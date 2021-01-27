@@ -1,4 +1,4 @@
-# content-cloud-poc
+# Content Cloud PoC
 This repository hosts a proof-of-concept project to demonstrate the security architecture of a sample application with the help of our efforts in the Content Cloud A project. The ore features our:  
 
 - __Standard authentication and authorization__: using OpenID Connect and OAuth2 integration with the KeyCloak identity management tool and Spring Security
