@@ -6,12 +6,17 @@ spring:
       default-filters:
         - TokenRelay
       routes:
-        - id: callme-service
-          uri: http://127.0.0.1:8040
+        - id: account-state-service
+          uri: http://127.0.0.1:8070
           predicates:
-            - Path=/callme/**
+            - Path=/accountstateservice/**
           filters:
             - RemoveRequestHeader=Cookie
+            - name: ABACPolicy
+              args:
+                abacQuery: "data.abac_policies.allow_partial == false"
+                abacUnknowns:
+                  - "data.accountState"
   security:
     oauth2:
       client:
@@ -22,18 +27,17 @@ spring:
             userinfo-uri: http://localhost:8080/auth/realms/master/protocol/openid-connect/userinfo
             user-name-attribute: preferred_username
         registration:
-          keycloak-with-test-scope:
+          gateway-content-cloud:
             provider: keycloak
-            client-id: spring-with-test-scope
-            client-secret: 296c3901-b937-4283-b419-e9045dbe7591
+            client-id: gateway-content-cloud
+            client-secret: 9cf562c5-08b0-41d0-aee8-ca223cc9983d
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
-          keycloak-without-test-scope:
-            provider: keycloak
-            client-id: spring-without-test-scope
-            client-secret: 20cb5b65-1433-4bf5-8434-bfd95302abcb
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+
+
+opa:
+  service:
+    base-url: http://opa:8181 # without the "/" at the end
 
 server.port: 8060
 

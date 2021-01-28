@@ -1,4 +1,4 @@
-package abac_policies
+package abac_policies.accountstates
 
 default allow_partial = false
 
