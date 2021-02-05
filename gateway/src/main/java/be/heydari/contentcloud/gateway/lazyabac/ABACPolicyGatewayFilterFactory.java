@@ -44,14 +44,16 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
                     String[] bearerArray = bearer.split("\\s+");
                     String abacContextEncoded = null;
                     try {
-                        abacContextEncoded = opaClient.queryOPA(config.getAbacQuery(), bearerArray[1], config.getAbacUnknowns());
+                        abacContextEncoded = opaClient.queryOPA(config.getAbacQuery(), new OpaInput(bearerArray[1]), config.getAbacUnknowns());
                     } catch (IOException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
 
-                    exchange.getRequest()
-                            .mutate()
-                            .header("X-ABAC-Context", abacContextEncoded);
+                    if (abacContextEncoded != null) {
+                        exchange.getRequest()
+                                .mutate()
+                                .header("X-ABAC-Context", abacContextEncoded);
+                    }
                 }
             }
             return chain.filter(exchange);

@@ -30,7 +30,7 @@ services:
       - "8181:8181"
     command: "run --server --log-level=debug --bundle /policies"
     volumes:
-      - ./account-state-service/src/main/resources/policies:/policies
+      - ./account-state-service/src/main/resources:/policies
 
   solr:
     image: paulcwarren/solr

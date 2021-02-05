@@ -11,10 +11,11 @@ spring:
           predicates:
             - Path=/accountstateservice/**
           filters:
+            - RewritePath=/accountstateservice(?<segment>/?.*), $\{segment}
             - RemoveRequestHeader=Cookie
             - name: ABACPolicy
               args:
-                abacQuery: "data.abac_policies.allow_partial == false"
+                abacQuery: "data.accountstates.allow_partial == false"
                 abacUnknowns:
                   - "data.accountState"
   security:
@@ -37,7 +38,7 @@ spring:
 
 opa:
   service:
-    base-url: http://opa:8181 # without the "/" at the end
+    base-url: http://localhost:8181 # without the "/" at the end
 
 server.port: 8060
 

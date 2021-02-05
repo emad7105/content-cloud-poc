@@ -1,8 +1,11 @@
-package abac_policies.accountstates
+package accountstates
 
 default allow_partial = false
 
 allow_partial {
-  input.action == "GET"
-  data.accountState.broker.id == input.brokerId
+  data.accountState.broker.id == token.payload.brokerId
+}
+
+token = {"payload": payload} {
+  [header, payload, signature] := io.jwt.decode(input.token)
 }
