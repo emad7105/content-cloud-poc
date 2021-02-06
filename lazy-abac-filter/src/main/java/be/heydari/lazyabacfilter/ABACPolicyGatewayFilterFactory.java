@@ -1,8 +1,7 @@
-package be.heydari.contentcloud.gateway.lazyabac;
+package be.heydari.lazyabacfilter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -19,10 +18,14 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
     public static final String ABAC_QUERY = "abacQuery";
     public static final String ABAC_UNKNOWNS = "abacUnknowns";
 
-    private @Autowired OPAClient opaClient;
+    private OPAClient opaClient;
 
     public ABACPolicyGatewayFilterFactory() {
         super(Config.class);
+    }
+
+    public void setOpaClient(OPAClient opaClient) {
+        this.opaClient = opaClient;
     }
 
     @Override

@@ -1,5 +1,4 @@
-package be.heydari.contentcloud.gateway.lazyabac;
-
+package be.heydari.lazyabacfilter;
 import be.heydari.AstWalker;
 import be.heydari.lib.converters.protobuf.ProtobufUtils;
 import be.heydari.lib.converters.protobuf.generated.PDisjunction;
@@ -16,19 +15,20 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
 
-import static java.lang.String.*;
 import static java.lang.String.format;
 
-@Service
+@Data
 public class OPAClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(OPAClient.class);
 
 
-    private @Autowired OPAClientConfig opaClientConfig;
+    private String baseUrl;
 
+    public OPAClient(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 
     public String queryOPA(String query, OpaInput input, List<String> unknowns) throws IOException {
         OpaQuery opaQuery = OpaQuery.builder()
@@ -38,7 +38,7 @@ public class OPAClient {
                 .build();
 
         String residualPolicy = new RestTemplate()
-                .postForObject(format("%s/v1/compile", opaClientConfig.getBaseUrl()), opaQuery, String.class);
+                .postForObject(format("%s/v1/compile", baseUrl), opaQuery, String.class);
 
         LOGGER.debug(format("Residual policy: %s", residualPolicy));
 

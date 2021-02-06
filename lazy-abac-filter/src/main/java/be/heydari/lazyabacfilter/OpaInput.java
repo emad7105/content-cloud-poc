@@ -1,5 +1,4 @@
-package be.heydari.contentcloud.gateway.lazyabac;
-
+package be.heydari.lazyabacfilter;
 import lombok.Data;
 
 @Data

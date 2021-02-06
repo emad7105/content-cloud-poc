@@ -1,6 +1,6 @@
 package be.heydari.contentcloud.gateway.config;
 
-import be.heydari.contentcloud.gateway.lazyabac.OpaABACWebFilter;
+import be.heydari.lazyabacfilter.OpaABACWebFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;

@@ -1,9 +1,9 @@
 package be.heydari.contentcloud.gateway;
 
-import be.heydari.contentcloud.gateway.lazyabac.OPAClientConfig;
+import be.heydari.lazyabacfilter.EnableOPAFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 import reactor.core.publisher.Mono;
 
 import org.springframework.boot.SpringApplication;
@@ -16,7 +16,9 @@ import org.springframework.web.server.WebSession;
 
 @SpringBootApplication
 @RestController
-@EnableConfigurationProperties(OPAClientConfig.class)
+
+@EnableOPAFilter
+@ComponentScan("be.heydari.lazyabacfilter")
 public class GatewayApplication {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GatewayApplication.class);
 

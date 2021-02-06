@@ -1,5 +1,4 @@
-package be.heydari.contentcloud.gateway.lazyabac;
-
+package be.heydari.lazyabacfilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.server.ServerWebExchange;
