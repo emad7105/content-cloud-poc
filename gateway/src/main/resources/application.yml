@@ -23,15 +23,16 @@ spring:
       client:
         provider:
           keycloak:
-            token-uri: http://localhost:8080/auth/realms/master/protocol/openid-connect/token
-            authorization-uri: http://localhost:8080/auth/realms/master/protocol/openid-connect/auth
-            userinfo-uri: http://localhost:8080/auth/realms/master/protocol/openid-connect/userinfo
+            token-uri: http://localhost:8080/auth/realms/content-cloud-realm/protocol/openid-connect/token
+            authorization-uri: http://localhost:8080/auth/realms/content-cloud-realm/protocol/openid-connect/auth
+            userinfo-uri: http://localhost:8080/auth/realms/content-cloud-realm/protocol/openid-connect/userinfo
             user-name-attribute: preferred_username
+            issuer-uri: http://localhost:8080/auth/realms/content-cloud-realm
         registration:
-          gateway-content-cloud:
+          content-cloud-gateway-client:
             provider: keycloak
-            client-id: gateway-content-cloud
-            client-secret: 0cfcb87f-bb9d-4b2e-aa53-5581e9d89403
+            client-id: content-cloud-gateway-client
+            client-secret: 92064e45-a751-4efb-bc1f-b4fbc2e99565
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
 

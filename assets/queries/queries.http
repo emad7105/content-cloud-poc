@@ -1,0 +1,21 @@
+### Storing the policy
+//PUT 127.0.0.1:8181/v1/policies/tagged-policy.rego
+//Content-Type: application/binary
+
+//< ../account-state-service/src/main/resources/policies/abac-policy-account-states.rego
+
+### Create a broker (directrly)
+POST 127.0.0.1:8087/brokers
+Content-Type: application/json
+
+< broker.json
+
+
+### Create an account statement (directly)
+
+### Partial evaluation
+POST 127.0.0.1:8181/v1/compile
+Content-Type: application/json
+
+< query.json
+

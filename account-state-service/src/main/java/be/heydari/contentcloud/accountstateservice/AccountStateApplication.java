@@ -23,11 +23,13 @@ import org.springframework.content.solr.SolrProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.context.annotation.RequestScope;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy()
 @EnableAbac
+@EnableWebSecurity
 public class AccountStateApplication {
 
     public static void main(String[] args) {
