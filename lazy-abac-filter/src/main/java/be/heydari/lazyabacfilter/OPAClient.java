@@ -3,6 +3,8 @@ import be.heydari.AstWalker;
 import be.heydari.lib.converters.protobuf.ProtobufUtils;
 import be.heydari.lib.converters.protobuf.generated.PDisjunction;
 import be.heydari.lib.expressions.Disjunction;
+import brave.Span;
+import brave.Tracer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
@@ -10,6 +12,10 @@ import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.annotation.NewSpan;
+import org.springframework.cloud.sleuth.annotation.SpanTag;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,33 +29,40 @@ import static java.lang.String.format;
 public class OPAClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(OPAClient.class);
 
-
     private String baseUrl;
+    private Tracer tracer;
 
-    public OPAClient(String baseUrl) {
+    public OPAClient(String baseUrl, Tracer tracer) {
         this.baseUrl = baseUrl;
+        this.tracer = tracer;
     }
 
     public String queryOPA(String query, OpaInput input, List<String> unknowns) throws IOException {
-        OpaQuery opaQuery = OpaQuery.builder()
+        Span span = tracer.nextSpan().name("call-opa");
+        try (Tracer.SpanInScope ws = this.tracer.withSpanInScope(span.start())){
+            span.tag("query", query);
+            OpaQuery opaQuery = OpaQuery.builder()
                 .query(query)
                 .input(input)
                 .unknowns(unknowns)
                 .build();
 
-        String residualPolicy = new RestTemplate()
+            String residualPolicy = new RestTemplate()
                 .postForObject(format("%s/v1/compile", baseUrl), opaQuery, String.class);
 
-        LOGGER.debug(format("Residual policy: %s", residualPolicy));
+            LOGGER.debug(format("Residual policy: %s", residualPolicy));
 
-        //ResponseAST
-        Disjunction disjunction = AstWalker.walk(residualPolicy);
-        PDisjunction pDisjunction = ProtobufUtils.from(disjunction, "");
-        byte[] protoBytes = pDisjunction.toByteArray();
-        if (protoBytes.length == 0) {
-            return null;
+            //ResponseAST
+            Disjunction disjunction = AstWalker.walk(residualPolicy);
+            PDisjunction pDisjunction = ProtobufUtils.from(disjunction, "");
+            byte[] protoBytes = pDisjunction.toByteArray();
+            if (protoBytes.length == 0) {
+                return null;
+            }
+            return Base64.getEncoder().encodeToString(protoBytes);
+        } finally {
+            span.finish();
         }
-        return Base64.getEncoder().encodeToString(protoBytes);
     }
 
 /*    public static String queryOPA(Long brokerId) throws IOException {
