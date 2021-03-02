@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import be.heydari.contentcloud.accountstateservice.provisioning.BrokerProvisioner;
 import be.heydari.lib.converters.solr.SolrUtils;
 import be.heydari.lib.expressions.Disjunction;
 import com.example.abac_spike.ABACContext;
@@ -20,9 +21,11 @@ import org.springframework.content.rest.config.RestConfiguration;
 import org.springframework.content.solr.AttributeProvider;
 import org.springframework.content.solr.FilterQueryProvider;
 import org.springframework.content.solr.SolrProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -33,7 +36,10 @@ import org.springframework.web.context.annotation.RequestScope;
 public class AccountStateApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AccountStateApplication.class, args);
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStateApplication.class, args);
+
+        BrokerProvisioner brokerProvisioner = applicationContext.getBean(BrokerProvisioner.class);
+        brokerProvisioner.provision();
     }
 
     @Configuration
