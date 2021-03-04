@@ -1,11 +1,12 @@
 package be.heydari.contentcloud.gateway;
 
+import be.heydari.contentcloud.gateway.filters.AuthnEndWebFilter;
+import be.heydari.contentcloud.gateway.filters.AuthnStartWebFilter;
 import be.heydari.lazyabacfilter.EnableOPAFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import reactor.core.publisher.Mono;
 
 import org.springframework.boot.SpringApplication;
@@ -37,4 +38,13 @@ public class GatewayApplication {
 		return Mono.just(session.getId());
 	}
 
+	@Bean
+	public AuthnStartWebFilter authnStartWebFilter() {
+		return new AuthnStartWebFilter();
+	}
+
+	@Bean
+	public AuthnEndWebFilter authnEndWebFilter() {
+		return new AuthnEndWebFilter();
+	}
 }
