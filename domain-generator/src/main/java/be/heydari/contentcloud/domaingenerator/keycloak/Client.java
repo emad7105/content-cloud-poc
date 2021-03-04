@@ -1,3 +1,5 @@
+package be.heydari.contentcloud.domaingenerator.keycloak;
+
 import org.keycloak.admin.client.resource.ClientResource;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.representations.idm.ClientRepresentation;
@@ -12,12 +14,12 @@ public class Client {
     private final String secret;
     private ClientResource client = null;
 
-    Client(String name, String secret) {
+    public Client(String name, String secret) {
         this.name = name;
         this.secret = secret;
     }
 
-    ClientResource create(@NotNull RealmResource realm) {
+    public ClientResource create(@NotNull RealmResource realm) {
         var client = new ClientRepresentation();
         client.setClientId(name);
         client.setRedirectUris(Collections.singletonList("*"));
@@ -31,7 +33,7 @@ public class Client {
         return this.client;
     }
 
-    void setAttributes(List<ProtocolMapperRepresentation> mappers) {
+    public void setAttributes(List<ProtocolMapperRepresentation> mappers) {
         var rep = this.client.toRepresentation();
         rep.setProtocolMappers(mappers);
         this.client.update(rep);

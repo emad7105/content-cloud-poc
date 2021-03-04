@@ -118,12 +118,12 @@
 		<dependency>
 			<groupId>com.github.paulcwarren</groupId>
 			<artifactId>spring-content-fs-boot-starter</artifactId>
-			<version>1.1.0.M4-SNAPSHOT</version>
+			<version>1.1.0.M4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.paulcwarren</groupId>
 			<artifactId>spring-content-rest-boot-starter</artifactId>
-			<version>1.1.0.M4-SNAPSHOT</version>
+			<version>1.1.0.M4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -132,18 +132,18 @@
 		<dependency>
 			<groupId>com.github.paulcwarren</groupId>
 			<artifactId>spring-content-renditions-boot-starter</artifactId>
-			<version>1.1.0.M4-SNAPSHOT</version>
+			<version>1.1.0.M4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.paulcwarren</groupId>
 			<artifactId>spring-content-docx4j</artifactId>
-			<version>1.1.0.M4-SNAPSHOT</version>
+			<version>1.1.0.M4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.github.paulcwarren</groupId>
 			<artifactId>spring-versions-jpa-boot-starter</artifactId>
-			<version>1.1.0.M4-SNAPSHOT</version>
+			<version>1.1.0.M4</version>
 		</dependency>
 
 		<dependency>
@@ -169,13 +169,13 @@
 		<dependency>
 			<groupId>com.github.paulcwarren</groupId>
 			<artifactId>spring-content-solr-boot-starter</artifactId>
-			<version>1.1.0.M4-SNAPSHOT</version>
+			<version>1.1.0.M4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.github.paulcwarren</groupId>
 			<artifactId>spring-content-solr</artifactId>
-			<version>1.1.0.M4-SNAPSHOT</version>
+			<version>1.1.0.M4</version>
 		</dependency>
 
 		<dependency>
@@ -209,6 +209,12 @@
 			<artifactId>rest-assured</artifactId>
 			<version>2.9.0</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- Martijn -->
+		<dependency>
+			<groupId>be.heydari.contentcloud</groupId>
+			<artifactId>domain-generator</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

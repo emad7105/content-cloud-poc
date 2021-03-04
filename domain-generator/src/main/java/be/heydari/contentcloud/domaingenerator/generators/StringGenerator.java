@@ -1,3 +1,5 @@
+package be.heydari.contentcloud.domaingenerator.generators;
+
 import java.util.List;
 import java.util.Random;
 
@@ -5,7 +7,7 @@ public class StringGenerator implements ValueGenerator {
     private final List<String> strings;
     private final Random rand;
 
-    StringGenerator(List<String> strings, Random rand) {
+    public StringGenerator(Random rand, List<String> strings) {
         this.strings = strings;
         this.rand = rand;
     }
@@ -13,4 +15,14 @@ public class StringGenerator implements ValueGenerator {
     public String generate() {
         return strings.get(rand.nextInt(strings.size()));
     }
+
+    public long uniqueEntries() {
+        return strings.size();
+    }
+
+    public String generatedType() {
+        return "string";
+    }
+
+    public List<String> getStrings() { return strings; }
 }

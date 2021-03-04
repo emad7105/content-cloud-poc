@@ -8,8 +8,8 @@ services:
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
+      DB_DATABASE: be.heydari.contentcloud.domaingenerator.keycloak
+      DB_USER: be.heydari.contentcloud.domaingenerator.keycloak
       DB_SCHEMA: public
       DB_PASSWORD: password
       KEYCLOAK_LOGLEVEL: DEBUG
@@ -23,8 +23,8 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
+      POSTGRES_DB: be.heydari.contentcloud.domaingenerator.keycloak
+      POSTGRES_USER: be.heydari.contentcloud.domaingenerator.keycloak
       POSTGRES_PASSWORD: password
 
   opa:

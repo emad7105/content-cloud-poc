@@ -2,12 +2,7 @@ package be.heydari.contentcloud.accountstateservice;
 
 import static javax.persistence.GenerationType.AUTO;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import org.springframework.content.commons.annotations.ContentId;
 import org.springframework.content.commons.annotations.ContentLength;
@@ -22,6 +17,8 @@ import org.springframework.versions.VersionNumber;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -76,4 +73,7 @@ public class AccountState {
     @JoinColumn
     @ManyToOne
     private Broker broker;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountStateAttribute> attributes;
 }

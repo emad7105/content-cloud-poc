@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import be.heydari.contentcloud.accountstateservice.provisioning.BrokerProvisioner;
+import be.heydari.contentcloud.accountstateservice.provisioning.Provisioner;
 import be.heydari.lib.converters.solr.SolrUtils;
 import be.heydari.lib.expressions.Disjunction;
 import com.example.abac_spike.ABACContext;
@@ -38,8 +39,8 @@ public class AccountStateApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStateApplication.class, args);
 
-        BrokerProvisioner brokerProvisioner = applicationContext.getBean(BrokerProvisioner.class);
-        brokerProvisioner.provision();
+        Provisioner provisioner = applicationContext.getBean(Provisioner.class);
+        provisioner.provision();
     }
 
     @Configuration

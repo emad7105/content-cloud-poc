@@ -1,3 +1,5 @@
+package be.heydari.contentcloud.domaingenerator.keycloak;
+
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -12,11 +14,11 @@ public class User {
     private final String username;
     private UserResource user = null;
 
-    User(String username) {
+    public User(String username) {
         this.username = username;
     }
 
-    UserResource create(@NotNull RealmResource realm) {
+    public UserResource create(@NotNull RealmResource realm) {
         var credentials = new CredentialRepresentation();
         credentials.setValue(username);
 
@@ -32,7 +34,7 @@ public class User {
         return this.user;
     }
 
-    void setAttributes(Map<String, List<String>> attributes) {
+    public void setAttributes(Map<String, List<String>> attributes) {
         var user = this.user.toRepresentation();
         user.setAttributes(attributes);
         this.user.update(user);

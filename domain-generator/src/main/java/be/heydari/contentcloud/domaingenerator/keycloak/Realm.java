@@ -1,3 +1,5 @@
+package be.heydari.contentcloud.domaingenerator.keycloak;
+
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.representations.idm.RealmRepresentation;
@@ -8,11 +10,11 @@ public class Realm {
     private final String name;
     private RealmResource realm = null;
 
-    Realm(String name) {
+    public Realm(String name) {
         this.name = name;
     }
 
-    RealmResource create(@NotNull Keycloak keycloak) {
+    public RealmResource create(@NotNull Keycloak keycloak) {
         var realm = new RealmRepresentation();
         realm.setRealm(name);
         realm.setEnabled(true);
@@ -22,7 +24,7 @@ public class Realm {
         return this.realm;
     }
 
-    RealmResource resource() {
+    public RealmResource resource() {
         return this.realm;
     }
 }
