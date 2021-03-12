@@ -11,6 +11,7 @@
 	</parent>
 
 	<artifactId>account-state-service</artifactId>
+	<packaging>jar</packaging>
 
 	<name>account-state-service</name>
 	<description>Example project for Account States</description>
@@ -227,6 +228,19 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>spring-boot</classifier>
+							<mainClass>
+								be.heydari.contentcloud.accountstateservice.AccountStateApplication
+							</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>

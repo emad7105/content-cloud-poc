@@ -1,0 +1,109 @@
+version: '3.2'
+
+services:
+  keycloak:
+    image: jboss/keycloak:12.0.4
+    ports:
+      - 8080:8080
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: be.heydari.contentcloud.domaingenerator.keycloak
+      DB_USER: be.heydari.contentcloud.domaingenerator.keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_LOGLEVEL: DEBUG
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+#      KEYCLOAK_FRONTEND_URL: http://localhost:8080/auth
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: be.heydari.contentcloud.domaingenerator.keycloak
+      POSTGRES_USER: be.heydari.contentcloud.domaingenerator.keycloak
+      POSTGRES_PASSWORD: password
+
+  opa:
+    image: openpolicyagent/opa:0.20.5
+    ports:
+      - 8181:8181
+    command: "run --server --log-level=debug --bundle /policies"
+    volumes:
+      - ./account-state-service/src/main/resources:/policies
+
+  solr:
+    image: paulcwarren/solr
+    ports:
+      - 8983:8983
+
+  zipkin:
+    image: ghcr.io/openzipkin/zipkin-slim:${TAG:-latest}
+    container_name: zipkin
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
+    environment:
+      - STORAGE_TYPE=mem
+      # Point the zipkin at the storage backend
+      - MYSQL_HOST=mysql
+      # Uncomment to enable self-tracing
+      # - SELF_TRACING_ENABLED=true
+      # Uncomment to increase heap size
+      # - JAVA_OPTS=-Xms128m -Xmx128m -XX:+ExitOnOutOfMemoryError
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411
+    # Uncomment to enable debug logging
+    # command: --logging.level.zipkin2=DEBUG
+
+  gateway:
+    image: content-cloud/gateway
+    depends_on:
+      - zipkin
+      - keycloak
+      - opa
+    environment:
+      KEYCLOAK_ADDR: keycloak:8080
+      ZIPKIN_ADDR: zipkin:9411
+      ZIPKIN_SAMPLING_RATE: 0.01
+      OPA_ADDR: opa:8181
+      ACCOUNT_STATE_ADDR: account-state-service:8070
+    ports:
+      - 8060:8060
+    restart: on-failure
+
+  account-state-service:
+    image: content-cloud/account-state-service
+    depends_on:
+      - zipkin
+      - keycloak
+    environment:
+      KEYCLOAK_ADDR: keycloak:8080
+      ZIPKIN_ADDR: zipkin:9411
+      ZIPKIN_SAMPLING_RATE: 0.01
+    restart: on-failure
+
+  domain-generator:
+    image: content-cloud/domain-generator
+    depends_on:
+      - keycloak
+    environment:
+      KEYCLOAK_ADDR: keycloak:8080
+    restart: on-failure
+
+  locust-client:
+    image: content-cloud/locust-client
+    depends_on:
+      - gateway
+      - account-state-service
+    ports:
+      - 8089:8089
+
+  debug:
+    image: praqma/network-multitool
+
+volumes:
+  postgres-data: {}

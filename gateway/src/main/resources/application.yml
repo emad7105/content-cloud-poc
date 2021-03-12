@@ -3,9 +3,9 @@ spring:
     name: gateway
   sleuth:
     sampler:
-      probability: 1.0
+      probability: ${ZIPKIN_SAMPLE_RATE:1.0}
   zipkin:
-    base-url: http://127.0.0.1:9411
+    base-url: http://${ZIPKIN_ADDR:127.0.0.1:9411}
     service:
       name: "gateway"
   cloud:
@@ -14,7 +14,7 @@ spring:
         - TokenRelay
       routes:
         - id: account-state-service
-          uri: http://127.0.0.1:8070
+          uri: http://${ACCOUNT_STATE_ADDR:127.0.0.1:8070}
           predicates:
             - Path=/accountstateservice/**
           filters:
@@ -30,11 +30,11 @@ spring:
       client:
         provider:
           keycloak:
-            token-uri: http://localhost:8080/auth/realms/content-cloud-realm/protocol/openid-connect/token
-            authorization-uri: http://localhost:8080/auth/realms/content-cloud-realm/protocol/openid-connect/auth
-            userinfo-uri: http://localhost:8080/auth/realms/content-cloud-realm/protocol/openid-connect/userinfo
+            token-uri: http://${KEYCLOAK_ADDR:localhost:8080}/auth/realms/content-cloud-realm/protocol/openid-connect/token
+            authorization-uri: http://${KEYCLOAK_ADDR:localhost:8080}/auth/realms/content-cloud-realm/protocol/openid-connect/auth
+            userinfo-uri: http://${KEYCLOAK_ADDR:localhost:8080}/auth/realms/content-cloud-realm/protocol/openid-connect/userinfo
             user-name-attribute: preferred_username
-            issuer-uri: http://localhost:8080/auth/realms/content-cloud-realm
+            issuer-uri: http://${KEYCLOAK_ADDR:localhost:8080}/auth/realms/content-cloud-realm
         registration:
           content-cloud-gateway-client:
             provider: keycloak
@@ -46,7 +46,7 @@ spring:
 
 opa:
   service:
-    base-url: http://localhost:8181 # without the "/" at the end
+    base-url: http://${OPA_ADDR:localhost:8181} # without the "/" at the end
 
 server.port: 8060
 

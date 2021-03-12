@@ -1,7 +1,8 @@
 package be.heydari.contentcloud.domaingenerator;
 
-import be.heydari.contentcloud.domaingenerator.generators.IntGenerator;
 import be.heydari.contentcloud.domaingenerator.keycloak.*;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.GsonBuilder;
 import org.keycloak.admin.client.KeycloakBuilder;
 
@@ -10,22 +11,41 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
+        var env = System.getenv();
+        var keycloakAddr =  env.getOrDefault("KEYCLOAK_ADDR", "localhost:8080");
+
         var keycloak = KeycloakBuilder.builder()
-            .serverUrl("http://localhost:8080/auth")
+            .serverUrl("http://"+ keycloakAddr +"/auth")
             .realm("master")
             .clientId("admin-cli")
             .username("admin")
             .password("admin")
             .build();
 
+//        var gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+//            @Override
+//            public boolean shouldSkipField(FieldAttributes f) {
+//                if(f.getName().equals("name")){
+//                    return true;
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean shouldSkipClass(Class<?> clazz) {
+//                return false;
+//            }
+//        }).setPrettyPrinting().create();
+//        var str = gson.toJson(keycloak.realm("content-cloud-realm").toRepresentation());
+//        System.out.println("str" + str);
         try {
             keycloak.realm("content-cloud-realm").remove();
         } catch (Exception e){
+            System.out.println(e);
             // ignore
         }
 
 
-        var rand = new Random();
         var realm = new Realm("content-cloud-realm");
         realm.create(keycloak);
         var client = new Client("content-cloud-gateway-client", "92064e45-a751-4efb-bc1f-b4fbc2e99565");
@@ -60,14 +80,13 @@ public class Main {
             user.setAttributes(values);
         }
 
-        var gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(
-            gson.toJson(
-                keycloak.realm("content-cloud-realm")
-                    .clients()
-                    .findByClientId("content-cloud-gateway-client")
-                    .get(0)
-            )
-        );
+//        System.out.println(
+//            gson.toJson(
+//                keycloak.realm("content-cloud-realm")
+//                    .clients()
+//                    .findByClientId("content-cloud-gateway-client")
+//                    .get(0)
+//            )
+//        );
     }
 }

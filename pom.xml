@@ -12,7 +12,7 @@
 		<module>gateway</module>
 		<module>account-state-service</module>
 		<module>lazy-abac-filter</module>
-		<module>keycloak-admin</module>
+		<module>domain-generator</module>
 	</modules>
 	<packaging>pom</packaging>
 

@@ -1,0 +1,12 @@
+from python:3.8-slim-buster
+env VIRTUAL_ENV=/opt/env
+run python3 -m venv $VIRTUAL_ENV
+env PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Install dependencies
+copy locust-client/requirements.txt .
+run pip install -r requirements.txt
+
+copy locust-client .
+expose 8089
+entrypoint ["locust", "-f" ,"main.py"]

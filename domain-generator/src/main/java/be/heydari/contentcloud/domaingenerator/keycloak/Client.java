@@ -27,6 +27,7 @@ public class Client {
         client.setSecret(secret);
         client.setEnabled(true);
         client.setStandardFlowEnabled(true);
+        client.setDirectAccessGrantsEnabled(true);
         realm.clients().create(client);
 
         this.client = this.resource(realm);

@@ -4,13 +4,13 @@ server:
 spring:
   sleuth:
     sampler:
-      probability: 1.0
+      probability: ${ZIPKIN_SAMPLING_RATE:1.0}
   zipkin:
-    base-url: http://127.0.0.1:9411
+    base-url: http://${ZIPKIN_ADDR:127.0.0.1:9411}
     service:
       name: "acc-state"
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/auth/realms/content-cloud-realm
+          issuer-uri: http://${KEYCLOAK_ADDR:localhost:8080}/auth/realms/content-cloud-realm
