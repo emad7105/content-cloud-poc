@@ -8,8 +8,8 @@ services:
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
-      DB_DATABASE: be.heydari.contentcloud.domaingenerator.keycloak
-      DB_USER: be.heydari.contentcloud.domaingenerator.keycloak
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
       DB_SCHEMA: public
       DB_PASSWORD: password
       KEYCLOAK_LOGLEVEL: DEBUG
@@ -24,8 +24,8 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: be.heydari.contentcloud.domaingenerator.keycloak
-      POSTGRES_USER: be.heydari.contentcloud.domaingenerator.keycloak
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
 
   opa:
@@ -70,12 +70,12 @@ services:
       ZIPKIN_ADDR: zipkin:9411
       ZIPKIN_SAMPLING_RATE: 0.01
       OPA_ADDR: opa:8181
-      ACCOUNT_STATE_ADDR: account-state-service:8070
+      ACCOUNT_STATE_ADDR: account-state:8070
     ports:
       - 8060:8060
     restart: on-failure
 
-  account-state-service:
+  account-state:
     image: content-cloud/account-state-service
     depends_on:
       - zipkin
@@ -94,13 +94,20 @@ services:
       KEYCLOAK_ADDR: keycloak:8080
     restart: on-failure
 
-  locust-client:
+  locust-master:
     image: content-cloud/locust-client
     depends_on:
       - gateway
-      - account-state-service
+      - account-state
     ports:
       - 8089:8089
+    entrypoint: locust -f main.py --master -H http://locust-master:8089
+
+  locust-worker:
+    image: content-cloud/locust-client
+    depends_on:
+      - locust-master
+    entrypoint: locust -f main.py --worker --master-host locust-master
 
   debug:
     image: praqma/network-multitool

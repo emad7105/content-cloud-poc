@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-state-deployment
+  labels:
+    app: account-state
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-state
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: content-cloud/account-state-service
+          ports:
+            - containerPort: 8070
+          envFrom:
+            - configMapRef:
+                name: account-state-config

@@ -14,6 +14,8 @@ public class Main {
         var env = System.getenv();
         var keycloakAddr =  env.getOrDefault("KEYCLOAK_ADDR", "localhost:8080");
 
+        System.out.println("keycloak address::" + "http://"+ keycloakAddr +"/auth");
+
         var keycloak = KeycloakBuilder.builder()
             .serverUrl("http://"+ keycloakAddr +"/auth")
             .realm("master")
@@ -41,8 +43,7 @@ public class Main {
         try {
             keycloak.realm("content-cloud-realm").remove();
         } catch (Exception e){
-            System.out.println(e);
-            // ignore
+            System.out.println("realm not found!");
         }
 
 

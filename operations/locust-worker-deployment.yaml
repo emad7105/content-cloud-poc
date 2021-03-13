@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: locust-worker
+  template:
+    metadata:
+      labels:
+        app: locust-worker
+    spec:
+      containers:
+        - name: locust-worker
+          image: content-cloud/locust-client
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8089
+          command: ["locust", "-f", "main.py", "--worker", "--master-host", "locust-master"]

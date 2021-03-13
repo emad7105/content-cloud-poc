@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+  labels:
+    app: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: content-cloud/gateway
+          ports:
+            - containerPort: 8060
+          envFrom:
+            - configMapRef:
+                name: gateway-config
+
+        - name: opa
+          image: openpolicyagent/opa:0.20.5
+          ports:
+            - containerPort: 8181
