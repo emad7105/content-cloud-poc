@@ -7,6 +7,6 @@ metadata:
 data:
   KEYCLOAK_ADDR: keycloak:8080
   ZIPKIN_ADDR: zipkin:9411
-  ZIPKIN_SAMPLING_RATE: 0.01
+  ZIPKIN_SAMPLING_RATE: "0.01"
   ACCOUNT_STATE_ADDR: account-state:8070
   OPA_ADDR: localhost:8181 #sidecar

@@ -7,4 +7,4 @@ metadata:
 data:
   KEYCLOAK_ADDR: keycloak:8080
   ZIPKIN_ADDR: zipkin:9411
-  ZIPKIN_SAMPLING_RATE: 0.01
+  ZIPKIN_SAMPLING_RATE: "0.01"

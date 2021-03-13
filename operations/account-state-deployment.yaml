@@ -12,11 +12,12 @@ spec:
   template:
     metadata:
       labels:
-        app: gateway
+        app: account-state
     spec:
       containers:
-        - name: gateway
+        - name: account-state
           image: content-cloud/account-state-service
+          imagePullPolicy: Never #remove once out of minikube
           ports:
             - containerPort: 8070
           envFrom:

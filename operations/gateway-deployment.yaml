@@ -17,6 +17,7 @@ spec:
       containers:
         - name: gateway
           image: content-cloud/gateway
+          imagePullPolicy: Never #remove once out of minikube
           ports:
             - containerPort: 8060
           envFrom:
@@ -24,6 +25,9 @@ spec:
                 name: gateway-config
 
         - name: opa
-          image: openpolicyagent/opa:0.20.5
+          image: content-cloud/opa
+          imagePullPolicy: Never # remove once not in minikube
+#          image: openpolicyagent/opa:0.20.5
+#          command: ["./opa", "run", "--server", "--log-level=debug"]
           ports:
             - containerPort: 8181

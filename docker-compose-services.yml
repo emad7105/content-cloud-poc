@@ -29,7 +29,8 @@ services:
       POSTGRES_PASSWORD: password
 
   opa:
-    image: openpolicyagent/opa:0.20.5
+    image: openpolicyagent/opa:0.20.5-debug
+#    image: content-cloud/opa
     ports:
       - 8181:8181
     command: "run --server --log-level=debug --bundle /policies"

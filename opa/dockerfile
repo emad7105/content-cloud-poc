@@ -1,0 +1,2 @@
+from openpolicyagent/opa:0.20.5
+entrypoint ["./opa", "run", "--server", "--log-level", "debug"]
