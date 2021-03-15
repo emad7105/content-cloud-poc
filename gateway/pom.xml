@@ -1,159 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.0.RELEASE</version>
-		<relativePath/>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.0.RELEASE</version>
+        <relativePath/>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>gateway</artifactId>
+    <artifactId>gateway</artifactId>
 
-	<properties>
-		<java.version>11</java.version>
-		<!--
-		We discovered this bug/vulnerability in Spring Cloud Security,
-		in particular TokenRelayGatewayFilterFactory. In brief, the Gateway
-		completes the oauth2 flow for the first time (first request) and
-		it caches the token. Later on for other requests, it just relay
-		the token to the resource server as long as it’s in the cache
-		and the cookie info is right. However, it doesn’t check the
-		expiration date, and when a token is expired, it has no logic
-		in this this Filter for using the refresh tokens and fetching
-		a new token (or even redirecting the user to log in again).
-		Luckily, likewise, the issue has been recently discovered by
-		the community: issue175
-		https://github.com/spring-cloud/spring-cloud-security/issues/175
+    <properties>
+        <java.version>11</java.version>
+        <!--
+        We discovered this bug/vulnerability in Spring Cloud Security,
+        in particular TokenRelayGatewayFilterFactory. In brief, the Gateway
+        completes the oauth2 flow for the first time (first request) and
+        it caches the token. Later on for other requests, it just relay
+        the token to the resource server as long as it’s in the cache
+        and the cookie info is right. However, it doesn’t check the
+        expiration date, and when a token is expired, it has no logic
+        in this this Filter for using the refresh tokens and fetching
+        a new token (or even redirecting the user to log in again).
+        Luckily, likewise, the issue has been recently discovered by
+        the community: issue175
+        https://github.com/spring-cloud/spring-cloud-security/issues/175
 
-		To fix this, there are two custom versions of this filter developed
-		by the community.
-		https://gist.github.com/tschlegel/62418600e04498d8c1db67ce5e1f17eb
+        To fix this, there are two custom versions of this filter developed
+        by the community.
+        https://gist.github.com/tschlegel/62418600e04498d8c1db67ce5e1f17eb
 
-		In the new version of Spring Cloud Gateway (3.0.x), in general,
-		TokenRelayGatewayFilterFactory has been moved from Spring Cloud
-		Security to Spring Cloud Gateway and the issue is fixed. But,
-		3.0.x is not a RELEASE version yet. (edited)  -->
-		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-	</properties>
+        In the new version of Spring Cloud Gateway (3.0.x), in general,
+        TokenRelayGatewayFilterFactory has been moved from Spring Cloud
+        Security to Spring Cloud Gateway and the issue is fixed. But,
+        3.0.x is not a RELEASE version yet. (edited)  -->
+        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+    </properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-
-	<dependencies>
-		<!--sleuth-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-sleuth</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-zipkin</artifactId>
-		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>be.heydari.contentcloud</groupId>-->
-<!--			<artifactId>lazy-abac-filter</artifactId>-->
-<!--			<version>0.0.1-SNAPSHOT</version>-->
-<!--		</dependency>-->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-oauth2-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-oauth2-jose</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-security</artifactId>
-		</dependency>
-		<!-- Emad -->
-		<dependency>
-			<groupId>be.heydari</groupId>
-			<artifactId>abac-lib</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>be.heydari</groupId>
-			<artifactId>rego-java</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>be.heydari.contentcloud</groupId>
-			<artifactId>lazy-abac-filter</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
-	<build>
-		<plugins>
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--			</plugin>-->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-						<configuration>
-							<classifier>spring-boot</classifier>
-							<mainClass>
-								be.heydari.contentcloud.gateway.GatewayApplication
-							</mainClass>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+    <dependencies>
+        <!--sleuth-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
 
-	<repositories>
-		<repository>
-			<id>oss</id>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</repository>
-	</repositories>
+        <!--		<dependency>-->
+        <!--			<groupId>be.heydari.contentcloud</groupId>-->
+        <!--			<artifactId>lazy-abac-filter</artifactId>-->
+        <!--			<version>0.0.1-SNAPSHOT</version>-->
+        <!--		</dependency>-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
+        </dependency>
+        <!-- Emad -->
+        <dependency>
+            <groupId>be.heydari</groupId>
+            <artifactId>abac-lib</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>be.heydari</groupId>
+            <artifactId>rego-java</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>be.heydari.contentcloud</groupId>
+            <artifactId>lazy-abac-filter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <!--			<plugin>-->
+            <!--				<groupId>org.springframework.boot</groupId>-->
+            <!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--			</plugin>-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>spring-boot</classifier>
+                            <mainClass>
+                                be.heydari.contentcloud.gateway.GatewayApplication
+                            </mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>oss</id>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
 
 </project>

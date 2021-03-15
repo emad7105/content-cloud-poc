@@ -21,13 +21,13 @@ public abstract class Attribute {
 
     public abstract Map<String, String> extraConfig();
 
-     public ProtocolMapperRepresentation mapper() {
+    public ProtocolMapperRepresentation mapper() {
         var mapper = new ProtocolMapperRepresentation();
         mapper.setProtocol("openid-connect");
         mapper.setProtocolMapper("oidc-usermodel-attribute-mapper");
         mapper.setName(name);
 
-        var config = new HashMap<String,String>();
+        var config = new HashMap<String, String>();
         config.put("userinfo.token.claim", "true");
         config.put("user.attribute", name);
         config.put("id.token.claim", "true");

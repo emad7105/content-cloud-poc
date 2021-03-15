@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 public class Main {
     public static void main(String[] args) {
         var env = System.getenv();
-        var keycloakAddr =  env.getOrDefault("KEYCLOAK_ADDR", "localhost:8080");
+        var keycloakAddr = env.getOrDefault("KEYCLOAK_ADDR", "localhost:8080");
 
-        System.out.println("keycloak address::" + "http://"+ keycloakAddr +"/auth");
+        System.out.println("keycloak address::" + "http://" + keycloakAddr + "/auth");
 
         var keycloak = KeycloakBuilder.builder()
-            .serverUrl("http://"+ keycloakAddr +"/auth")
+            .serverUrl("http://" + keycloakAddr + "/auth")
             .realm("master")
             .clientId("admin-cli")
             .username("admin")
@@ -42,7 +42,7 @@ public class Main {
 //        System.out.println("str" + str);
         try {
             keycloak.realm("content-cloud-realm").remove();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("realm not found!");
         }
 
@@ -55,16 +55,16 @@ public class Main {
         var generators = Generators.Example1();
         var attributes = new ArrayList<Attribute>();
         var singleGens = generators.getSingleGenerators();
-        for (var key: singleGens.keySet()) {
+        for (var key : singleGens.keySet()) {
             var gen = singleGens.get(key);
             attributes.add(new SingletonAttribute(key, gen));
         }
 
         var multiGens = generators.getMultiValuedGenerators();
-        for (var key: multiGens.keySet()) {
+        for (var key : multiGens.keySet()) {
             var gen = multiGens.get(key);
             var unique = gen.uniqueEntries();
-            attributes.add(new MultiValuedAttribute(key, gen,  (int) Math.min(unique, 5)));
+            attributes.add(new MultiValuedAttribute(key, gen, (int) Math.min(unique, 5)));
         }
 
         var mappers = attributes.stream().map(Attribute::mapper).collect(Collectors.toList());

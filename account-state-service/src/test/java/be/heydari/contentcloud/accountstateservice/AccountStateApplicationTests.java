@@ -61,7 +61,7 @@ import lombok.Data;
 @RunWith(Ginkgo4jSpringRunner.class)
 @Ginkgo4jConfiguration(threads = 1)
 @SpringBootTest(classes = {
-        AccountStateApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    AccountStateApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AccountStateApplicationTests {
 
     @LocalServerPort
@@ -115,224 +115,224 @@ public class AccountStateApplicationTests {
                     // add some brokers
                     {
                         json = given()
-                                .header("content-type", "application/hal+json")
-                                .body("{\"name\":\"foo\"}")
-                                .post("/brokers/")
-                                .then()
-                                .statusCode(HttpStatus.SC_CREATED)
-                                .extract()
-                                .jsonPath();
+                            .header("content-type", "application/hal+json")
+                            .body("{\"name\":\"foo\"}")
+                            .post("/brokers/")
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED)
+                            .extract()
+                            .jsonPath();
 
                         brokerFooUri = (String) json
-                                .get("_links.self.href");
+                            .get("_links.self.href");
 
                         json = given()
-                                .header("content-type", "application/hal+json")
-                                .body("{\"name\":\"bar\"}")
-                                .post("/brokers/")
-                                .then()
-                                .statusCode(HttpStatus.SC_CREATED)
-                                .extract()
-                                .jsonPath();
+                            .header("content-type", "application/hal+json")
+                            .body("{\"name\":\"bar\"}")
+                            .post("/brokers/")
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED)
+                            .extract()
+                            .jsonPath();
 
                         brokerBarUri = (String) json
-                                .get("_links.self.href");
+                            .get("_links.self.href");
                     }
 
                     // add account statements owned by brokers' broker ID
                     {
                         json = given()
-                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                        .substringAfter(brokerFooUri, "/brokers/")))*/
-                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                                .substringAfter(brokerFooUri, "/brokers/"))))
-                                .header("content-type", "application/hal+json")
-                                .body("{\"name\":\"zzz\",\"type\":\"sop_document\"}")
-                                .post("/accountStates/")
-                                .then()
-                                .statusCode(HttpStatus.SC_CREATED)
-                                .extract()
-                                .jsonPath();
+                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/")))*/
+                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                .substringAfter(brokerFooUri, "/brokers/"))))
+                            .header("content-type", "application/hal+json")
+                            .body("{\"name\":\"zzz\",\"type\":\"sop_document\"}")
+                            .post("/accountStates/")
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED)
+                            .extract()
+                            .jsonPath();
 
                         tenantFooDoc1 = (String) json
-                                .get("_links.self.href");
+                            .get("_links.self.href");
                         tenantFooDoc1Content = (String) json
-                                .get("_links.accountStates.href");
+                            .get("_links.accountStates.href");
 
                         json = given()
-                                .contentType("text/uri-list")
-                                .body(format("%s", brokerFooUri))
-                                .put(tenantFooDoc1
-                                        + "/broker")
-                                .then()
-                                .statusCode(HttpStatus.SC_NO_CONTENT)
-                                .extract()
-                                .jsonPath();
+                            .contentType("text/uri-list")
+                            .body(format("%s", brokerFooUri))
+                            .put(tenantFooDoc1
+                                + "/broker")
+                            .then()
+                            .statusCode(HttpStatus.SC_NO_CONTENT)
+                            .extract()
+                            .jsonPath();
 
                         given()
-                        .config(RestAssured
+                            .config(RestAssured
                                 .config()
                                 .encoderConfig(encoderConfig()
-                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                        /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                .substringAfter(brokerFooUri, "/brokers/")))*/
-                        .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/")))*/
+                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                 .substringAfter(brokerFooUri, "/brokers/"))))
-                        .header("content-type", "text/plain")
-                        .body(IOUtils
+                            .header("content-type", "text/plain")
+                            .body(IOUtils
                                 .toByteArray("foo doc 1"))
-                        .post(tenantFooDoc1Content)
-                        .then()
-                        .statusCode(HttpStatus.SC_CREATED);
+                            .post(tenantFooDoc1Content)
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED);
 
                         json = given()
-                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                        .substringAfter(brokerBarUri, "/brokers/")))*/
-                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                        .substringAfter(brokerBarUri, "/brokers/"))))
-                                .header("content-type", "application/hal+json")
-                                .body("{\"name\":\"www\",\"type\":\"sop_document\"}")
-                                .post("/accountStates/")
-                                .then()
-                                .statusCode(HttpStatus.SC_CREATED)
-                                .extract()
-                                .jsonPath();
+                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                    .substringAfter(brokerBarUri, "/brokers/")))*/
+                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                .substringAfter(brokerBarUri, "/brokers/"))))
+                            .header("content-type", "application/hal+json")
+                            .body("{\"name\":\"www\",\"type\":\"sop_document\"}")
+                            .post("/accountStates/")
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED)
+                            .extract()
+                            .jsonPath();
 
                         tenantBarDoc1 = (String) json
-                                .get("_links.self.href");
+                            .get("_links.self.href");
                         tenantBarDoc1Content = (String) json
-                                .get("_links.accountStates.href");
+                            .get("_links.accountStates.href");
 
                         json = given()
-                                .contentType("text/uri-list")
-                                .body(format("%s", brokerBarUri))
-                                .put(tenantBarDoc1
-                                        + "/broker")
-                                .then()
-                                .statusCode(HttpStatus.SC_NO_CONTENT)
-                                .extract()
-                                .jsonPath();
+                            .contentType("text/uri-list")
+                            .body(format("%s", brokerBarUri))
+                            .put(tenantBarDoc1
+                                + "/broker")
+                            .then()
+                            .statusCode(HttpStatus.SC_NO_CONTENT)
+                            .extract()
+                            .jsonPath();
 
                         given()
-                        .config(RestAssured
+                            .config(RestAssured
                                 .config()
                                 .encoderConfig(encoderConfig()
-                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                        /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                .substringAfter(brokerBarUri, "/brokers/")))*/
-                        .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                    .substringAfter(brokerBarUri, "/brokers/")))*/
+                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                 .substringAfter(brokerBarUri, "/brokers/"))))
-                        .header("content-type", "text/plain")
-                        .body(IOUtils
+                            .header("content-type", "text/plain")
+                            .body(IOUtils
                                 .toByteArray("bar doc 1"))
-                        .post(tenantBarDoc1Content)
-                        .then()
-                        .statusCode(HttpStatus.SC_CREATED);
+                            .post(tenantBarDoc1Content)
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED);
 
                         json = given()
-                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                        .substringAfter(brokerFooUri, "/brokers/")))*/
-                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                        .substringAfter(brokerFooUri, "/brokers/"))))
-                                .header("content-type", "application/hal+json")
-                                .body("{\"name\":\"ppp\",\"type\":\"sop_document\"}")
-                                .post("/accountStates/")
-                                .then()
-                                .statusCode(HttpStatus.SC_CREATED)
-                                .extract()
-                                .jsonPath();
+                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/")))*/
+                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                .substringAfter(brokerFooUri, "/brokers/"))))
+                            .header("content-type", "application/hal+json")
+                            .body("{\"name\":\"ppp\",\"type\":\"sop_document\"}")
+                            .post("/accountStates/")
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED)
+                            .extract()
+                            .jsonPath();
 
                         tenantFooDoc2 = (String) json
-                                .get("_links.self.href");
+                            .get("_links.self.href");
                         tenantFooDoc2Content = (String) json
-                                .get("_links.accountStates.href");
+                            .get("_links.accountStates.href");
 
                         json = given()
-                                .contentType("text/uri-list")
-                                .body(format("%s", brokerFooUri))
-                                .put(tenantFooDoc2
-                                        + "/broker")
-                                .then()
-                                .statusCode(HttpStatus.SC_NO_CONTENT)
-                                .extract()
-                                .jsonPath();
+                            .contentType("text/uri-list")
+                            .body(format("%s", brokerFooUri))
+                            .put(tenantFooDoc2
+                                + "/broker")
+                            .then()
+                            .statusCode(HttpStatus.SC_NO_CONTENT)
+                            .extract()
+                            .jsonPath();
 
                         given()
-                        .config(RestAssured
+                            .config(RestAssured
                                 .config()
                                 .encoderConfig(encoderConfig()
-                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                        /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                .substringAfter(brokerFooUri, "/brokers/")))*/
-                        .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/")))*/
+                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                 .substringAfter(brokerFooUri, "/brokers/"))))
-                        .header("content-type", "text/plain")
-                        .body(IOUtils
+                            .header("content-type", "text/plain")
+                            .body(IOUtils
                                 .toByteArray("foo doc 2"))
-                        .post(tenantFooDoc2Content)
-                        .then()
-                        .statusCode(HttpStatus.SC_CREATED);
+                            .post(tenantFooDoc2Content)
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED);
 
                         json = given()
-                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                        .substringAfter(brokerFooUri, "/brokers/")))*/
-                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                        .substringAfter(brokerFooUri, "/brokers/"))))
-                                .header("content-type", "application/hal+json")
-                                .body("{\"name\":\"aaa\",\"type\":\"sop_document\"}")
-                                .post("/accountStates/")
-                                .then()
-                                .statusCode(HttpStatus.SC_CREATED)
-                                .extract()
-                                .jsonPath();
+                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/")))*/
+                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                .substringAfter(brokerFooUri, "/brokers/"))))
+                            .header("content-type", "application/hal+json")
+                            .body("{\"name\":\"aaa\",\"type\":\"sop_document\"}")
+                            .post("/accountStates/")
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED)
+                            .extract()
+                            .jsonPath();
 
                         tenantFooDoc3 = (String) json
-                                .get("_links.self.href");
+                            .get("_links.self.href");
                         tenantFooDoc3Content = (String) json
-                                .get("_links.accountStates.href");
+                            .get("_links.accountStates.href");
 
                         json = given()
-                                .contentType("text/uri-list")
-                                .body(format("%s", brokerFooUri))
-                                .put(tenantFooDoc3
-                                        + "/broker")
-                                .then()
-                                .statusCode(HttpStatus.SC_NO_CONTENT)
-                                .extract()
-                                .jsonPath();
+                            .contentType("text/uri-list")
+                            .body(format("%s", brokerFooUri))
+                            .put(tenantFooDoc3
+                                + "/broker")
+                            .then()
+                            .statusCode(HttpStatus.SC_NO_CONTENT)
+                            .extract()
+                            .jsonPath();
 
                         given()
-                        .config(RestAssured
+                            .config(RestAssured
                                 .config()
                                 .encoderConfig(encoderConfig()
-                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                        /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                .substringAfter(brokerFooUri, "/brokers/")))*/
-                        .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/")))*/
+                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                 .substringAfter(brokerFooUri, "/brokers/"))))
-                        .header("content-type", "text/plain")
-                        .body(IOUtils
+                            .header("content-type", "text/plain")
+                            .body(IOUtils
                                 .toByteArray("foo doc 3"))
-                        .post(tenantFooDoc3Content)
-                        .then()
-                        .statusCode(HttpStatus.SC_CREATED);
+                            .post(tenantFooDoc3Content)
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED);
                     }
 
                     // add some other documents
                     {
                         given()
-                        .header("content-type", "application/hal+json")
-                        .body("{\"type\":\"other\"}")
-                        .post("/otherDocuments/")
-                        .then()
-                        .statusCode(HttpStatus.SC_CREATED);
+                            .header("content-type", "application/hal+json")
+                            .body("{\"type\":\"other\"}")
+                            .post("/otherDocuments/")
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED);
 
                         given()
-                        .header("content-type", "application/hal+json")
-                        .body("{\"type\":\"other\"}")
-                        .post("/otherDocuments/")
-                        .then()
-                        .statusCode(HttpStatus.SC_CREATED);
+                            .header("content-type", "application/hal+json")
+                            .body("{\"type\":\"other\"}")
+                            .post("/otherDocuments/")
+                            .then()
+                            .statusCode(HttpStatus.SC_CREATED);
                     }
                 });
 
@@ -352,41 +352,41 @@ public class AccountStateApplicationTests {
 
                         BeforeEach(() -> {
                             json = given()
-                                    .config(RestAssured
-                                            .config()
-                                            .encoderConfig(encoderConfig()
-                                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                                    /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/")))*/
-                                    .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/"))))
-                                    .get("/accountStates?page=0&size=2&sort=name&name.dir=asc")
-                                    .then()
-                                    .statusCode(HttpStatus.SC_OK)
-                                    .extract()
-                                    .jsonPath();
+                                .config(RestAssured
+                                    .config()
+                                    .encoderConfig(encoderConfig()
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerFooUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/"))))
+                                .get("/accountStates?page=0&size=2&sort=name&name.dir=asc")
+                                .then()
+                                .statusCode(HttpStatus.SC_OK)
+                                .extract()
+                                .jsonPath();
 
                         });
 
                         It("should only return account statements owned by broker foo", () -> {
                             int count = json
-                                    .getList("_embedded.accountStates")
-                                    .size();
+                                .getList("_embedded.accountStates")
+                                .size();
                             assertThat(count, is(2));
                             String previousName = "";
                             for (int i = 0; i < count; i++) {
                                 // assertThat(json.getString(format("_embedded.accountStates[%s].brokerId",
                                 // i)), is("foo"));
                                 assertThat(json
-                                        .getString(format("_embedded.accountStates[%s].type", i)), is("sop_document"));
+                                    .getString(format("_embedded.accountStates[%s].type", i)), is("sop_document"));
                                 assertThat(json
-                                        .getString(format("_embedded.accountStates[%s].name", i)), is(isIn(new String[] {
-                                                "aaa",
-                                        "ppp" })));
+                                    .getString(format("_embedded.accountStates[%s].name", i)), is(isIn(new String[]{
+                                    "aaa",
+                                    "ppp"})));
                                 assertThat(json
-                                        .getString(format("_embedded.accountStates[%s].name", i)), is(greaterThanOrEqualTo(previousName)));
+                                    .getString(format("_embedded.accountStates[%s].name", i)), is(greaterThanOrEqualTo(previousName)));
                                 previousName = json
-                                        .getString(format("_embedded.accountStates[%s].name", i));
+                                    .getString(format("_embedded.accountStates[%s].name", i));
                             }
                         });
                     });
@@ -398,40 +398,40 @@ public class AccountStateApplicationTests {
 
                         BeforeEach(() -> {
                             json = given()
-                                    .config(RestAssured
-                                            .config()
-                                            .encoderConfig(encoderConfig()
-                                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                                    /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/")))*/
-                                    .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/"))))
-                                    .header("accept", "application/hal+json")
-                                    .get("/accountStates/search/findByType?type=sop_document&page=0&size=2&sort=name&name.dir=asc")
-                                    .then()
-                                    .statusCode(HttpStatus.SC_OK)
-                                    .extract()
-                                    .jsonPath();
+                                .config(RestAssured
+                                    .config()
+                                    .encoderConfig(encoderConfig()
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerFooUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/"))))
+                                .header("accept", "application/hal+json")
+                                .get("/accountStates/search/findByType?type=sop_document&page=0&size=2&sort=name&name.dir=asc")
+                                .then()
+                                .statusCode(HttpStatus.SC_OK)
+                                .extract()
+                                .jsonPath();
 
                         });
 
                         It("should only return account statements owned by broker foo", () -> {
                             int count = json
-                                    .getList("_embedded.accountStates")
-                                    .size();
+                                .getList("_embedded.accountStates")
+                                .size();
                             assertThat(count, is(2));
                             String previousName = "";
                             for (int i = 0; i < count; i++) {
                                 assertThat(json
-                                        .getString(format("_embedded.accountStates[%s].type", i)), is("sop_document"));
+                                    .getString(format("_embedded.accountStates[%s].type", i)), is("sop_document"));
                                 assertThat(json
-                                        .getString(format("_embedded.accountStates[%s].name", i)), is(isIn(new String[] {
-                                                "aaa",
-                                        "ppp" })));
+                                    .getString(format("_embedded.accountStates[%s].name", i)), is(isIn(new String[]{
+                                    "aaa",
+                                    "ppp"})));
                                 assertThat(json
-                                        .getString(format("_embedded.accountStates[%s].name", i)), is(greaterThanOrEqualTo(previousName)));
+                                    .getString(format("_embedded.accountStates[%s].name", i)), is(greaterThanOrEqualTo(previousName)));
                                 previousName = json
-                                        .getString(format("_embedded.accountStates[%s].name", i));
+                                    .getString(format("_embedded.accountStates[%s].name", i));
                             }
                         });
                     });
@@ -444,34 +444,34 @@ public class AccountStateApplicationTests {
 
                         BeforeEach(() -> {
                             json = given()
-                                    .config(RestAssured
-                                            .config()
-                                            .encoderConfig(encoderConfig()
-                                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                                    /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/")))*/
-                                    .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/"))))
-                                    .header("accept", "application/hal+json")
-                                    .get("/accountStates/search/byType?type=sop_document")
-                                    .then()
-                                    .statusCode(HttpStatus.SC_OK)
-                                    .extract()
-                                    .jsonPath();
+                                .config(RestAssured
+                                    .config()
+                                    .encoderConfig(encoderConfig()
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerFooUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/"))))
+                                .header("accept", "application/hal+json")
+                                .get("/accountStates/search/byType?type=sop_document")
+                                .then()
+                                .statusCode(HttpStatus.SC_OK)
+                                .extract()
+                                .jsonPath();
                         });
 
                         It("should only return account statements owned by broker foo", () -> {
                             int count = json
-                                    .getList("_embedded.accountStates")
-                                    .size();
+                                .getList("_embedded.accountStates")
+                                .size();
                             for (int i = 0; i < count; i++) {
                                 assertThat(json
-                                        .getString(format("_embedded.accountStates[%s].name", i)), is(isIn(new String[] {
-                                                "aaa",
-                                                "ppp",
-                                        "zzz" })));
+                                    .getString(format("_embedded.accountStates[%s].name", i)), is(isIn(new String[]{
+                                    "aaa",
+                                    "ppp",
+                                    "zzz"})));
                                 assertThat(json
-                                        .getString(format("_embedded.accountStates[%s].type", i)), is("sop_document"));
+                                    .getString(format("_embedded.accountStates[%s].type", i)), is("sop_document"));
                             }
                         });
                     });
@@ -484,31 +484,31 @@ public class AccountStateApplicationTests {
                         It("should succeed", () -> {
 
                             int statusCode = given()
-                                    .config(RestAssured
-                                            .config()
-                                            .encoderConfig(encoderConfig()
-                                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                                    /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/")))*/
-                                    .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/"))))
-                                    .header("Content-Type", "application/hal+json")
-                                    .body("{\"name\":\"zzz updated\"}")
-                                    .put(tenantFooDoc1)
-                                    .then()
-                                    .statusCode(HttpStatus.SC_OK)
-                                    .extract()
-                                    .statusCode();
+                                .config(RestAssured
+                                    .config()
+                                    .encoderConfig(encoderConfig()
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerFooUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/"))))
+                                .header("Content-Type", "application/hal+json")
+                                .body("{\"name\":\"zzz updated\"}")
+                                .put(tenantFooDoc1)
+                                .then()
+                                .statusCode(HttpStatus.SC_OK)
+                                .extract()
+                                .statusCode();
 
                             assertThat(statusCode, is(200));
 
                             Optional<AccountState> one = repo
-                                    .findById(Long
-                                            .parseLong(StringUtils
-                                                    .substringAfter(tenantFooDoc1, "/accountStates/")));
+                                .findById(Long
+                                    .parseLong(StringUtils
+                                        .substringAfter(tenantFooDoc1, "/accountStates/")));
                             assertThat(one
-                                    .get()
-                                    .getName(), is("zzz updated"));
+                                .get()
+                                .getName(), is("zzz updated"));
                         });
                     });
 
@@ -517,19 +517,19 @@ public class AccountStateApplicationTests {
                         It("should fail with a 404", () -> {
 
                             given()
-                            .config(RestAssured
+                                .config(RestAssured
                                     .config()
                                     .encoderConfig(encoderConfig()
-                                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                    .substringAfter(brokerBarUri, "/brokers/")))*/
-                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerBarUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                     .substringAfter(brokerBarUri, "/brokers/"))))
-                            .header("Content-Type", "application/hal+json")
-                            .body("{\"name\":\"zzz updated\",\"vstamp\":1}")
-                            .put(tenantFooDoc1)
-                            .then()
-                            .statusCode(HttpStatus.SC_NOT_FOUND);
+                                .header("Content-Type", "application/hal+json")
+                                .body("{\"name\":\"zzz updated\",\"vstamp\":1}")
+                                .put(tenantFooDoc1)
+                                .then()
+                                .statusCode(HttpStatus.SC_NOT_FOUND);
                         });
                     });
                 });
@@ -541,25 +541,25 @@ public class AccountStateApplicationTests {
                         It("should succeed", () -> {
 
                             given()
-                            .config(RestAssured
+                                .config(RestAssured
                                     .config()
                                     .encoderConfig(encoderConfig()
-                                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                    .substringAfter(brokerFooUri, "/brokers/")))*/
-                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerFooUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                     .substringAfter(brokerFooUri, "/brokers/"))))
-                            .header("Accept", "application/hal+json")
-                            .delete(tenantFooDoc1)
-                            .then()
-                            .statusCode(HttpStatus.SC_NO_CONTENT);
+                                .header("Accept", "application/hal+json")
+                                .delete(tenantFooDoc1)
+                                .then()
+                                .statusCode(HttpStatus.SC_NO_CONTENT);
 
                             Optional<AccountState> one = repo
-                                    .findById(Long
-                                            .parseLong(StringUtils
-                                                    .substringAfter(tenantFooDoc1, "/accountStates/")));
+                                .findById(Long
+                                    .parseLong(StringUtils
+                                        .substringAfter(tenantFooDoc1, "/accountStates/")));
                             assertThat(one
-                                    .isPresent(), is(false));
+                                .isPresent(), is(false));
                         });
                     });
 
@@ -568,18 +568,18 @@ public class AccountStateApplicationTests {
                         It("should fail with a 404", () -> {
 
                             given()
-                            .config(RestAssured
+                                .config(RestAssured
                                     .config()
                                     .encoderConfig(encoderConfig()
-                                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                    .substringAfter(brokerBarUri, "/brokers/")))*/
-                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerBarUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                     .substringAfter(brokerBarUri, "/brokers/"))))
-                            .header("Accept", "application/hal+json")
-                            .delete(tenantFooDoc1)
-                            .then()
-                            .statusCode(HttpStatus.SC_NOT_FOUND);
+                                .header("Accept", "application/hal+json")
+                                .delete(tenantFooDoc1)
+                                .then()
+                                .statusCode(HttpStatus.SC_NOT_FOUND);
                         });
                     });
                 });
@@ -591,21 +591,21 @@ public class AccountStateApplicationTests {
                         It("should succeed", () -> {
 
                             String body = given()
-                                    .config(RestAssured
-                                            .config()
-                                            .encoderConfig(encoderConfig()
-                                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                                    /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/")))*/
-                                    .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/"))))
-                                    .header("Accept", "text/plain")
-                                    .get(tenantFooDoc1Content)
-                                    .then()
-                                    .statusCode(HttpStatus.SC_OK)
-                                    .extract()
-                                    .body()
-                                    .asString();
+                                .config(RestAssured
+                                    .config()
+                                    .encoderConfig(encoderConfig()
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerFooUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/"))))
+                                .header("Accept", "text/plain")
+                                .get(tenantFooDoc1Content)
+                                .then()
+                                .statusCode(HttpStatus.SC_OK)
+                                .extract()
+                                .body()
+                                .asString();
 
                             assertThat(body, is("foo doc 1"));
                         });
@@ -616,18 +616,18 @@ public class AccountStateApplicationTests {
                         It("should fail with a 404", () -> {
 
                             given()
-                            .config(RestAssured
+                                .config(RestAssured
                                     .config()
                                     .encoderConfig(encoderConfig()
-                                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                    .substringAfter(brokerBarUri, "/brokers/")))*/
-                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerBarUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                     .substringAfter(brokerBarUri, "/brokers/"))))
-                            .header("Accept", "text/plain")
-                            .put(tenantFooDoc1Content)
-                            .then()
-                            .statusCode(HttpStatus.SC_NOT_FOUND);
+                                .header("Accept", "text/plain")
+                                .put(tenantFooDoc1Content)
+                                .then()
+                                .statusCode(HttpStatus.SC_NOT_FOUND);
                         });
                     });
                 });
@@ -639,26 +639,26 @@ public class AccountStateApplicationTests {
                         It("should succeed", () -> {
 
                             byte[] body = given()
-                                    .config(RestAssured
-                                            .config()
-                                            .encoderConfig(encoderConfig()
-                                                    .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                                    /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/")))*/
-                                    .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
-                                            .substringAfter(brokerFooUri, "/brokers/"))))
-                                    .header("Accept", "image/jpeg")
-                                    .get(tenantFooDoc1Content)
-                                    .then()
-                                    .statusCode(HttpStatus.SC_OK)
-                                    .extract()
-                                    .body()
-                                    .asByteArray();
+                                .config(RestAssured
+                                    .config()
+                                    .encoderConfig(encoderConfig()
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerFooUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                    .substringAfter(brokerFooUri, "/brokers/"))))
+                                .header("Accept", "image/jpeg")
+                                .get(tenantFooDoc1Content)
+                                .then()
+                                .statusCode(HttpStatus.SC_OK)
+                                .extract()
+                                .body()
+                                .asByteArray();
 
                             ByteArrayInputStream bis = new ByteArrayInputStream(
-                                    body);
+                                body);
                             BufferedImage img = ImageIO
-                                    .read(bis);
+                                .read(bis);
                             assertThat(img, is(not(nullValue())));
                         });
                     });
@@ -668,18 +668,18 @@ public class AccountStateApplicationTests {
                         It("should fail with a 404", () -> {
 
                             given()
-                            .config(RestAssured
+                                .config(RestAssured
                                     .config()
                                     .encoderConfig(encoderConfig()
-                                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                    .substringAfter(brokerBarUri, "/brokers/")))*/
-                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerBarUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                     .substringAfter(brokerBarUri, "/brokers/"))))
-                            .header("Accept", "image/jpeg")
-                            .get(tenantFooDoc1Content)
-                            .then()
-                            .statusCode(HttpStatus.SC_NOT_FOUND);
+                                .header("Accept", "image/jpeg")
+                                .get(tenantFooDoc1Content)
+                                .then()
+                                .statusCode(HttpStatus.SC_NOT_FOUND);
                         });
                     });
                 });
@@ -688,28 +688,28 @@ public class AccountStateApplicationTests {
 
                     BeforeEach(() -> {
                         SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(new UsernamePasswordAuthenticationToken(
+                            .getContext()
+                            .setAuthentication(new UsernamePasswordAuthenticationToken(
                                 new BasicUserPrincipal(
-                                        "tuser"),
+                                    "tuser"),
                                 null,
                                 null));
 
                         doc = repo
-                                .findById(Long
-                                        .parseLong(StringUtils
-                                                .substringAfter(tenantFooDoc1, "/accountStates/")))
-                                .get();
+                            .findById(Long
+                                .parseLong(StringUtils
+                                    .substringAfter(tenantFooDoc1, "/accountStates/")))
+                            .get();
                         doc = repo
-                                .lock(doc);
+                            .lock(doc);
                         doc = repo
-                                .version(doc, new VersionInfo(
-                                        "1.1",
-                                        "Minor version"));
+                            .version(doc, new VersionInfo(
+                                "1.1",
+                                "Minor version"));
                         doc = repo
-                                .unlock(doc);
+                            .unlock(doc);
                         doc = repo
-                                .save(doc);
+                            .save(doc);
                     });
 
                     Context("when a broker gets a version of an account state they own", () -> {
@@ -717,20 +717,20 @@ public class AccountStateApplicationTests {
                         It("should succeed", () -> {
 
                             given()
-                            .config(RestAssured
+                                .config(RestAssured
                                     .config()
                                     .encoderConfig(encoderConfig()
-                                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                    .substringAfter(brokerFooUri, "/brokers/")))*/
-                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerFooUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                     .substringAfter(brokerFooUri, "/brokers/"))))
-                            .header("Accept", "application/hal+json")
-                            .get("/accountStates/"
+                                .header("Accept", "application/hal+json")
+                                .get("/accountStates/"
                                     + doc
                                     .getId())
-                            .then()
-                            .statusCode(HttpStatus.SC_OK);
+                                .then()
+                                .statusCode(HttpStatus.SC_OK);
                         });
                     });
 
@@ -739,19 +739,19 @@ public class AccountStateApplicationTests {
                         It("should fail with a 404", () -> {
 
                             given()
-                            .config(RestAssured
+                                .config(RestAssured
                                     .config()
                                     .encoderConfig(encoderConfig()
-                                            .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-                            /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
-                                    .substringAfter(brokerBarUri, "/brokers/")))*/
-                            .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
+                                        .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                /*.header("X-ABAC-Context", format("broker.id = %sL", StringUtils
+                                        .substringAfter(brokerBarUri, "/brokers/")))*/
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils
                                     .substringAfter(brokerBarUri, "/brokers/"))))
-                            .header("Accept", "application/hal+json")
-                            .get("/accountStates/"
+                                .header("Accept", "application/hal+json")
+                                .get("/accountStates/"
                                     + doc
                                     .getId())
-                            .then().statusCode(HttpStatus.SC_NOT_FOUND);
+                                .then().statusCode(HttpStatus.SC_NOT_FOUND);
                         });
                     });
                 });
@@ -763,17 +763,17 @@ public class AccountStateApplicationTests {
                         It("should only return documents they own", () -> {
 
                             JsonPath results = given()
-                                    .config(RestAssured.config()
-                                            .encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+                                .config(RestAssured.config()
+                                    .encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false)))
 /*
                                     .header("X-ABAC-Context", format("broker.id = %sL", StringUtils.substringAfter(brokerFooUri, "/brokers/")))
 */
-                                    .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils.substringAfter(brokerFooUri, "/brokers/"))))
-                                    .header("Accept", "application/hal+json")
-                                    .get(searchContentEndpoint(tenantFooDoc1, "doc"))
-                                    .then()
-                                    .statusCode(HttpStatus.SC_OK)
-                                    .extract().jsonPath();
+                                .header("X-ABAC-Context", queryOPA(Long.valueOf(StringUtils.substringAfter(brokerFooUri, "/brokers/"))))
+                                .header("Accept", "application/hal+json")
+                                .get(searchContentEndpoint(tenantFooDoc1, "doc"))
+                                .then()
+                                .statusCode(HttpStatus.SC_OK)
+                                .extract().jsonPath();
 
                             List<String> links = results.get("_embedded.accountStates._links.self.href");
                             assertThat(links.size(), is(greaterThan(0)));
@@ -800,13 +800,13 @@ public class AccountStateApplicationTests {
 
     public static String queryOPA(Long brokerId) throws IOException {
         OpaQuery opaQuery = OpaQuery.builder()
-                .query("data.abac_policies.allow_partial == false")
-                .input(new OpaInput("GET", format("%sL", brokerId)))
-                .unknowns(Collections.singletonList("data.accountState"))
-                .build();
+            .query("data.abac_policies.allow_partial == false")
+            .input(new OpaInput("GET", format("%sL", brokerId)))
+            .unknowns(Collections.singletonList("data.accountState"))
+            .build();
 
         String residualPolicy = new RestTemplate()
-                .postForObject("http://127.0.0.1:8181/v1/compile", opaQuery, String.class);
+            .postForObject("http://127.0.0.1:8181/v1/compile", opaQuery, String.class);
 
         //ResponseAST
         Disjunction disjunction = AstWalker.walk(residualPolicy);
@@ -819,14 +819,14 @@ public class AccountStateApplicationTests {
     /**
      * Example:
      * {
-     *   "query": "data.abac_policies.allow_partial == false",
-     *   "input": {
-     *     "action": "GET",
-     *     "brokerId": "1l"
-     *   },
-     *   "unknowns": [
-     *     "data.accountState"
-     *   ]
+     * "query": "data.abac_policies.allow_partial == false",
+     * "input": {
+     * "action": "GET",
+     * "brokerId": "1l"
+     * },
+     * "unknowns": [
+     * "data.accountState"
+     * ]
      * }
      */
     @Data

@@ -34,11 +34,11 @@ public class Generators {
 
     public static Random rand = new Random();
 
-//    public List<String> brokers = new ArrayList<>();
+    //    public List<String> brokers = new ArrayList<>();
 //    public List<String> roles = new ArrayList<>();
 //    public List<String> clearanceLevels = new ArrayList<>();
 //    public Pair<Integer, Integer> accountStateRange = new Pair<>(0,0);
-    public Pair<Integer, Integer> numberRange = new Pair<>(0,0);
+    public Pair<Integer, Integer> numberRange = new Pair<>(0, 0);
     public Map<String, ValueGenerator> generators = new HashMap<>();
     public Map<String, ValueGenerator> multiValue = new HashMap<>();
 

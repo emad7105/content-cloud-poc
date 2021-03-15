@@ -37,11 +37,13 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
     public GatewayFilter apply(Config config) {
         return new OrderedGatewayFilter((exchange, chain) -> {
             LOGGER.info("--- Hello from ABAC GateWay Filter: ---");
-            LOGGER.info(config.getAbacQuery());
-            LOGGER.info(config.getAbacUnknowns().toString());
+            LOGGER.info("query:" + config.getAbacQuery());
+            LOGGER.info("unknowns:" + config.getAbacUnknowns().toString());
+
+            LOGGER.info("headers" + exchange.getRequest().getHeaders());
 
             List<String> authorization = exchange.getRequest().getHeaders().get("Authorization");
-            if (authorization != null && authorization.size()>0) {
+            if (authorization != null && authorization.size() > 0) {
                 String bearer = authorization.get(0);
                 if (bearer.startsWith("Bearer")) {
                     String[] bearerArray = bearer.split("\\s+");
@@ -54,15 +56,14 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
 
                     if (abacContextEncoded != null) {
                         exchange.getRequest()
-                                .mutate()
-                                .header("X-ABAC-Context", abacContextEncoded);
+                            .mutate()
+                            .header("X-ABAC-Context", abacContextEncoded);
                     }
                 }
             }
             return chain.filter(exchange);
         }, 1);
     }
-
 
 
     public static class Config {

@@ -48,7 +48,7 @@ public class Provisioner {
             List<AccountStateAttribute> attributes = new ArrayList<>();
 
             Map<String, ValueGenerator> singles = generators.getSingleGenerators();
-            for (String key: singles.keySet()) {
+            for (String key : singles.keySet()) {
 
                 if (key.equals("broker")) {
                     continue;
@@ -60,7 +60,7 @@ public class Provisioner {
             }
 
             Map<String, ValueGenerator> multiples = generators.getMultiValuedGenerators();
-            for (String key: multiples.keySet()) {
+            for (String key : multiples.keySet()) {
                 AccountStateAttribute attr = new AccountStateAttribute();
                 attr.setName(key);
                 attr.setValue(multiples.get(key).generate());

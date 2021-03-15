@@ -8,12 +8,14 @@ log = logging.getLogger('init')
 
 
 def setup_session(gateway_url, username, password):
+    # first login at the resource server (gateway)
     gateway_url = urlparse(gateway_url)
     gateway_conn = http.client.HTTPConnection(gateway_url.hostname, gateway_url.port, timeout=10)
     (response, data) = do_request(gateway_conn, 'GET', '/')
     assert response.status == 302
     log.debug(f"status: {response.status}; headers: {response.headers}")
 
+    # follow redirect to dedicated oauth2 endpoint
     redirect_url = response.headers['Location']
     (response, data) = do_request(gateway_conn, 'GET', redirect_url)
     assert response.status == 302
@@ -21,6 +23,7 @@ def setup_session(gateway_url, username, password):
     gateway_cookies = get_cookies(response.headers)
     redirect_url = response.headers['Location']
 
+    # fetch keycloak login page
     keycloak_url = urlparse(redirect_url)
     keycloak_conn = http.client.HTTPConnection(keycloak_url.hostname, keycloak_url.port, timeout=10)
     (response, data) = do_request(keycloak_conn, 'GET', f"{keycloak_url.path}?{keycloak_url.query}")
@@ -36,11 +39,15 @@ def setup_session(gateway_url, username, password):
         'Content-Type': 'application/x-www-form-urlencoded',
         'Cookie': join_cookies(keycloak_cookies)
     }
+    # login to keycloak
     (response, data) = do_request(keycloak_conn, 'POST', f"{login_url.path}?{login_url.query}", params, headers)
     log.debug(f"status: {response.status}; headers: {response.headers}")
     assert response.status == 302
     redirect_url = urlparse(response.headers['Location'])
 
+    print(f"status: {response.status}; headers: {response.headers}")
+    print(f"data: {response.read().decode()}")
+    # follow redirect
     (response, data) = do_request(gateway_conn, 'GET', f"{redirect_url.path}?{redirect_url.query}", headers={'Cookie': join_cookies(gateway_cookies)})
     assert response.status == 302
     return get_cookies(response.headers)

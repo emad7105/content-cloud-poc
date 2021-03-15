@@ -34,7 +34,7 @@ public class AccountState {
     }
 
     @Id
-    @GeneratedValue(strategy=AUTO)
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
     @ContentId

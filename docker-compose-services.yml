@@ -15,7 +15,7 @@ services:
       KEYCLOAK_LOGLEVEL: DEBUG
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
-#      KEYCLOAK_FRONTEND_URL: http://localhost:8080/auth
+    #      KEYCLOAK_FRONTEND_URL: http://localhost:8080/auth
     depends_on:
       - postgres
 
@@ -30,7 +30,7 @@ services:
 
   opa:
     image: openpolicyagent/opa:0.20.5-debug
-#    image: content-cloud/opa
+    #    image: content-cloud/opa
     ports:
       - 8181:8181
     command: "run --server --log-level=debug --bundle /policies"
@@ -69,7 +69,7 @@ services:
     environment:
       KEYCLOAK_ADDR: keycloak:8080
       ZIPKIN_ADDR: zipkin:9411
-      ZIPKIN_SAMPLING_RATE: 0.01
+      #      ZIPKIN_SAMPLING_RATE: 0.01
       OPA_ADDR: opa:8181
       ACCOUNT_STATE_ADDR: account-state:8070
     ports:
@@ -84,7 +84,7 @@ services:
     environment:
       KEYCLOAK_ADDR: keycloak:8080
       ZIPKIN_ADDR: zipkin:9411
-      ZIPKIN_SAMPLING_RATE: 0.01
+    #      ZIPKIN_SAMPLING_RATE: 0.01
     restart: on-failure
 
   domain-generator:
@@ -114,4 +114,4 @@ services:
     image: praqma/network-multitool
 
 volumes:
-  postgres-data: {}
+  postgres-data: { }

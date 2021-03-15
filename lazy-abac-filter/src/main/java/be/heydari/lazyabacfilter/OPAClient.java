@@ -1,4 +1,5 @@
 package be.heydari.lazyabacfilter;
+
 import be.heydari.AstWalker;
 import be.heydari.lib.converters.protobuf.ProtobufUtils;
 import be.heydari.lib.converters.protobuf.generated.PDisjunction;
@@ -39,7 +40,7 @@ public class OPAClient {
 
     public String queryOPA(String query, OpaInput input, List<String> unknowns) throws IOException {
         Span span = tracer.nextSpan().name("call-opa");
-        try (Tracer.SpanInScope ws = this.tracer.withSpanInScope(span.start())){
+        try (Tracer.SpanInScope ws = this.tracer.withSpanInScope(span.start())) {
             span.tag("query", query);
             OpaQuery opaQuery = OpaQuery.builder()
                 .query(query)
@@ -86,14 +87,14 @@ public class OPAClient {
     /**
      * Example:
      * {
-     *   "query": "data.abac_policies.allow_partial == false",
-     *   "input": {
-     *     "action": "GET",
-     *     "brokerId": "1l"
-     *   },
-     *   "unknowns": [
-     *     "data.accountState"
-     *   ]
+     * "query": "data.abac_policies.allow_partial == false",
+     * "input": {
+     * "action": "GET",
+     * "brokerId": "1l"
+     * },
+     * "unknowns": [
+     * "data.accountState"
+     * ]
      * }
      */
     @Data

@@ -22,29 +22,29 @@ import org.springframework.web.server.WebSession;
 @EnableOPAFilter
 @ComponentScan("be.heydari.lazyabacfilter")
 public class GatewayApplication {
-	private static final Logger LOGGER = LoggerFactory.getLogger(GatewayApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GatewayApplication.class);
 
-	public static void main(String[] args) {
-		SpringApplication.run(GatewayApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
 
-	@GetMapping(value = "/token")
-	public Mono<String> getHome(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient) {
-		return Mono.just(authorizedClient.getAccessToken().getTokenValue());
-	}
+    @GetMapping(value = "/token")
+    public Mono<String> getHome(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient) {
+        return Mono.just(authorizedClient.getAccessToken().getTokenValue());
+    }
 
-	@GetMapping("/")
-	public Mono<String> index(WebSession session) {
-		return Mono.just(session.getId());
-	}
+    @GetMapping("/")
+    public Mono<String> index(WebSession session) {
+        return Mono.just(session.getId());
+    }
 
-	@Bean
-	public AuthnStartWebFilter authnStartWebFilter() {
-		return new AuthnStartWebFilter();
-	}
+    @Bean
+    public AuthnStartWebFilter authnStartWebFilter() {
+        return new AuthnStartWebFilter();
+    }
 
-	@Bean
-	public AuthnEndWebFilter authnEndWebFilter() {
-		return new AuthnEndWebFilter();
-	}
+    @Bean
+    public AuthnEndWebFilter authnEndWebFilter() {
+        return new AuthnEndWebFilter();
+    }
 }

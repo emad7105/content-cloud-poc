@@ -1,4 +1,5 @@
 package be.heydari.lazyabacfilter;
+
 import lombok.Data;
 
 @Data

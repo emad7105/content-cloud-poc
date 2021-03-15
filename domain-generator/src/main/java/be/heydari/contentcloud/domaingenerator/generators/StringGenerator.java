@@ -24,5 +24,7 @@ public class StringGenerator implements ValueGenerator {
         return "string";
     }
 
-    public List<String> getStrings() { return strings; }
+    public List<String> getStrings() {
+        return strings;
+    }
 }

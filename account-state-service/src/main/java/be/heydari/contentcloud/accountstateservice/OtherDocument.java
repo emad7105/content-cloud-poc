@@ -13,7 +13,7 @@ import static javax.persistence.GenerationType.AUTO;
 public class OtherDocument {
 
     @Id
-    @GeneratedValue(strategy=AUTO)
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
     private String type;

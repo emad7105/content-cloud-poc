@@ -20,7 +20,7 @@ public class Realm {
         realm.setEnabled(true);
         keycloak.realms().create(realm);
 
-        this.realm =  keycloak.realm(name);
+        this.realm = keycloak.realm(name);
         return this.realm;
     }
 

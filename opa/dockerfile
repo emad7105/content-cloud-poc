@@ -1,2 +1,6 @@
-from openpolicyagent/opa:0.20.5
-entrypoint ["./opa", "run", "--server", "--log-level", "debug"]
+from openjdk:15-jdk-alpine
+copy opa/target/opa-0.0.1-SNAPSHOT-jar-with-dependencies.jar app.jar
+copy opa/src/main/resources resources
+env POLICY_FILE=/resources/policies.rego
+
+entrypoint ["java", "-jar", "app.jar"]

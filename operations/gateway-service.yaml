@@ -7,5 +7,10 @@ spec:
     app: gateway
   ports:
     - protocol: TCP
+      name: gateway
       port: 8060
       targetPort: 8060
+    - protocol: TCP
+      name: opa
+      port: 8181
+      targetPort: 8181

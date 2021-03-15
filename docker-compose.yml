@@ -31,9 +31,18 @@ services:
     image: openpolicyagent/opa:0.20.5
     ports:
       - "8181:8181"
-    command: "run --server --log-level=debug --bundle /policies"
-    volumes:
-      - ./account-state-service/src/main/resources:/policies
+    command: "run --server --log-level=debug"
+  #    command: "run --server --log-level=debug --bundle /policies"
+  #    volumes:
+  #      - ./account-state-service/src/main/resources:/policies
+
+  policy-pusher:
+    image: content-cloud/policy-pusher
+    environment:
+      OPA_ADDR: opa:8181
+    restart: on-failure
+    depends_on:
+      - opa
 
   solr:
     image: paulcwarren/solr
@@ -55,8 +64,8 @@ services:
     ports:
       # Port used for the Zipkin UI and HTTP Api
       - 9411:9411
-    # Uncomment to enable debug logging
-    # command: --logging.level.zipkin2=DEBUG
+      # Uncomment to enable debug logging
+      # command: --logging.level.zipkin2=DEBUG
 
 volumes:
-  postgres-data: {}
+  postgres-data: { }

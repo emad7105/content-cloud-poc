@@ -18,4 +18,4 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8089
-          command: ["locust", "-f", "main.py", "--worker", "--master-host", "locust-master"]
+          command: [ "locust", "-f", "main.py", "--worker", "--master-host", "locust-master" ]

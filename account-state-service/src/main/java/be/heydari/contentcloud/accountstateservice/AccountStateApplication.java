@@ -104,7 +104,7 @@ public class AccountStateApplication {
 
         @Bean
         public SolrClient solrClient(
-                SolrProperties props) {
+            SolrProperties props) {
             props.setUser("solr");
             props.setPassword("SolrRocks");
             return new HttpSolrClient.Builder(props.getUrl()).build();
@@ -126,7 +126,7 @@ public class AccountStateApplication {
 
                 @Override
                 public Map<String, String> synchronize(AccountState entity) {
-                    Map<String,String> attrs = new HashMap<>();
+                    Map<String, String> attrs = new HashMap<>();
                     attrs.put("broker.id", entity.getBroker().getId().toString());
                     return attrs;
                 }
@@ -138,12 +138,13 @@ public class AccountStateApplication {
         public FilterQueryProvider fqProvider() {
             return new FilterQueryProvider() {
 
-                private @Autowired HttpServletRequest request;
+                private @Autowired
+                HttpServletRequest request;
 
                 @Override
                 public String[] filterQueries(Class<?> entity) {
                     Disjunction abacContext = ABACContext.getCurrentAbacContext();
-                    return SolrUtils.from(abacContext,"");
+                    return SolrUtils.from(abacContext, "");
                 }
             };
         }

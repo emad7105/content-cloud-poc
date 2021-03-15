@@ -16,18 +16,18 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-	@Bean
-	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-		http.authorizeExchange(exchanges -> exchanges.anyExchange().authenticated())
-			.oauth2Login(withDefaults());
-		http.csrf().disable();
+    @Bean
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        http.authorizeExchange(exchanges -> exchanges.anyExchange().authenticated())
+            .oauth2Login(withDefaults());
+        http.csrf().disable();
 
-		http.addFilterAfter(new AuthnStartWebFilter(), SecurityWebFiltersOrder.FIRST);
+        http.addFilterAfter(new AuthnStartWebFilter(), SecurityWebFiltersOrder.FIRST);
 
-		http.addFilterBefore(new AuthnEndWebFilter(), SecurityWebFiltersOrder.LAST);
+        http.addFilterBefore(new AuthnEndWebFilter(), SecurityWebFiltersOrder.LAST);
 
-		http.addFilterBefore(new OpaABACWebFilter(), SecurityWebFiltersOrder.LAST);
+        http.addFilterBefore(new OpaABACWebFilter(), SecurityWebFiltersOrder.LAST);
 
-		return http.build();
-	}
+        return http.build();
+    }
 }
