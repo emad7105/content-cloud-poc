@@ -132,6 +132,18 @@ public class AccountStateApplication {
                 }
             };
         }
+//
+//        @Bean
+//        public AttributeProvider<AccountStateAttribute> syncer() {
+//            return new AttributeProvider<AccountStateAttribute>() {
+//                @Override
+//                public Map<String, String> synchronize(AccountStateAttribute entity) {
+//                    Map<String, String> attrs = new HashMap<>();
+//                    attrs.put("broker.id", entity.getBroker().getId().toString());
+//                    return attrs;
+//                }
+//            };
+//        }
 
         @Bean
         @RequestScope

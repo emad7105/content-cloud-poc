@@ -9,7 +9,9 @@ public interface ValueGenerator {
 
     String generatedType();
 
-    long uniqueEntries();
+    long uniqueEntryCount();
+
+    List<String> uniqueEntries();
 
     default List<String> generateMultiple(int count) {
         var set = new HashSet<String>();

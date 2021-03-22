@@ -16,8 +16,12 @@ public class StringGenerator implements ValueGenerator {
         return strings.get(rand.nextInt(strings.size()));
     }
 
-    public long uniqueEntries() {
+    public long uniqueEntryCount() {
         return strings.size();
+    }
+
+    public List<String> uniqueEntries() {
+        return strings;
     }
 
     public String generatedType() {

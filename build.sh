@@ -1,9 +1,9 @@
 #!/bin/bash
 
 mvn -f lazy-abac-filter/pom.xml clean install -DskipTests
+mvn -f domain-generator/pom.xml clean install -DskipTests
 mvn -f account-state-service/pom.xml clean package -DskipTests
 mvn -f gateway/pom.xml clean package -DskipTests
-mvn -f domain-generator/pom.xml clean package -DskipTests
 mvn -f opa/pom.xml clean package -DskipTests
 
 docker build -f account-state-service/dockerfile -t content-cloud/account-state-service .

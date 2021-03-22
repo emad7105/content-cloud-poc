@@ -19,6 +19,7 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
     public static final String ABAC_UNKNOWNS = "abacUnknowns";
 
     private OPAClient opaClient;
+    private boolean enabled;
 
     public ABACPolicyGatewayFilterFactory() {
         super(Config.class);
@@ -26,6 +27,9 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
 
     public void setOpaClient(OPAClient opaClient) {
         this.opaClient = opaClient;
+    }
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
@@ -36,6 +40,10 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
     @Override
     public GatewayFilter apply(Config config) {
         return new OrderedGatewayFilter((exchange, chain) -> {
+            if (!this.enabled) {
+                return chain.filter(exchange);
+            }
+
             LOGGER.info("--- Hello from ABAC GateWay Filter: ---");
             LOGGER.info("query:" + config.getAbacQuery());
             LOGGER.info("unknowns:" + config.getAbacUnknowns().toString());

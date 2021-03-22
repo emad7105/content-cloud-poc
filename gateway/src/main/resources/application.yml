@@ -22,9 +22,10 @@ spring:
             - RemoveRequestHeader=Cookie
             - name: ABACPolicy
               args:
-                abacQuery: "data.accountstates.allow_partial == false"
+                abacQuery: "data.accountstates.allow_partial"
                 abacUnknowns:
                   - "data.accountState"
+#                  - "data.accountStateAttributes"
   security:
     oauth2:
       client:
@@ -47,6 +48,7 @@ spring:
 opa:
   service:
     base-url: http://${OPA_ADDR:localhost:8181} # without the "/" at the end
+    enabled: true
 
 server.port: 8060
 

@@ -11,8 +11,10 @@
 	<modules>
 		<module>gateway</module>
 		<module>account-state-service</module>
+		<module>account-state-postfilter</module>
 		<module>lazy-abac-filter</module>
 		<module>domain-generator</module>
+		<module>opa</module>
 	</modules>
 	<packaging>pom</packaging>
 

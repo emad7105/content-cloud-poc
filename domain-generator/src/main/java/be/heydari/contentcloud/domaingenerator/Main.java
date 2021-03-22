@@ -1,9 +1,7 @@
 package be.heydari.contentcloud.domaingenerator;
 
 import be.heydari.contentcloud.domaingenerator.keycloak.*;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.GsonBuilder;
+import org.javatuples.Pair;
 import org.keycloak.admin.client.KeycloakBuilder;
 
 import java.util.*;
@@ -63,20 +61,25 @@ public class Main {
         var multiGens = generators.getMultiValuedGenerators();
         for (var key : multiGens.keySet()) {
             var gen = multiGens.get(key);
-            var unique = gen.uniqueEntries();
+            var unique = gen.uniqueEntryCount();
             attributes.add(new MultiValuedAttribute(key, gen, (int) Math.min(unique, 5)));
         }
 
         var mappers = attributes.stream().map(Attribute::mapper).collect(Collectors.toList());
         client.setAttributes(mappers);
 
-        for (int i = 0; i != 10; i++) {
-            var user = new User("broker" + i);
+
+        for (var broker : singleGens.get("broker").uniqueEntries()) {
+            var user = new User(broker);
             user.create(realm.resource());
             var values = new HashMap<String, List<String>>();
             for (var attr : attributes) {
-                var value = attr.generate();
-                values.put(value.getValue0(), value.getValue1());
+                if (attr.getName().equals("broker")) {
+                    values.put("broker", Collections.singletonList(broker));
+                } else {
+                    var value = attr.generate();
+                    values.put(value.getValue0(), value.getValue1());
+                }
             }
             user.setAttributes(values);
         }

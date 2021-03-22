@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 @Data
 @ConfigurationProperties(prefix = "opa.service")
 public class OPAFilterConfig {
+    private boolean enabled = true;
 
     private String baseUrl;
 
@@ -19,6 +20,7 @@ public class OPAFilterConfig {
     public ABACPolicyGatewayFilterFactory abacPolicyGatewayFilterFactory() {
         ABACPolicyGatewayFilterFactory abacPolicyGatewayFilterFactory = new ABACPolicyGatewayFilterFactory();
         abacPolicyGatewayFilterFactory.setOpaClient(new OPAClient(baseUrl, tracer));
+        abacPolicyGatewayFilterFactory.setEnabled(enabled);
         return abacPolicyGatewayFilterFactory;
     }
 

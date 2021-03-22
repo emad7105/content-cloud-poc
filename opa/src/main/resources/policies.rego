@@ -3,7 +3,15 @@ package accountstates
 default allow_partial = false
 
 allow_partial {
-  data.accountState.broker.id == token.payload.broker
+  attr := data.accountState.attributes[_]
+  attr.name == "clearanceLevel"
+  attr.value == token.payload.clearanceLevel
+}
+
+default support_allow = false
+
+support_allow {
+    token.payload.broker == "broker0"
 }
 
 token = {"payload": payload} {

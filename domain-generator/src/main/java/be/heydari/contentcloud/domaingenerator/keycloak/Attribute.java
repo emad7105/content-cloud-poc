@@ -21,6 +21,10 @@ public abstract class Attribute {
 
     public abstract Map<String, String> extraConfig();
 
+    public String getName() {
+        return this.name;
+    }
+
     public ProtocolMapperRepresentation mapper() {
         var mapper = new ProtocolMapperRepresentation();
         mapper.setProtocol("openid-connect");

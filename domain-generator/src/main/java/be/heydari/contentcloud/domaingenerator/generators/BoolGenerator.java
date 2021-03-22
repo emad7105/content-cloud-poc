@@ -1,5 +1,7 @@
 package be.heydari.contentcloud.domaingenerator.generators;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class BoolGenerator implements ValueGenerator {
@@ -14,8 +16,12 @@ public class BoolGenerator implements ValueGenerator {
         return String.valueOf(b);
     }
 
-    public long uniqueEntries() {
+    public long uniqueEntryCount() {
         return 2;
+    }
+
+    public List<String> uniqueEntries() {
+        return Arrays.asList(String.valueOf(true), String.valueOf(false));
     }
 
     public String generatedType() {

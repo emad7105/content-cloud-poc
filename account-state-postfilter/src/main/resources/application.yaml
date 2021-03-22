@@ -1,0 +1,21 @@
+server:
+  port: 8070
+
+spring:
+  sleuth:
+    sampler:
+      probability: ${ZIPKIN_SAMPLING_RATE:1.0}
+  zipkin:
+    base-url: http://${ZIPKIN_ADDR:127.0.0.1:9411}
+    service:
+      name: "acc-state"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${KEYCLOAK_ADDR:localhost:8080}/auth/realms/content-cloud-realm
+
+opa:
+  service:
+    base-url: http://${OPA_ADDR:localhost:8181}
+    query: "data.accountstates.allow"

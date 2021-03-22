@@ -1,8 +1,9 @@
-package be.heydari.contentcloud.accountstateservice;
+package be.heyadri.contentcloud.accountstatepostfilter;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -10,20 +11,17 @@ import static javax.persistence.GenerationType.AUTO;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class AccountStateAttribute {
     @Id
     @GeneratedValue(strategy = AUTO)
+    @JsonIgnore
     private Long id;
 
     @JoinColumn
     @ManyToOne
+    @JsonIgnore
     private AccountState accountState;
-
-    @JoinColumn
-    @ManyToOne
-    private Broker broker;
 
     private String name;
     private String value;

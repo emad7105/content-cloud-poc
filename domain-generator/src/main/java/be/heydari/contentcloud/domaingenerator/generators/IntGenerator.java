@@ -1,5 +1,6 @@
 package be.heydari.contentcloud.domaingenerator.generators;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -20,8 +21,17 @@ public class IntGenerator implements ValueGenerator {
         return String.valueOf(i);
     }
 
-    public long uniqueEntries() {
+    public long uniqueEntryCount() {
         return end - begin;
+    }
+
+    public List<String> uniqueEntries() {
+        var list = new ArrayList<String>();
+        for (int i = begin; i != end; i++) {
+            list.add(String.valueOf(i));
+        }
+
+        return list;
     }
 
     public String generatedType() {
