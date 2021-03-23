@@ -1,21 +1,19 @@
 package be.heyadri.contentcloud.accountstatepostfilter.opa;
 
-import be.heyadri.contentcloud.accountstatepostfilter.AccountStateAttribute;
+import be.heyadri.contentcloud.accountstatepostfilter.AccountState;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class OPAInput {
     private String token;
 
-    private List<AccountStateAttribute> attributes;
+    private AccountState accountState;
 
-    public OPAInput(String token, List<AccountStateAttribute> attributes) {
+    public OPAInput(String token, AccountState accountState) {
         this.token = token;
-        this.attributes = attributes;
+        this.accountState = accountState;
     }
 
     public String toJson() throws JsonProcessingException {

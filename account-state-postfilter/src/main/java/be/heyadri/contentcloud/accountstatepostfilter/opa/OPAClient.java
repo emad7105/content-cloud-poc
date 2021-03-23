@@ -25,30 +25,11 @@ public class OPAClient {
     }
 
     public OPAResponse queryOPA(OPAInput input) throws IOException {
-        Tracer tracer = this.config.getTracer();
-        Span span = tracer.nextSpan().name("call-opa");
-        try (Tracer.SpanInScope ws = tracer.withSpanInScope(span.start())) {
-            span.tag("query", this.config.getQuery());
-            return this.queryOPAInner(this.config.getQuery(), input);
-        } finally {
-            span.finish();
-        }
+        return this.queryOPAInner(this.config.getQuery(), input);
     }
 
     private OPAResponse queryOPAInner(String query, OPAInput input) throws IOException {
         OPADataRequestBody body = OPADataRequestBody.builder().input(input).pretty(true).build();
-        System.out.println("request body:" + body.toJson());
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-            String.format("%s/v1/%s",
-                this.config.getBaseUrl(),
-                query.replace(".", "/")
-                )
-            )
-            .queryParam("pretty", true)
-            .queryParam("input", input.toJson());
-
-
         String urlString = String.format("%s/v1/%s?pretty=true&input=%s",
             this.config.getBaseUrl(),
             query.replace(".", "/"),
@@ -73,8 +54,6 @@ public class OPAClient {
         in.close();
 
         String response = content.toString();
-        System.out.println(response);
-
         Gson gson = new Gson();
         return gson.fromJson(response, OPAResponse.class);
     }

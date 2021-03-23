@@ -4,13 +4,14 @@ import be.heyadri.contentcloud.accountstatepostfilter.AccountState;
 import be.heyadri.contentcloud.accountstatepostfilter.AccountStateAttribute;
 import be.heyadri.contentcloud.accountstatepostfilter.AccountStateRepository;
 import be.heydari.contentcloud.domaingenerator.Generators;
-import be.heydari.contentcloud.domaingenerator.generators.ValueGenerator;
+import be.heydari.contentcloud.domaingenerator.generators.StringValueGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class Provisioner {
@@ -22,27 +23,32 @@ public class Provisioner {
     }
 
     public void provision() {
-        Generators generators = Generators.Example1();
+        Generators.HardcodedGenerator generator = new Generators.HardcodedGenerator();
 
-        for (int i = 0; i != 100; i++) {
+        List<String> brokers = generator.getBroker().uniqueEntries();
+
+        for (int i = 0; i != 100; i ++) {
             AccountState state = new AccountState();
-            List<AccountStateAttribute> attributes = new ArrayList<>();
-            Map<String, ValueGenerator> singles = generators.getSingleGenerators();
-            for (String key: singles.keySet()) {
-                AccountStateAttribute attr = new AccountStateAttribute();
-                attr.setName(key);
-                attr.setValue(singles.get(key).generate());
-                attributes.add(attr);
-            }
+            String broker = brokers.get(Generators.rand.nextInt(brokers.size()));
+            state.setBrokerName(broker);
 
-            Map<String, ValueGenerator> multiples = generators.getMultiValuedGenerators();
-            for (String key: multiples.keySet()) {
-                AccountStateAttribute attr = new AccountStateAttribute();
-                attr.setName(key);
-                attr.setValue(multiples.get(key).generate());
-            }
+            System.out.println("setting broker with name: " + broker);
 
-            state.setAttributes(attributes);
+            state.setAccountState(generator.getAccountState().generate());
+            state.setRequiredRole(generator.getRoles().generate());
+            state.setClearanceLevel(generator.getClearanceLevel().generate());
+            state.setProbation(generator.getProbation().generate());
+            state.setAttribute0(generator.getAttribute().generate());
+            state.setAttribute1(generator.getAttribute().generate());
+            state.setAttribute2(generator.getAttribute().generate());
+            state.setAttribute3(generator.getAttribute().generate());
+            state.setAttribute4(generator.getAttribute().generate());
+            state.setAttribute5(generator.getAttribute().generate());
+            state.setAttribute6(generator.getAttribute().generate());
+            state.setAttribute7(generator.getAttribute().generate());
+            state.setAttribute8(generator.getAttribute().generate());
+            state.setAttribute9(generator.getAttribute().generate());
+
             accountStateRepository.save(state);
         }
     }

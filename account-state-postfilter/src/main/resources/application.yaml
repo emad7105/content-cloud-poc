@@ -5,10 +5,12 @@ spring:
   sleuth:
     sampler:
       probability: ${ZIPKIN_SAMPLING_RATE:1.0}
+    enabled: true
   zipkin:
     base-url: http://${ZIPKIN_ADDR:127.0.0.1:9411}
     service:
       name: "acc-state"
+    enabled: true
   security:
     oauth2:
       resourceserver:
