@@ -30,7 +30,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        be.heydari.contentcloud.opa.Main
+                                        be.heydari.contentcloud.opa.PolicyPusher
                                     </mainClass>
                                 </manifest>
                             </archive>

@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class Main {
+public class PolicyPusher {
     public static void main(String[] args) throws Exception {
         var env = System.getenv();
         var opaAddr = env.getOrDefault("OPA_ADDR", "localhost:8181");

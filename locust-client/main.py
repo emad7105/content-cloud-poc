@@ -1,6 +1,5 @@
 from locust import HttpUser, task, between
 from session import setup_session
-import os
 
 
 class AccountStateServiceUser(HttpUser):
@@ -8,11 +7,9 @@ class AccountStateServiceUser(HttpUser):
 
     @task
     def fetch_brokers(self):
-        self.client.get('/accountstateservice/brokers')
+        self.client.get('/accountstateservice/accountStates')
 
     def on_start(self):
-        print(f"host: {self.host}")
-
         cookies = setup_session(self.host, 'broker0', 'broker0')
 
         for name, value in cookies.items():

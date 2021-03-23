@@ -6,10 +6,16 @@ mvn -f account-state-service/pom.xml clean package -DskipTests
 mvn -f gateway/pom.xml clean package -DskipTests
 mvn -f opa/pom.xml clean package -DskipTests
 
-docker build -f account-state-service/dockerfile -t content-cloud/account-state-service .
-docker build -f gateway/dockerfile -t content-cloud/gateway .
-docker build -f domain-generator/dockerfile -t content-cloud/domain-generator .
-docker build -f locust-client/dockerfile -t content-cloud/locust-client .
-docker build -f opa/dockerfile -t content-cloud/policy-pusher .
+docker build -f account-state-service/dockerfile -t contentcloudpoc.azurecr.io/account-state-query .
+docker build -f gateway/dockerfile -t contentcloudpoc.azurecr.io/gateway .
+docker build -f domain-generator/dockerfile -t contentcloudpoc.azurecr.io/fill-keycloak .
+docker build -f locust-client/dockerfile -t contentcloudpoc.azurecr.io/locust .
+docker build -f opa/dockerfile -t contentcloudpoc.azurecr.io/policy-pusher .
+
+docker push contentcloudpoc.azurecr.io/account-state-query
+docker push contentcloudpoc.azurecr.io/gateway
+docker push contentcloudpoc.azurecr.io/fill-keycloak
+docker push contentcloudpoc.azurecr.io/locust
+docker push contentcloudpoc.azurecr.io/policy-pusher
 
 docker rmi $(docker images -f dangling=true -q) || true
