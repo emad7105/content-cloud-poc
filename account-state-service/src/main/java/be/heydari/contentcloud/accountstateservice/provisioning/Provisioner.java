@@ -3,7 +3,7 @@ package be.heydari.contentcloud.accountstateservice.provisioning;
 import be.heydari.contentcloud.accountstateservice.*;
 import be.heydari.contentcloud.domaingenerator.Generators;
 import be.heydari.contentcloud.domaingenerator.generators.StringGenerator;
-import be.heydari.contentcloud.domaingenerator.generators.ValueGenerator;
+import be.heydari.contentcloud.domaingenerator.generators.StringValueGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,10 +45,11 @@ public class Provisioner {
             state.setBroker(
                 broker
             );
+            state.setBrokerName(broker.getName());
 
             List<AccountStateAttribute> attributes = new ArrayList<>();
 
-            Map<String, ValueGenerator> singles = generators.getSingleGenerators();
+            Map<String, StringValueGenerator> singles = generators.getSingleGenerators();
             for (String key : singles.keySet()) {
                 if (key.equals("broker")) {
                     continue;
@@ -57,10 +58,10 @@ public class Provisioner {
                 attr.setName(key);
                 attr.setValue(singles.get(key).generate());
                 attributes.add(attr);
-                attr.setBroker(broker);
+//                attr.setBroker(broker);
             }
 
-            Map<String, ValueGenerator> multiples = generators.getMultiValuedGenerators();
+            Map<String, StringValueGenerator> multiples = generators.getMultiValuedGenerators();
             for (String key : multiples.keySet()) {
                 AccountStateAttribute attr = new AccountStateAttribute();
                 attr.setName(key);

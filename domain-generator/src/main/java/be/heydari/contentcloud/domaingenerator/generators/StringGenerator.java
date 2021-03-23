@@ -3,7 +3,7 @@ package be.heydari.contentcloud.domaingenerator.generators;
 import java.util.List;
 import java.util.Random;
 
-public class StringGenerator implements ValueGenerator {
+public class StringGenerator implements StringValueGenerator {
     private final List<String> strings;
     private final Random rand;
 

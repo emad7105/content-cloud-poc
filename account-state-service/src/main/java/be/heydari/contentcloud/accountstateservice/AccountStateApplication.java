@@ -2,25 +2,27 @@ package be.heydari.contentcloud.accountstateservice;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
-import be.heydari.contentcloud.accountstateservice.provisioning.Provisioner;
+import be.heydari.contentcloud.accountstateservice.provisioning.HardcodedProvisioner;
 import be.heydari.lib.converters.solr.SolrUtils;
 import be.heydari.lib.expressions.Disjunction;
-import brave.Span;
 import brave.SpanCustomizer;
 import com.example.abac_spike.ABACContext;
 import com.example.abac_spike.EnableAbac;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.postgresql.ds.PGConnectionPoolDataSource;
+import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.content.rest.config.ContentRestConfigurer;
 import org.springframework.content.rest.config.RestConfiguration;
 import org.springframework.content.solr.AttributeProvider;
@@ -30,19 +32,12 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
-import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.context.annotation.RequestScope;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy()
@@ -51,9 +46,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class AccountStateApplication {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStateApplication.class, args);
+//        System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+//        System.setProperty("spring.jpa.hibernate.ddl-auto", "create");
 
-        Provisioner provisioner = applicationContext.getBean(Provisioner.class);
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStateApplication.class, args);
+        HardcodedProvisioner provisioner = applicationContext.getBean(HardcodedProvisioner.class);
         provisioner.provision();
     }
 
@@ -100,6 +97,71 @@ public class AccountStateApplication {
     }
 
     @Configuration
+    public class JpaConfig {
+        @Bean
+        public DataSource getDataSource() {
+            String driverName = System.getenv("DB_DRIVER");
+
+            driverName = driverName == null ? "H2" : driverName;
+
+            switch (driverName) {
+                case "H2":
+                    return getH2DataSource();
+                case "Postgres":
+                    return getPostgresDataSource();
+                case "SqlServer":
+                    return getSqlServerDataSource();
+                default:
+                    throw new IllegalArgumentException("unknown database driver: " + driverName);
+            }
+        }
+
+        public DataSource getH2DataSource() {
+            DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+            dataSourceBuilder.driverClassName("org.h2.Driver");
+            dataSourceBuilder.url("jdbc:h2:mem:");
+            dataSourceBuilder.username("sa");
+            dataSourceBuilder.password("");
+            return dataSourceBuilder.build();
+        }
+
+        public DataSource getPostgresDataSource() {
+            Map<String, String> env = System.getenv();
+            String dbURL = env.getOrDefault("DB_URL", "localhost:5432/account-states");
+            String username = env.getOrDefault("DB_USERNAME", "username");
+            String password = env.getOrDefault("DB_PASSWORD", "password");
+
+//            DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+//            dataSourceBuilder.driverClassName("org.postgresql.Driver");
+//            dataSourceBuilder.url(String.format("jdbc:postgresql://%s", dbURL));
+//            dataSourceBuilder.username(username);
+//            dataSourceBuilder.password(password);
+//            return dataSourceBuilder.build();
+
+            PGSimpleDataSource ds = new PGSimpleDataSource();
+            ds.setDatabaseName("account-state");
+            ds.setServerNames(new String[]{"localhost"});
+            ds.setUser("username");
+            ds.setPassword("password");
+            return ds;
+        }
+
+        public DataSource getSqlServerDataSource() {
+            Map<String, String> env = System.getenv();
+            String dbURL = env.getOrDefault("DB_URL", "account-states.database.windows.net:1433;database=account-states;loginTimeout=30s");
+            String username = env.getOrDefault("DB_USERNAME", "username");
+            String password = env.getOrDefault("DB_PASSWORD", "password");
+
+            DataSourceBuilder dataSourceBuilder  = DataSourceBuilder.create();
+            dataSourceBuilder.driverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            dataSourceBuilder.url(String.format("jdbc:sqlserver://%s", dbURL));
+            dataSourceBuilder.username(username);
+            dataSourceBuilder.password(password);
+            return dataSourceBuilder.build();
+        }
+    }
+
+    @Configuration
     public static class Config {
 
         @Bean
@@ -120,10 +182,22 @@ public class AccountStateApplication {
             };
         }
 
+//        @Bean
+//        public AttributeProvider<AccountState> syncer() {
+//            return new AttributeProvider<AccountState>() {
+//
+//                @Override
+//                public Map<String, String> synchronize(AccountState entity) {
+//                    Map<String, String> attrs = new HashMap<>();
+//                    attrs.put("broker.id", entity.getBroker().getId().toString());
+//                    return attrs;
+//                }
+//            };
+//        }
+
         @Bean
         public AttributeProvider<AccountState> syncer() {
             return new AttributeProvider<AccountState>() {
-
                 @Override
                 public Map<String, String> synchronize(AccountState entity) {
                     Map<String, String> attrs = new HashMap<>();
@@ -132,18 +206,6 @@ public class AccountStateApplication {
                 }
             };
         }
-//
-//        @Bean
-//        public AttributeProvider<AccountStateAttribute> syncer() {
-//            return new AttributeProvider<AccountStateAttribute>() {
-//                @Override
-//                public Map<String, String> synchronize(AccountStateAttribute entity) {
-//                    Map<String, String> attrs = new HashMap<>();
-//                    attrs.put("broker.id", entity.getBroker().getId().toString());
-//                    return attrs;
-//                }
-//            };
-//        }
 
         @Bean
         @RequestScope

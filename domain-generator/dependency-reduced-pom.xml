@@ -20,7 +20,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>be.heydari.contentcloud.domaingenerator.Main</mainClass>
+                  <mainClass>be.heydari.contentcloud.domaingenerator.HardcodedMain</mainClass>
                 </transformer>
                 <transformer>
                   <resource>META-INF/services/javax.ws.rs.ext.Providers</resource>

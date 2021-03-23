@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class BoolGenerator implements ValueGenerator {
+public class BoolStringGenerator implements StringValueGenerator {
     private final Random rand;
 
-    public BoolGenerator(Random rand) {
+    public BoolStringGenerator(Random rand) {
         this.rand = rand;
     }
 

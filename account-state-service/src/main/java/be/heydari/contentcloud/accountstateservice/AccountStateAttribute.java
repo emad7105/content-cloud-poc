@@ -21,9 +21,9 @@ public class AccountStateAttribute {
     @ManyToOne
     private AccountState accountState;
 
-    @JoinColumn
-    @ManyToOne
-    private Broker broker;
+//    @JoinColumn
+//    @ManyToOne
+//    private Broker broker;
 
     private String name;
     private String value;

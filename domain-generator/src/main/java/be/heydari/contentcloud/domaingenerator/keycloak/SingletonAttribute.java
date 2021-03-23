@@ -1,5 +1,6 @@
 package be.heydari.contentcloud.domaingenerator.keycloak;
 
+import be.heydari.contentcloud.domaingenerator.generators.StringValueGenerator;
 import be.heydari.contentcloud.domaingenerator.generators.ValueGenerator;
 import org.javatuples.Pair;
 
@@ -9,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 public class SingletonAttribute extends Attribute {
-    public SingletonAttribute(String name, ValueGenerator generator) {
+    public SingletonAttribute(String name, ValueGenerator<?> generator) {
         super(name, generator);
     }
 
     @Override
     public Pair<String, List<String>> generate() {
-        var value = this.generator.generate();
+        var value = this.generator.generateString();
         return new Pair<>(this.name, Collections.singletonList(value));
     }
 

@@ -1,5 +1,6 @@
 package be.heydari.contentcloud.domaingenerator.keycloak;
 
+import be.heydari.contentcloud.domaingenerator.generators.StringValueGenerator;
 import be.heydari.contentcloud.domaingenerator.generators.ValueGenerator;
 import org.javatuples.Pair;
 import org.keycloak.representations.idm.ProtocolMapperRepresentation;
@@ -10,9 +11,9 @@ import java.util.Map;
 
 public abstract class Attribute {
     protected final String name;
-    protected final ValueGenerator generator;
+    protected final ValueGenerator<?> generator;
 
-    public Attribute(String name, ValueGenerator generator) {
+    public Attribute(String name, ValueGenerator<?> generator) {
         this.name = name;
         this.generator = generator;
     }
