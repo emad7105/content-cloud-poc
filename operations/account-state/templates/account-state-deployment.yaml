@@ -14,10 +14,12 @@ spec:
       labels:
         app: account-state
     spec:
+      imagePullSecrets:
+        - name: azurecrcred
       containers:
         - name: account-state
-          image: content-cloud/account-state-service
-          imagePullPolicy: Never #remove once out of minikube
+          image: contentcloudpoc.azurecr.io/account-state-query
+          imagePullPolicy: Always
           ports:
             - containerPort: 8070
           envFrom:

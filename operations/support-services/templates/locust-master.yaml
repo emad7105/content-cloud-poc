@@ -12,10 +12,12 @@ spec:
       labels:
         app: locust-master
     spec:
+      imagePullSecrets:
+        - name: azurecrcred
       containers:
         - name: master
-          image: content-cloud/locust-client
-          imagePullPolicy: Never
+          image: contentcloudpoc.azurecr.io/locust
+          imagePullPolicy: Always
           ports:
             - containerPort: 8089
             - containerPort: 5557

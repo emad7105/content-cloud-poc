@@ -14,10 +14,12 @@ spec:
       labels:
         app: gateway
     spec:
+      imagePullSecrets:
+        - name: azurecrcred
       containers:
         - name: gateway
-          image: content-cloud/gateway
-          imagePullPolicy: Never #remove once out of minikube
+          image: contentcloudpoc.azurecr.io/gateway
+          imagePullPolicy: Always
           ports:
             - containerPort: 8060
           envFrom:

@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A helm chart for deploying the account state service
+name: account-state
+version: 1.0.0

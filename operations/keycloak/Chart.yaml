@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for deploying keycloak with postgres as a storage backend
+name: keycloak
+version: 1.0.0

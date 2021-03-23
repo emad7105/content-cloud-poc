@@ -12,10 +12,12 @@ metadata:
 spec:
   template:
     spec:
+      imagePullSecrets:
+        - name: azurecrcred
       containers:
         - name: policy-pusher
-          image: content-cloud/policy-pusher
-          imagePullPolicy: Never
+          image: contentcloudpoc.azurecr.io/policy-pusher
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: policy-pusher-config

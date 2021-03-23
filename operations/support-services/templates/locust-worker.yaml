@@ -12,10 +12,12 @@ spec:
       labels:
         app: locust-worker
     spec:
+      imagePullSecrets:
+        - name: azurecrcred
       containers:
         - name: locust-worker
-          image: content-cloud/locust-client
-          imagePullPolicy: Never
+          image: contentcloudpoc.azurecr.io/locust
+          imagePullPolicy: Always
           ports:
             - containerPort: 8089
           command: [ "locust", "-f", "main.py", "--worker", "--master-host", "locust-master" ]
