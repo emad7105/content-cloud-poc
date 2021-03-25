@@ -1,4 +1,4 @@
-{{ if eq .Values.infrastructure "minikube" }}
+{{ if eq .Values.accountState.dbDriver "MSSQL" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

@@ -220,6 +220,13 @@
             <artifactId>domain-generator</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>be.heydari.contentcloud</groupId>
+            <artifactId>account-state-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
@@ -243,6 +250,12 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>9.2.1.jre8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>be.heydari.contentcloud</groupId>
+            <artifactId>account-state-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

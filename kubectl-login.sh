@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl delete secret azurecrcred
+kubectl delete secret azurecrcred || true
 
 kubectl create secret docker-registry azurecrcred \
   --namespace default \

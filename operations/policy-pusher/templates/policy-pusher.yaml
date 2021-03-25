@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: policy-pusher-config
+data:
+  OPA_ADDR: {{ .Values.opa.host -}}:8181
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: policy-pusher
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: azurecrcred
+      containers:
+        - name: policy-pusher
+          image: contentcloudpoc.azurecr.io/policy-pusher
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: policy-pusher-config
+      restartPolicy: Never
+  backoffLimit: 10

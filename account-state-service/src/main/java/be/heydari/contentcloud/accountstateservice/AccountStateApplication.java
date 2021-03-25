@@ -2,9 +2,6 @@ package be.heydari.contentcloud.accountstateservice;
 
 import java.io.IOException;
 import java.net.URI;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +9,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
-import be.heydari.contentcloud.accountstateservice.drivers.*;
+//import be.heydari.contentcloud.accountstateservice.drivers.*;
+import be.heydari.contentcloud.accountstatecommon.drivers.*;
 import be.heydari.contentcloud.accountstateservice.provisioning.HardcodedProvisioner;
 import be.heydari.lib.converters.solr.SolrUtils;
 import be.heydari.lib.expressions.Disjunction;
@@ -21,7 +19,6 @@ import com.example.abac_spike.ABACContext;
 import com.example.abac_spike.EnableAbac;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.postgresql.ds.PGConnectionPoolDataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

@@ -5,12 +5,15 @@ metadata:
   labels:
     app: keycloak
 data:
+  # only use postgres when we're running in minikube infrastructure
+  {{ if eq .Values.storage "Postgres" }}
   DB_VENDOR: POSTGRES
   DB_ADDR: postgres:5432
   DB_DATABASE: keycloak
   DB_USER: keycloak
   DB_SCHEMA: public
   DB_PASSWORD: password
+  {{ end }}
   KEYCLOAK_LOGLEVEL: DEBUG
   KEYCLOAK_USER: admin
   KEYCLOAK_PASSWORD: admin

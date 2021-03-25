@@ -7,5 +7,12 @@ spec:
     app: account-state
   ports:
     - protocol: TCP
+      name: account-state
       port: 8070
       targetPort: 8070
+    {{ if eq .Values.accountState.mode "postfilter" -}}
+    - protocol: TCP
+      name: opa
+      port: 8181
+      targetPort: 8181
+    {{- end -}}

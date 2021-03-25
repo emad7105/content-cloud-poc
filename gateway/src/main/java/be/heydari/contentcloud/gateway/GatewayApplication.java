@@ -5,8 +5,11 @@ import be.heydari.contentcloud.gateway.filters.AuthnStartWebFilter;
 import be.heydari.lazyabacfilter.EnableOPAFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.env.Environment;
 import reactor.core.publisher.Mono;
 
 import org.springframework.boot.SpringApplication;
@@ -25,7 +28,10 @@ public class GatewayApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(GatewayApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(GatewayApplication.class, args);
+        ConfigurableApplicationContext ctx = SpringApplication.run(GatewayApplication.class, args);
+        Environment env = ctx.getEnvironment();
+        String property = env.getProperty("spring.sleuth.sampler.probability");
+        System.out.println("sampling rate: " + property);
     }
 
     @GetMapping(value = "/token")

@@ -25,7 +25,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: gateway-config
-
+        {{ if eq .Values.accountState.mode "query" -}}
         - name: opa
           image: openpolicyagent/opa:0.20.5
           #          imagePullPolicy: Never # remove once not in minikube
@@ -33,3 +33,4 @@ spec:
           command: [ "./opa", "run", "--server", "--log-level", "debug" ]
           ports:
             - containerPort: 8181
+        {{- end -}}

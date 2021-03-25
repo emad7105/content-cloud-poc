@@ -1,0 +1,4 @@
+zipkin:
+  sampleRate: "\"0\""
+accountState:
+  mode: "query"

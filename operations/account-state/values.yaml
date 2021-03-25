@@ -1,8 +1,9 @@
+zipkin:
+  sampleRate: "\"0\""
 accountState:
+  mode: "query"
   dbDriver: "MSSQL"
   dbServer: "mssql"
   dbName: "AccountStates"
   dbUserName: "SA"
   dbPassword: "s3cr3t_p@ssw0rd"
-
-infrastructure: "minikube"

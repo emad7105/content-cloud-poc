@@ -7,6 +7,7 @@ metadata:
 data:
   KEYCLOAK_ADDR: keycloak:8080
   ZIPKIN_ADDR: zipkin:9411
-  ZIPKIN_SAMPLING_RATE: "0.01"
+  ZIPKIN_SAMPLE_RATE: {{ .Values.zipkin.sampleRate }}
   ACCOUNT_STATE_ADDR: account-state:8070
   OPA_ADDR: localhost:8181 #sidecar
+  OPA_ENABLED: {{ if eq .Values.accountState.mode "query" -}} "true" {{- else -}} "false" {{- end -}}

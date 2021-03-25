@@ -1,0 +1,4 @@
+from openjdk:15-jdk-alpine
+copy account-state-postfilter/target/*-spring-boot.jar app.jar
+expose 8070
+entrypoint ["java", "-jar", "app.jar"]

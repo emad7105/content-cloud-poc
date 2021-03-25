@@ -1,3 +1,4 @@
+{{ if eq .Values.storage "Postgres" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,3 +9,4 @@ data:
   POSTGRES_DB: keycloak
   POSTGRES_USER: keycloak
   POSTGRES_PASSWORD: password
+{{ end }}

@@ -1,0 +1,9 @@
+zipkin:
+  sampleRate: "\"0\""
+accountState:
+  mode: "postfilter"
+  dbDriver: "MSSQL"
+  dbServer: "mssql"
+  dbName: "AccountStates-Postfilter"
+  dbUserName: "SA"
+  dbPassword: "s3cr3t_p@ssw0rd"

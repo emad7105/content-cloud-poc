@@ -4,7 +4,7 @@ server:
 spring:
   sleuth:
     sampler:
-      probability: ${ZIPKIN_SAMPLING_RATE:1.0}
+      probability: ${ZIPKIN_SAMPLE_RATE:1.0}
   zipkin:
     base-url: http://${ZIPKIN_ADDR:127.0.0.1:9411}
     service:

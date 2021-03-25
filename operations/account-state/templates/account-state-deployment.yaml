@@ -18,10 +18,24 @@ spec:
         - name: azurecrcred
       containers:
         - name: account-state
-          image: contentcloudpoc.azurecr.io/account-state-query
+          image: {{if eq .Values.accountState.mode "query" -}}
+            contentcloudpoc.azurecr.io/account-state-query
+          {{- else if eq .Values.accountState.mode "postfilter" -}}
+            contentcloudpoc.azurecr.io/account-state-postfilter
+          {{- else -}}
+            contentcloudpoc.azurecr.io/account-state-query
+          {{- end }}
           imagePullPolicy: Always
           ports:
             - containerPort: 8070
           envFrom:
             - configMapRef:
                 name: account-state-config
+        {{ if eq .Values.accountState.mode "postfilter" -}}
+        - name: opa
+          image:  openpolicyagent/opa:0.20.5
+          imagePullPolicy: Always
+          command: ["./opa", "run", "--server", "--log-level", "debug" ]
+          ports:
+            - containerPort: 8181
+        {{- end -}}

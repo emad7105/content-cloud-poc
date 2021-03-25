@@ -1,4 +1,4 @@
-{{ if eq .Values.infrastructure "minikube" }}
+{{ if eq .Values.accountState.dbDriver "MSSQL" }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
