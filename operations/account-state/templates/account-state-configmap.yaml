@@ -8,3 +8,8 @@ data:
   KEYCLOAK_ADDR: keycloak:8080
   ZIPKIN_ADDR: zipkin:9411
   ZIPKIN_SAMPLING_RATE: "0.01"
+  DB_DRIVER: {{ .Values.accountState.dbDriver }}
+  DB_SERVER: {{ .Values.accountState.dbServer }}
+  DB_Name: {{ .Values.accountState.dbName }}
+  DB_USERNAME: {{ .Values.accountState.dbUserName }}
+  DB_PASSWORD: {{ .Values.accountState.dbPassword }}

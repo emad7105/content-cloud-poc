@@ -1,0 +1,11 @@
+{{ if eq .Values.infrastructure "minikube" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mssql-config
+  labels:
+    app: mssql
+data:
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: {{ .Values.accountState.dbPassword }}
+{{ end }}

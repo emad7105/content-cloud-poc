@@ -2,6 +2,9 @@ package be.heydari.contentcloud.accountstateservice;
 
 import java.io.IOException;
 import java.net.URI;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +12,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
+import be.heydari.contentcloud.accountstateservice.drivers.*;
 import be.heydari.contentcloud.accountstateservice.provisioning.HardcodedProvisioner;
 import be.heydari.lib.converters.solr.SolrUtils;
 import be.heydari.lib.expressions.Disjunction;
@@ -44,10 +48,41 @@ import org.springframework.web.context.annotation.RequestScope;
 @EnableAbac
 //@EnableWebSecurity
 public class AccountStateApplication {
+    private static final DatabaseDrivers drivers = new DatabaseDrivers(new H2Driver(), new MSSQLDriver(), new PostgresDriver());
 
     public static void main(String[] args) {
+        DatabaseDriver driver = drivers.getByEnv();
+        driver.before();
 //        System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 //        System.setProperty("spring.jpa.hibernate.ddl-auto", "create");
+//
+//
+//        try {
+//
+//            Connection connection =
+//                DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=SA;password=s3cr3t_p@ssw0rd");
+//            Statement stmt = connection.createStatement();
+//
+//            String query = "IF NOT EXISTS(SELECT * FROM sys.Databases WHERE Name = 'AccountStates')\n" +
+//                "BEGIN\n" +
+//                "  CREATE DATABASE AccountStates;\n" +
+//                "END;\n";
+//            System.out.println("query:\n" + query);
+//
+//            stmt.execute(query);
+//
+//            connection.commit();
+//            connection.close();
+//
+//        } catch (Exception e) {
+//           throw new RuntimeException(e);
+//        }
+//
+//        System.out.println("created database");
+//
+//        System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
+//        System.setProperty("spring.jpa.hibernate.ddl-auto", "create");
+////        System.setProperty("spring.jpa.hibernate.hbm2ddl.auto", "create");
 
         ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStateApplication.class, args);
         HardcodedProvisioner provisioner = applicationContext.getBean(HardcodedProvisioner.class);
@@ -100,20 +135,21 @@ public class AccountStateApplication {
     public class JpaConfig {
         @Bean
         public DataSource getDataSource() {
-            String driverName = System.getenv("DB_DRIVER");
-
-            driverName = driverName == null ? "H2" : driverName;
-
-            switch (driverName) {
-                case "H2":
-                    return getH2DataSource();
-                case "Postgres":
-                    return getPostgresDataSource();
-                case "SqlServer":
-                    return getSqlServerDataSource();
-                default:
-                    throw new IllegalArgumentException("unknown database driver: " + driverName);
-            }
+            return drivers.getByEnv().getDataSource();
+//            String driverName = System.getenv("DB_DRIVER");
+//
+//            driverName = driverName == null ? "H2" : driverName;
+//
+//            switch (driverName) {
+//                case "H2":
+//                    return getH2DataSource();
+//                case "Postgres":
+//                    return getPostgresDataSource();
+//                case "MSSQL":
+//                    return getSqlServerDataSource();
+//                default:
+//                    throw new IllegalArgumentException("unknown database driver: " + driverName);
+//            }
         }
 
         public DataSource getH2DataSource() {
@@ -148,9 +184,9 @@ public class AccountStateApplication {
 
         public DataSource getSqlServerDataSource() {
             Map<String, String> env = System.getenv();
-            String dbURL = env.getOrDefault("DB_URL", "account-states.database.windows.net:1433;database=account-states;loginTimeout=30s");
-            String username = env.getOrDefault("DB_USERNAME", "username");
-            String password = env.getOrDefault("DB_PASSWORD", "password");
+            String dbURL = env.getOrDefault("DB_URL", "localhost:1433;databaseName=AccountStates");
+            String username = env.getOrDefault("DB_USERNAME", "SA");
+            String password = env.getOrDefault("DB_PASSWORD", "s3cr3t_p@ssw0rd");
 
             DataSourceBuilder dataSourceBuilder  = DataSourceBuilder.create();
             dataSourceBuilder.driverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

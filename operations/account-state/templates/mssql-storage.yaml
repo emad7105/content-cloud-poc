@@ -1,0 +1,31 @@
+{{ if eq .Values.infrastructure "minikube" }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mssql-pv-volume
+  labels:
+    type: local
+    app: mssql
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/mssql/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-pv-claim
+  labels:
+    app: mssql
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+{{ end }}
