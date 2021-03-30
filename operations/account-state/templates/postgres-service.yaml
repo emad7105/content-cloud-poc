@@ -1,13 +1,13 @@
-{{ if eq .Values.cluster.k8s "minikube" }}
+{{ if eq .Values.accountState.dbDriver "Postgres" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  name: {{ .Values.accountState.dbServer }}
   labels:
-    app: postgres
+    app: account-state-postgres
 spec:
   selector:
-    app: postgres
+    app: account-state-postgres
   #  type: NodePort
   ports:
     - protocol: TCP

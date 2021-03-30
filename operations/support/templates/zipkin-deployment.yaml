@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: keycloak-deployment
+  name: zipkin-deployment
   labels:
-    app: keycloak
+    app: zikpin
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: keycloak
+      app: zipkin
   template:
     metadata:
       labels:
-        app: keycloak
+        app: zipkin
         group: support
     spec:
       {{ if eq .Values.cluster.k8s "AKS" -}}
@@ -26,14 +26,13 @@ spec:
                     operator: In
                     values:
                       - presentation-tier
-                      - logic-tier
-      {{end -}}
+                      - support
+      {{ end -}}
       containers:
-        - name: keycloak
-          image: jboss/keycloak:12.0.4
+        - name: zipkin
+          image: ghcr.io/openzipkin/zipkin-slim:latest
           ports:
-            - containerPort: 8080
-          envFrom:
-            - configMapRef:
-                name: keycloak-config
-
+            - containerPort: 9411
+          env:
+            - name: STORAGE_TYPE
+              value: mem

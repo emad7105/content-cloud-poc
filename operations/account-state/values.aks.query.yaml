@@ -1,0 +1,11 @@
+zipkin:
+  sampleRate: "\"0\""
+accountState:
+  mode: "query"
+  dbDriver: "AzureSQL"
+  dbServer: "contentcloudaccountstates"
+  dbName: "accountstates"
+  dbUsername: "content-cloud"
+  dbPassword: ""
+cluster:
+  k8s: "AKS"

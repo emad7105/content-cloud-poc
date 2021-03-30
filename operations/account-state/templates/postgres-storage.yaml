@@ -1,11 +1,11 @@
-{{ if eq .Values.cluster.k8s "minikube" }}
+{{ if eq .Values.accountState.dbDriver "Postgres" }}
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: postgres-pv-volume
+  name: account-state-postgres-pv-volume
   labels:
     type: local
-    app: postgres
+    app: account-state-postgres
 spec:
   # change to the actual storage class once going to aks: https://kubernetes.io/docs/concepts/storage/storage-classes/
   # https://docs.microsoft.com/en-us/azure/aks/azure-disks-dynamic-pv
@@ -16,12 +16,12 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/mnt/postgres/data"
+    path: "/mnt/account-state/postgres/data"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: postgres-pv-claim
+  name: account-state-postgres-pv-claim
   labels:
     app: postgres
 spec:

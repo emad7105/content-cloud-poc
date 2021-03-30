@@ -1,8 +1,0 @@
-zipkin:
-  sampleRate: "\"0\""
-accountState:
-  mode: "query"
-  dbDriver: "AzureSQL"
-  dbServer: "ContentCloud"
-  dbName: "AccountStates"
-  dbPassword: "T3l3ph0neMugP0st3rCabinet-5y4978"

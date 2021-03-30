@@ -13,9 +13,25 @@ spec:
     metadata:
       labels:
         app: gateway
+        group: presentation-tier
     spec:
+      {{ if eq .Values.cluster.k8s "minikube" -}}
       imagePullSecrets:
         - name: azurecrcred
+      {{ end -}}
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - logic-tier
+                      - support
+      {{ end -}}
       containers:
         - name: gateway
           image: contentcloudpoc.azurecr.io/gateway

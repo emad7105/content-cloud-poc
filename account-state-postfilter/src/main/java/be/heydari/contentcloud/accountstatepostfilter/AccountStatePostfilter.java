@@ -13,7 +13,7 @@ import static javax.persistence.GenerationType.AUTO;
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AccountState {
+public class AccountStatePostfilter {
 
     @Id
     @GeneratedValue(strategy = AUTO)

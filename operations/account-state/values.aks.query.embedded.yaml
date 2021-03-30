@@ -1,0 +1,10 @@
+#configuration for the account state service with an embedded database
+accountState:
+  dbServer: "\"\""
+  dbDriver: H2
+  dbUsername: sa
+  dbPassword: "\"\""
+zipkin:
+  sampleRate: "\"0\""
+cluster:
+  k8s: "AKS"

@@ -37,7 +37,7 @@ public class AccountStateController {
     }
 
     @GetMapping("/accountStates")
-    public List<AccountState> accountStates(@RequestHeader("Authorization") String token) {
+    public List<AccountStatePostfilter> accountStates(@RequestHeader("Authorization") String token) {
         Tracer tracer = this.tracer;
         Span span = tracer.nextSpan().name("postfilter-opa");
         try (Tracer.SpanInScope ws = tracer.withSpanInScope(span.start())) {
@@ -48,9 +48,9 @@ public class AccountStateController {
         }
     }
 
-    private List<AccountState> sequentialAccountStates(String token) {
-        List<AccountState> states = new ArrayList<>();
-        for(AccountState entry: accountStateRepository.findAll()) {
+    private List<AccountStatePostfilter> sequentialAccountStates(String token) {
+        List<AccountStatePostfilter> states = new ArrayList<>();
+        for(AccountStatePostfilter entry: accountStateRepository.findAll()) {
             String[] bearerArray = token.split("\\s+");
             OPAInput input = new OPAInput(bearerArray[1], entry);
 
@@ -67,11 +67,11 @@ public class AccountStateController {
         return states;
     }
 
-    private List<AccountState> parallelAccountStates(String token) {
-        List<Future<Pair<Boolean, AccountState>>> futures = new ArrayList<>();
-        for(AccountState entry: accountStateRepository.findAll()) {
-            AccountState captured = entry;
-            Future<Pair<Boolean, AccountState>> future = executor.submit(() -> {
+    private List<AccountStatePostfilter> parallelAccountStates(String token) {
+        List<Future<Pair<Boolean, AccountStatePostfilter>>> futures = new ArrayList<>();
+        for(AccountStatePostfilter entry: accountStateRepository.findAll()) {
+            AccountStatePostfilter captured = entry;
+            Future<Pair<Boolean, AccountStatePostfilter>> future = executor.submit(() -> {
                 String[] bearerArray = token.split("\\s+");
                 OPAInput input = new OPAInput(bearerArray[1], captured);
 
@@ -92,7 +92,7 @@ public class AccountStateController {
                 return future.get();
             } catch (Exception e) {
                 e.printStackTrace();
-                return new Pair<Boolean, AccountState>(false, null);
+                return new Pair<Boolean, AccountStatePostfilter>(false, null);
             }
         })
             .filter(Pair::getValue0)

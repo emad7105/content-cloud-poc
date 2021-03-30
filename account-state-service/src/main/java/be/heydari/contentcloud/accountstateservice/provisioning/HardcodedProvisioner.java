@@ -31,12 +31,14 @@ public class HardcodedProvisioner {
         LOGGER.info("account state repository: " + accountStateRepository.count() + " entities present");
         LOGGER.info("broker repository: " + accountStateRepository.count() + " entities present");
 
-        // clear database at start
-        accountStateRepository.deleteAll();
-        brokerRepository.deleteAll();
+//        if (System.getenv("DB_INIT") != null && System.getenv("DB_INIT").equals("clear")) {
+            // clear database at start
+            accountStateRepository.deleteAll();
+            brokerRepository.deleteAll();
 
-        LOGGER.info("cleared account state repository: " + accountStateRepository.count() + " entities remaining");
-        LOGGER.info("cleared broker repository: " + accountStateRepository.count() + " entities remaining");
+            LOGGER.info("cleared account state repository: " + accountStateRepository.count() + " entities remaining");
+            LOGGER.info("cleared broker repository: " + accountStateRepository.count() + " entities remaining");
+//        }
 
         Generators.HardcodedGenerator generator = new Generators.HardcodedGenerator();
         List<Broker> brokers = generator.getBroker().uniqueEntries().stream().map(broker -> {

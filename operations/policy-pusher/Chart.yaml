@@ -1,4 +1,4 @@
 apiVersion: v1
-description: A Helm chart for deploying pushing policies to opa
+description: A Helm chart for pushing policies to the opa engine
 name: policy-pusher
 version: 1.0.0

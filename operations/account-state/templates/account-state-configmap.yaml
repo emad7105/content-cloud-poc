@@ -10,6 +10,6 @@ data:
   ZIPKIN_SAMPLE_RATE: {{ .Values.zipkin.sampleRate }}
   DB_DRIVER: {{ .Values.accountState.dbDriver }}
   DB_SERVER: {{ .Values.accountState.dbServer }}
-  DB_Name: {{ .Values.accountState.dbName }}
-  DB_USERNAME: {{ .Values.accountState.dbUserName }}
+  DB_NAME: {{ .Values.accountState.dbName }}
+  DB_USER: {{ .Values.accountState.dbUsername }}
   DB_PASSWORD: {{ .Values.accountState.dbPassword }}

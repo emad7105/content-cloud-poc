@@ -15,17 +15,17 @@ public class PostgresDriver implements DatabaseDriver {
     @Override
     public DataSource getDataSource() {
         PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setDatabaseName("account-state");
-        ds.setServerNames(new String[]{"localhost"});
-        ds.setUser("username");
-        ds.setPassword("password");
+        ds.setDatabaseName(databaseName());
+        ds.setServerNames(new String[]{serverName()});
+        ds.setUser(username());
+        ds.setPassword(password());
         return ds;
     }
 
     @Override
     public void before() {
         System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        System.setProperty("spring.jpa.hibernate.ddl-auto", "create");
+        System.setProperty("spring.jpa.hibernate.ddl-auto", "create-drop");
     }
 
     private String serverName() {
@@ -37,7 +37,7 @@ public class PostgresDriver implements DatabaseDriver {
     }
 
     private String username() {
-        return env().getOrDefault("DB_USERNAME", "username");
+        return env().getOrDefault("DB_USER", "username");
     }
 
     private String password() {

@@ -2,8 +2,10 @@ zipkin:
   sampleRate: "\"0\""
 accountState:
   mode: "query"
-  dbDriver: "MSSQL"
-  dbServer: "mssql"
+  dbDriver: "Postgres"
+  dbServer: "account-state-postgres"
   dbName: "AccountStates"
-  dbUserName: "SA"
+  dbUsername: "user"
   dbPassword: "s3cr3t_p@ssw0rd"
+cluster:
+  k8s: "minikube"

@@ -13,9 +13,15 @@ public class H2Driver implements DatabaseDriver {
     }
 
     @Override
+    public void before() {
+//        System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+//        System.setProperty("spring.jpa.hibernate.ddl-auto", "create");
+    }
+
+    @Override
     public DataSource getDataSource() {
         DataSourceBuilder datasourceBuilder = DataSourceBuilder.create();
-        datasourceBuilder.driverClassName("org.h2.driver");
+        datasourceBuilder.driverClassName("org.h2.Driver");
         datasourceBuilder.url(url());
         datasourceBuilder.username(userName());
         datasourceBuilder.password(password());
@@ -23,18 +29,14 @@ public class H2Driver implements DatabaseDriver {
     }
 
     private String url() {
-        return env().getOrDefault("DATABASE_URL", "jdbc:h2:mem");
+         return "jdbc:h2:mem:";
     }
 
     private String userName() {
-        return env().getOrDefault("DATABASE_USERNAME", "sa");
+        return "SA";
     }
 
     private String password() {
-        return env().getOrDefault("DATABASE_PASSWORD", "");
-    }
-
-    private Map<String, String> env() {
-        return System.getenv();
+        return "";
     }
 }

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mssql
+  name: {{ .Values.accountState.dbServer }}
   labels:
     app: mssql
 spec:
@@ -12,4 +12,4 @@ spec:
     - protocol: TCP
       port: 1433
       targetPort: 1433
-{{ end }}
+{{ end -}}

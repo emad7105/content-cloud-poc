@@ -5,5 +5,7 @@ accountState:
   dbDriver: "MSSQL"
   dbServer: "mssql"
   dbName: "AccountStates-Postfilter"
-  dbUserName: "SA"
+  dbUsername: "SA"
   dbPassword: "s3cr3t_p@ssw0rd"
+cluster:
+  k8s: "minikube"

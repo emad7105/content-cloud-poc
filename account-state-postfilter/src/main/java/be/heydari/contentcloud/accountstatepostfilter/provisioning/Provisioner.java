@@ -1,8 +1,9 @@
 package be.heydari.contentcloud.accountstatepostfilter.provisioning;
 
-import be.heydari.contentcloud.accountstatepostfilter.AccountState;
+import be.heydari.contentcloud.accountstatepostfilter.AccountStatePostfilter;
 import be.heydari.contentcloud.accountstatepostfilter.AccountStateRepository;
 import be.heydari.contentcloud.domaingenerator.Generators;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,8 @@ import java.util.List;
 
 @Component
 public class Provisioner {
+    private Logger LOGGER = Logger.getLogger(Provisioner.class);
+
     private AccountStateRepository accountStateRepository;
 
     @Autowired
@@ -22,8 +25,16 @@ public class Provisioner {
 
         List<String> brokers = generator.getBroker().uniqueEntries();
 
+        LOGGER.info("account state repository: " + accountStateRepository.count() + " entities present");
+        if (System.getenv("DB_INIT").equals("clear")) {
+            // clear database at start
+            accountStateRepository.deleteAll();
+
+            LOGGER.info("cleared account state repository: " + accountStateRepository.count() + " entities remaining");
+        }
+
         for (int i = 0; i != 100; i ++) {
-            AccountState state = new AccountState();
+            AccountStatePostfilter state = new AccountStatePostfilter();
             String broker = brokers.get(Generators.rand.nextInt(brokers.size()));
             state.setBrokerName(broker);
 

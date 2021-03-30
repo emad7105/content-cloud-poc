@@ -45,7 +45,7 @@ import org.springframework.web.context.annotation.RequestScope;
 @EnableAbac
 //@EnableWebSecurity
 public class AccountStateApplication {
-    private static final DatabaseDrivers drivers = new DatabaseDrivers(new H2Driver(), new MSSQLDriver(), new PostgresDriver());
+    private static final DatabaseDrivers drivers = new DatabaseDrivers(new H2Driver(), new MSSQLDriver(), new PostgresDriver(), new AzureSQLDriver());
 
     public static void main(String[] args) {
         DatabaseDriver driver = drivers.getByEnv();

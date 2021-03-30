@@ -1,0 +1,4 @@
+opa:
+  host: "account-state"
+cluster:
+  k8s: "AKS"

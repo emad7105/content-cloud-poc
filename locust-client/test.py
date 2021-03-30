@@ -9,7 +9,7 @@ cookies = setup_session(f"http://{host}:{port}", 'broker0', 'broker0')
 
 conn = http.client.HTTPConnection(host, 8060, timeout=10)
 
-conn.request('GET', '/accountstateservice/brokers', headers={'Cookie': join_cookies(cookies)})
+conn.request('GET', '/accountstateservice/accountStates', headers={'Cookie': join_cookies(cookies)})
 response = conn.getresponse()
 data = response.read().decode()
 print(f"status: {response.status}")

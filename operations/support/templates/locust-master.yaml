@@ -11,9 +11,25 @@ spec:
     metadata:
       labels:
         app: locust-master
+        group: support
     spec:
+      {{ if eq .Values.cluster.k8s "minikube" -}}
       imagePullSecrets:
         - name: azurecrcred
+      {{ end -}}
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - presentation-tier
+                      - support
+      {{ end -}}
       containers:
         - name: master
           image: contentcloudpoc.azurecr.io/locust

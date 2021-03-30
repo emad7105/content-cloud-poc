@@ -10,7 +10,7 @@ public class AzureSQLDriver implements DatabaseDriver {
     @Override
     public void before() {
         System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
-        System.setProperty("spring.jpa.hibernate.ddl-auto", "create");
+        System.setProperty("spring.jpa.hibernate.ddl-auto", "create-drop");
     }
 
     @Override
@@ -37,8 +37,9 @@ public class AzureSQLDriver implements DatabaseDriver {
     }
 
     private String username() {
-        String server = databaseServer();
-        return String.format("spring@%s", server);
+        return env().get("DB_USER");
+//        String server = databaseServer();
+//        return String.format("spring@%s", server);
     }
 
     private String password() {
