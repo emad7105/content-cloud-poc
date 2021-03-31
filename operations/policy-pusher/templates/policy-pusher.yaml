@@ -4,6 +4,7 @@ metadata:
   name: policy-pusher-config
 data:
   OPA_ADDR: {{ .Values.opa.host -}}:8181
+  POLICY_FILE: {{ .Values.opa.policyFile }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -15,6 +16,10 @@ spec:
       {{ if eq .Values.cluster.k8s "minikube" -}}
       imagePullSecrets:
         - name: azurecrcred
+      {{end -}}
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+          agentpool: application
       {{end -}}
       containers:
         - name: policy-pusher

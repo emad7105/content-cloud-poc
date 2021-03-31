@@ -12,7 +12,7 @@ public class PolicyPusher {
     public static void main(String[] args) throws Exception {
         var env = System.getenv();
         var opaAddr = env.getOrDefault("OPA_ADDR", "localhost:8181");
-        var policyFile = env.getOrDefault("POLICY_FILE", "./opa/src/main/resources/policies.rego");
+        var policyFile = env.getOrDefault("POLICY_FILE", "./opa/src/main/resources/query/selectivity_20.rego");
 
         var url = new URL("http://" + opaAddr + "/v1/policies/account-state");
         var httpCon = (HttpURLConnection) url.openConnection();
@@ -23,6 +23,7 @@ public class PolicyPusher {
         );
 
         var path = Path.of(policyFile);
+        System.out.println("policy file: " + path.toString());
         var policies = Files.readString(path);
 
         out.write(policies);

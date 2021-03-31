@@ -58,17 +58,46 @@ public class HardcodedProvisioner {
             state.setRequiredRole(generator.getRoles().generate());
             state.setClearanceLevel(generator.getClearanceLevel().generate());
             state.setProbation(generator.getProbation().generate());
-            state.setAttribute0(generator.getAttribute().generate());
-            state.setAttribute1(generator.getAttribute().generate());
-            state.setAttribute2(generator.getAttribute().generate());
-            state.setAttribute3(generator.getAttribute().generate());
-            state.setAttribute4(generator.getAttribute().generate());
-            state.setAttribute5(generator.getAttribute().generate());
-            state.setAttribute6(generator.getAttribute().generate());
-            state.setAttribute7(generator.getAttribute().generate());
-            state.setAttribute8(generator.getAttribute().generate());
-            state.setAttribute9(generator.getAttribute().generate());
 
+            state.setAttribute0(broker.getName());
+            state.setAttribute1(broker.getName());
+            state.setAttribute2(broker.getName());
+            state.setAttribute3(broker.getName());
+            state.setAttribute4(broker.getName());
+            state.setAttribute5(broker.getName());
+            state.setAttribute6(broker.getName());
+            state.setAttribute7(broker.getName());
+            state.setAttribute8(broker.getName());
+            state.setAttribute9(broker.getName());
+            state.setAttribute10(broker.getName());
+            state.setAttribute11(broker.getName());
+            state.setAttribute12(broker.getName());
+            state.setAttribute13(broker.getName());
+            state.setAttribute14(broker.getName());
+            state.setAttribute15(broker.getName());
+            state.setAttribute16(broker.getName());
+            state.setAttribute17(broker.getName());
+            state.setAttribute18(broker.getName());
+            state.setAttribute19(broker.getName());
+            state.setAttribute20(broker.getName());
+            state.setAttribute21(broker.getName());
+            state.setAttribute22(broker.getName());
+            state.setAttribute23(broker.getName());
+            state.setAttribute24(broker.getName());
+
+            state.setSelectivity1 (i<1 );
+            state.setSelectivity10(i<10);
+            state.setSelectivity20(i<20);
+            state.setSelectivity40(i<40);
+            state.setSelectivity60(i<60);
+            state.setSelectivity80(i<80);
+            state.setSelectivity100(true);
+
+//            state.setAttribute25(generator.getAttribute().generate());
+//            state.setAttribute26(generator.getAttribute().generate());
+//            state.setAttribute27(generator.getAttribute().generate());
+//            state.setAttribute28(generator.getAttribute().generate());
+//            state.setAttribute29(generator.getAttribute().generate());
             accountStateRepository.save(state);
         }
     }

@@ -20,6 +20,8 @@ spec:
         - name: azurecrcred
       {{ end -}}
       {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+        agentpool: application
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

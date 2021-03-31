@@ -10,6 +10,10 @@ spec:
       imagePullSecrets:
         - name: azurecrcred
       {{end -}}
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+        agentpool: application
+      {{end -}}
       containers:
         - name: fill-keycloak
           image: contentcloudpoc.azurecr.io/fill-keycloak

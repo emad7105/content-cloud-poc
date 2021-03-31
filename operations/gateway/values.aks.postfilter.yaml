@@ -1,0 +1,6 @@
+zipkin:
+  sampleRate: "\"0\""
+accountState:
+  mode: "postfilter"
+cluster:
+  k8s: "AKS"

@@ -1,6 +1,7 @@
 from locust import HttpUser, task, between
 from session import setup_session
-
+import os
+import random
 
 class AccountStateServiceUser(HttpUser):
     wait_time = between(1, 2.5)
@@ -10,7 +11,9 @@ class AccountStateServiceUser(HttpUser):
         self.client.get('/accountstateservice/accountStates')
 
     def on_start(self):
-        cookies = setup_session(self.host, 'broker0', 'broker0')
+        broker_count = int(os.environ.get('BROKER_COUNT') or 10)
+        broker_idx = random.randint(0, broker_count - 1)
+        cookies = setup_session(self.host, f'broker{broker_idx}', f'broker{broker_idx}')
 
         for name, value in cookies.items():
             self.client.cookies.set(name, value)

@@ -1,13 +1,12 @@
 package be.heydari.contentcloud.domaingenerator;
 
+import be.heydari.contentcloud.domaingenerator.generators.BoolGenerator;
 import be.heydari.contentcloud.domaingenerator.keycloak.*;
 import org.keycloak.admin.client.KeycloakBuilder;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class HardcodedMain {
     public static void main(String[] args) {
@@ -43,19 +42,33 @@ public class HardcodedMain {
         attributes.add(new SingletonAttribute("probation", generators.getProbation()));
         attributes.add(new SingletonAttribute("clearanceLevel", generators.getClearanceLevel()));
 
-        for (var i = 0; i != 10; i++) {
-            attributes.add(new SingletonAttribute("attribute" + i, generators.getAttribute()));
-        }
-
         attributes.add(new MultiValuedAttribute("roles", generators.getRoles(), (int) Math.min(generators.getRoles().uniqueEntryCount(), 5)));
 
-        var mappers = attributes.stream().map(Attribute::mapper).collect(Collectors.toList());
+
+        var policySizeAttributes = new ArrayList<Attribute>();
+        for (var i = 0; i != 25; i++) {
+            policySizeAttributes.add(new SingletonAttribute("attribute" + i, new BoolGenerator(null)));
+        }
+
+        var selectivityAttributes = new ArrayList<Attribute>();
+        for (var selectivity: Arrays.asList(1, 10, 20, 40, 60, 80, 100)) {
+            selectivityAttributes.add(new SingletonAttribute("select_" + selectivity, new BoolGenerator(null)));
+        }
+
+        var allAttrs = new ArrayList<Attribute>();
+        allAttrs.addAll(attributes);
+        allAttrs.addAll(policySizeAttributes);
+        allAttrs.addAll(selectivityAttributes);
+
+        var mappers = allAttrs.stream().map(Attribute::mapper).collect(Collectors.toList());
         client.setAttributes(mappers);
 
 
         for (var broker : generators.getBroker().uniqueEntries()) {
             var user = new User(broker);
             user.create(realm.resource());
+
+
             var values = new HashMap<String, List<String>>();
             for (var attr : attributes) {
                 if (attr.getName().equals("broker")) {
@@ -65,6 +78,15 @@ public class HardcodedMain {
                     values.put(value.getValue0(), value.getValue1());
                 }
             }
+
+            for (var attr: policySizeAttributes) {
+                values.put(attr.getName(), Collections.singletonList(broker));
+            }
+
+            for (var attr: selectivityAttributes) {
+                values.put(attr.getName(), Collections.singletonList("true"));
+            }
+
             user.setAttributes(values);
         }
     }

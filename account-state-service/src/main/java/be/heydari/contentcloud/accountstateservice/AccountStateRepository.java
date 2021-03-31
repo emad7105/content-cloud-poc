@@ -14,5 +14,4 @@ public interface AccountStateRepository extends JpaRepository<AccountState, Long
 
     @Query("select d from AccountState d where d.type = :type")
     List<AccountState> byType(@Param("type") String type);
-
 }

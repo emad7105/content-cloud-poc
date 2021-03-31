@@ -1,6 +1,6 @@
 package be.heydari.contentcloud.accountstatepostfilter.opa;
 
-import be.heydari.contentcloud.accountstatepostfilter.AccountStatePostfilter;
+import be.heydari.contentcloud.accountstatepostfilter.AccountState;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -9,9 +9,9 @@ import lombok.Data;
 public class OPAInput {
     private String token;
 
-    private AccountStatePostfilter accountState;
+    private AccountState accountState;
 
-    public OPAInput(String token, AccountStatePostfilter accountState) {
+    public OPAInput(String token, AccountState accountState) {
         this.token = token;
         this.accountState = accountState;
     }

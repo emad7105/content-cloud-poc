@@ -1,0 +1,11 @@
+zipkin:
+  sampleRate: "\"0\""
+accountState:
+  mode: "postfilter"
+  dbDriver: "AzureSQL"
+  dbServer: "contentcloudaccountstates"
+  dbName: "accountstates-postfilter"
+  dbUsername: "content-cloud"
+  dbPassword: ""
+cluster:
+  k8s: "AKS"
