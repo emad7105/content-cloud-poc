@@ -34,4 +34,8 @@ build/
 .vscode/
 
 **/venv
+**/results/*
 **/reports/*
+
+### account-state-secrets ###
+**/values.aks.dbpassword.yaml

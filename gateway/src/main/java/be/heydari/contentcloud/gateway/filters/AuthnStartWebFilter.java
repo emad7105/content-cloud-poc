@@ -13,8 +13,8 @@ public class AuthnStartWebFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
-        LOGGER.info("---START OF AUTHN VERIFICATION---");
-        System.out.println(serverWebExchange.getAttributes());
+//        LOGGER.info("---START OF AUTHN VERIFICATION---");
+//        System.out.println(serverWebExchange.getAttributes());
 
         Span span = (Span) serverWebExchange.getAttributes().get("org.springframework.cloud.sleuth.instrument.web.TraceWebFilter.TRACE");
         span.annotate("start of verification");

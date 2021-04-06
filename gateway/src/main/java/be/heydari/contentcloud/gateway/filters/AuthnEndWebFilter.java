@@ -13,7 +13,7 @@ public class AuthnEndWebFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
-        LOGGER.info("---END OF AUTHN VERIFICATION---");
+//        LOGGER.info("---END OF AUTHN VERIFICATION---");
 
         Span span = (Span) serverWebExchange.getAttributes().get("org.springframework.cloud.sleuth.instrument.web.TraceWebFilter.TRACE");
         span.annotate("end of verification");

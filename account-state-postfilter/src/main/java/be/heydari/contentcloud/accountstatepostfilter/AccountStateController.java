@@ -9,13 +9,16 @@ import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
@@ -37,18 +40,17 @@ public class AccountStateController {
     }
 
     @GetMapping("/accountStates")
-    public List<AccountState> accountStates(@RequestHeader("Authorization") String token) {
+    public List<AccountState> accountStates(@RequestHeader("Authorization") String token, @RequestParam("size") Optional<Integer> size) {
         Tracer tracer = this.tracer;
         Span span = tracer.nextSpan().name("postfilter-opa");
         try (Tracer.SpanInScope ws = tracer.withSpanInScope(span.start())) {
-            return sequentialAccountStates(token);
-
+            return sequentialAccountStates(token, size.orElse(20));
         } finally {
             span.finish();
         }
     }
 
-    private List<AccountState> sequentialAccountStates(String token) {
+    private List<AccountState> sequentialAccountStates(String token, int size) {
         List<AccountState> states = new ArrayList<>();
         for(AccountState entry: accountStateRepository.findAll()) {
             String[] bearerArray = token.split("\\s+");
@@ -61,6 +63,10 @@ public class AccountStateController {
                 }
             } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
+            }
+
+            if (states.size() == size) {
+                break;
             }
         }
 

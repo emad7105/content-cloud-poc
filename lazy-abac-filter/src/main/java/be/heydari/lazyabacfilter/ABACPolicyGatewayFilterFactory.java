@@ -44,11 +44,11 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
                 return chain.filter(exchange);
             }
 
-            LOGGER.info("--- Hello from ABAC GateWay Filter: ---");
-            LOGGER.info("query:" + config.getAbacQuery());
-            LOGGER.info("unknowns:" + config.getAbacUnknowns().toString());
+//            LOGGER.info("--- Hello from ABAC GateWay Filter: ---");
+//            LOGGER.info("query:" + config.getAbacQuery());
+//            LOGGER.info("unknowns:" + config.getAbacUnknowns().toString());
 
-            LOGGER.info("headers" + exchange.getRequest().getHeaders());
+//            LOGGER.info("headers" + exchange.getRequest().getHeaders());
 
             List<String> authorization = exchange.getRequest().getHeaders().get("Authorization");
             if (authorization != null && authorization.size() > 0) {

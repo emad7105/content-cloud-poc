@@ -29,7 +29,7 @@ public class H2Driver implements DatabaseDriver {
     }
 
     private String url() {
-         return "jdbc:h2:mem:";
+         return "jdbc:h2:mem:accountstates";
     }
 
     private String userName() {

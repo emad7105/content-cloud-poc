@@ -51,7 +51,7 @@ public class OPAClient {
             String residualPolicy = new RestTemplate()
                 .postForObject(format("%s/v1/compile", baseUrl), opaQuery, String.class);
 
-            System.out.println(format("Residual policy: %s", residualPolicy));
+//            System.out.println(format("Residual policy: %s", residualPolicy));
 
             //ResponseAST
             Disjunction disjunction = AstWalker.walk(residualPolicy);

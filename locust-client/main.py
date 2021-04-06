@@ -8,11 +8,14 @@ class AccountStateServiceUser(HttpUser):
 
     @task
     def fetch_brokers(self):
-        self.client.get('/accountstateservice/accountStates')
+        self.client.get('/accountstateservice/accountStates?size=100')
 
     def on_start(self):
         broker_count = int(os.environ.get('BROKER_COUNT') or 10)
         broker_idx = random.randint(0, broker_count - 1)
+
+        print('using broker', broker_idx)
+
         cookies = setup_session(self.host, f'broker{broker_idx}', f'broker{broker_idx}')
 
         for name, value in cookies.items():

@@ -1,5 +1,5 @@
 opa:
   host: "gateway"
-  policyFile: "/resources/query/policies.rego"
+  policyFile: "/resources/query/selectivity_100.rego"
 cluster:
   k8s: "AKS"

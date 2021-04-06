@@ -1,6 +1,7 @@
 package be.heydari.contentcloud.domaingenerator;
 
 import be.heydari.contentcloud.domaingenerator.generators.BoolGenerator;
+import be.heydari.contentcloud.domaingenerator.generators.StringGenerator;
 import be.heydari.contentcloud.domaingenerator.keycloak.*;
 import org.keycloak.admin.client.KeycloakBuilder;
 
@@ -47,7 +48,7 @@ public class HardcodedMain {
 
         var policySizeAttributes = new ArrayList<Attribute>();
         for (var i = 0; i != 25; i++) {
-            policySizeAttributes.add(new SingletonAttribute("attribute" + i, new BoolGenerator(null)));
+            policySizeAttributes.add(new SingletonAttribute("attribute" + i, new StringGenerator(null, Collections.emptyList())));
         }
 
         var selectivityAttributes = new ArrayList<Attribute>();

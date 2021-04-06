@@ -33,6 +33,8 @@ spec:
                     values:
                       - logic-tier
                       - support
+                      - presentation-tier
+
       {{ end -}}
       containers:
         - name: gateway
@@ -48,7 +50,7 @@ spec:
           image: openpolicyagent/opa:0.20.5
           #          imagePullPolicy: Never # remove once not in minikube
           #          image: openpolicyagent/opa:0.20.5
-          command: [ "./opa", "run", "--server", "--log-level", "debug" ]
+          command: [ "./opa", "run", "--server"]
           ports:
             - containerPort: 8181
         {{- end -}}

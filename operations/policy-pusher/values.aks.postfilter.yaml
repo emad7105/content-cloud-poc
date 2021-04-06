@@ -1,5 +1,5 @@
 opa:
   host: "account-state"
-  policyFile: "/resources/postfilter/policies.rego"
+  policyFile: "/resources/postfilter/selectivity_1.rego"
 cluster:
   k8s: "AKS"

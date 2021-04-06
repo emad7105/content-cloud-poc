@@ -3,6 +3,8 @@ package be.heydari.contentcloud.gateway;
 import be.heydari.contentcloud.gateway.filters.AuthnEndWebFilter;
 import be.heydari.contentcloud.gateway.filters.AuthnStartWebFilter;
 import be.heydari.lazyabacfilter.EnableOPAFilter;
+import org.apache.logging.log4j.Level;
+//import org.slf4j.Logger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,6 @@ import org.springframework.web.server.WebSession;
 @EnableOPAFilter
 @ComponentScan("be.heydari.lazyabacfilter")
 public class GatewayApplication {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GatewayApplication.class);
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(GatewayApplication.class, args);

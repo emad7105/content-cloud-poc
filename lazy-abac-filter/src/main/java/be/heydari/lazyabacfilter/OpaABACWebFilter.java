@@ -13,7 +13,7 @@ public class OpaABACWebFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
 
-        LOGGER.info("---- Hello there!! ----");
+//        LOGGER.info("---- Hello there!! ----");
 
         return webFilterChain.filter(serverWebExchange);
     }

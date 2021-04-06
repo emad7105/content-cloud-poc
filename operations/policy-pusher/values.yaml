@@ -1,5 +1,5 @@
 opa:
   host: "gateway"
-  policyFile: "/resources/query/policies.rego"
+  policyFile: "/resources/query/selectivity_1.rego"
 cluster:
   k8s: "minikube"

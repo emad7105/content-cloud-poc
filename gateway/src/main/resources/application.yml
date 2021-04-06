@@ -52,6 +52,6 @@ opa:
 server.port: 8060
 
 logging.level:
-  org.springframework.cloud.gateway: DEBUG
-  org.springframework.security: DEBUG
-  org.springframework.web.reactive.function.client: TRACE
+  org.springframework.cloud.gateway: ERROR
+  org.springframework.security: ERROR
+  org.springframework.web.reactive.function.client: ERROR
