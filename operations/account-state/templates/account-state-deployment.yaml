@@ -40,6 +40,8 @@ spec:
             contentcloudpoc.azurecr.io/account-state-query
           {{- else if eq .Values.accountState.mode "postfilter" -}}
             contentcloudpoc.azurecr.io/account-state-postfilter
+          {{- else if eq .Values.accountState.mode "hardcoded" -}}
+            contentcloudpoc.azurecr.io/account-state-hardcoded
           {{- else -}}
             contentcloudpoc.azurecr.io/account-state-query
           {{- end }}

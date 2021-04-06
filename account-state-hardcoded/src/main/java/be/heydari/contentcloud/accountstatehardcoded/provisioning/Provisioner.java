@@ -1,7 +1,8 @@
-package be.heydari.contentcloud.accountstatepostfilter.provisioning;
+package be.heydari.contentcloud.accountstatehardcoded.provisioning;
 
-import be.heydari.contentcloud.accountstatepostfilter.AccountState;
-import be.heydari.contentcloud.accountstatepostfilter.AccountStateRepository;
+
+import be.heydari.contentcloud.accountstatehardcoded.AccountState;
+import be.heydari.contentcloud.accountstatehardcoded.AccountStateRepository;
 import be.heydari.contentcloud.domaingenerator.Generators;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,10 @@ public class Provisioner {
 
         LOGGER.info("account state repository: " + accountStateRepository.count() + " entities present");
 //        if (System.getenv("DB_INIT").equals("clear")) {
-            // clear database at start
-            accountStateRepository.deleteAll();
+        // clear database at start
+        accountStateRepository.deleteAll();
 
-            LOGGER.info("cleared account state repository: " + accountStateRepository.count() + " entities remaining");
+        LOGGER.info("cleared account state repository: " + accountStateRepository.count() + " entities remaining");
 //        }
 
         for (int i = 0; i != 100; i ++) {

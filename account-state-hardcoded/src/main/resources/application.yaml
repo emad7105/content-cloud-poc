@@ -16,8 +16,3 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://${KEYCLOAK_ADDR:localhost:8080}/auth/realms/content-cloud-realm
-
-opa:
-  service:
-    base-url: http://${PDP_ADDR:localhost:8181}
-    query: "data.accountstates.allow"

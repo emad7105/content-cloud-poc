@@ -1,0 +1,6 @@
+zipkin:
+  sampleRate: "\"0\""
+accountState:
+  mode: "hardcoded"
+cluster:
+  k8s: "AKS"

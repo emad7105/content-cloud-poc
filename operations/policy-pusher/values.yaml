@@ -1,5 +1,6 @@
-opa:
-  host: "gateway"
+pdp:
+  lang: "Rego"
+  host: "gateway:8181"
   policyFile: "/resources/query/selectivity_1.rego"
 cluster:
   k8s: "minikube"

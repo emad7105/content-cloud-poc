@@ -46,7 +46,7 @@ spring:
 
 opa:
   service:
-    base-url: http://${OPA_ADDR:localhost:8181} # without the "/" at the end
+    base-url: http://${PDP_ADDR:localhost:8181} # without the "/" at the end
     enabled: ${OPA_ENABLED:true}
 
 server.port: 8060

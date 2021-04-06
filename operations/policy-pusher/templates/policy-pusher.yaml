@@ -3,8 +3,13 @@ kind: ConfigMap
 metadata:
   name: policy-pusher-config
 data:
-  OPA_ADDR: {{ .Values.opa.host -}}:8181
-  POLICY_FILE: {{ .Values.opa.policyFile }}
+  POLICY_LANGUAGE: {{ .Values.pdp.lang }}
+  PDP_ADDR: {{ .Values.pdp.host }}
+  {{ if eq .Values.pdp.lang "Rego" -}}
+  POLICY_FILE: {{ .Values.pdp.policyFile }}
+  {{ else if eq .Values.pdp.lang "Java" -}}
+  POLICY_NAME: {{ .Values.pdp.policyName }}
+  {{ end }}
 ---
 apiVersion: batch/v1
 kind: Job

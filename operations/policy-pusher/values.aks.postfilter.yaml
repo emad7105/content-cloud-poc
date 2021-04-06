@@ -1,5 +1,6 @@
-opa:
-  host: "account-state"
+pdp:
+  lang: "Rego"
+  host: "account-state:8181"
   policyFile: "/resources/postfilter/selectivity_1.rego"
 cluster:
   k8s: "AKS"

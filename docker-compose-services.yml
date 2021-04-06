@@ -70,7 +70,7 @@ services:
       KEYCLOAK_ADDR: keycloak:8080
       ZIPKIN_ADDR: zipkin:9411
       #      ZIPKIN_SAMPLING_RATE: 0.01
-      OPA_ADDR: opa:8181
+      PDP_ADDR: opa:8181
       ACCOUNT_STATE_ADDR: account-state:8070
     ports:
       - 8060:8060

@@ -60,7 +60,7 @@ services:
   policy-pusher:
     image: contentcloudpoc.azurecr.io/policy-pusher
     environment:
-      OPA_ADDR: opa:8181
+      PDP_ADDR: opa:8181
     restart: on-failure
     volumes:
     - ./opa/src/main/resources/:/resources
