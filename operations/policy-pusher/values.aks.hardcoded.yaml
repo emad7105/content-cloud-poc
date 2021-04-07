@@ -1,6 +1,6 @@
 pdp:
   lang: "Java"
   host: "account-state:8070"
-  policyName: "selectivity_20"
+  policyName: "selectivity_100"
 cluster:
   k8s: "AKS"

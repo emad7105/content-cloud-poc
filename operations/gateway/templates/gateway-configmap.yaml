@@ -10,4 +10,5 @@ data:
   ZIPKIN_SAMPLE_RATE: {{ .Values.zipkin.sampleRate }}
   ACCOUNT_STATE_ADDR: account-state:8070
   PDP_ADDR: localhost:8181 #sidecar
-  OPA_ENABLED: {{ if eq .Values.accountState.mode "query" -}} "true" {{- else -}} "false" {{- end -}}
+  FILTER_PROFILE: {{ if eq .Values.accountState.mode "query"}} "filterEnabled" {{- else -}} "filterDisabled" {{- end }}
+  #OPA_ENABLED: {{ if eq .Values.accountState.mode "query" -}} "true" {{- else -}} "false" {{- end -}}

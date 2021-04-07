@@ -2,6 +2,7 @@ package be.heydari.lazyabacfilter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
+@ConditionalOnProperty(name = "opa.service.enabled", havingValue = "true")
 public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory<ABACPolicyGatewayFilterFactory.Config> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ABACPolicyGatewayFilterFactory.class);
 

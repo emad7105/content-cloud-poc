@@ -1,0 +1,8 @@
+#configuration for the account state service with an embedded database
+accountState:
+  mode: "hardcoded"
+  dbDriver: H2
+cluster:
+  k8s: "AKS"
+zipkin:
+  sampleRate: "\"0\""

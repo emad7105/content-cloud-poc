@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.WebSession;
 
+import java.util.Arrays;
+
 @SpringBootApplication
 @RestController
 @EnableOPAFilter
@@ -33,6 +35,11 @@ public class GatewayApplication {
         Environment env = ctx.getEnvironment();
         String property = env.getProperty("spring.sleuth.sampler.probability");
         System.out.println("sampling rate: " + property);
+
+        Arrays.stream(
+            ctx.getBeanDefinitionNames()
+        ).sorted().forEach(component -> System.out.println("component: " + component));
+
     }
 
     @GetMapping(value = "/token")

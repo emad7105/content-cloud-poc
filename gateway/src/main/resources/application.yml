@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    active:
+      - ${FILTER_PROFILE:filterEnabled}
   application:
     name: gateway
   sleuth:
@@ -8,23 +11,7 @@ spring:
     base-url: http://${ZIPKIN_ADDR:127.0.0.1:9411}
     service:
       name: "gateway"
-  cloud:
-    gateway:
-      default-filters:
-        - TokenRelay
-      routes:
-        - id: account-state-service
-          uri: http://${ACCOUNT_STATE_ADDR:127.0.0.1:8070}
-          predicates:
-            - Path=/accountstateservice/**
-          filters:
-            - RewritePath=/accountstateservice(?<segment>/?.*), $\{segment}
-            - RemoveRequestHeader=Cookie
-            - name: ABACPolicy
-              args:
-                abacQuery: "data.accountstates.allow"
-                abacUnknowns:
-                  - "data.accountState"
+
   security:
     oauth2:
       client:
@@ -43,15 +30,56 @@ spring:
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
 
-
-opa:
-  service:
-    base-url: http://${PDP_ADDR:localhost:8181} # without the "/" at the end
-    enabled: ${OPA_ENABLED:true}
-
 server.port: 8060
 
 logging.level:
   org.springframework.cloud.gateway: ERROR
   org.springframework.security: ERROR
   org.springframework.web.reactive.function.client: ERROR
+
+---
+spring:
+  profiles: filterEnabled
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay
+      routes:
+        - id: account-state-service
+          uri: http://${ACCOUNT_STATE_ADDR:127.0.0.1:8070}
+          predicates:
+            - Path=/accountstateservice/**
+          filters:
+            - RewritePath=/accountstateservice(?<segment>/?.*), $\{segment}
+            - RemoveRequestHeader=Cookie
+            - name: ABACPolicy
+              args:
+                abacQuery: "data.accountstates.allow"
+                abacUnknowns:
+                  - "data.accountState"
+opa:
+  service:
+    base-url: http://${PDP_ADDR:localhost:8181} # without the "/" at the end
+    enabled: true
+
+
+---
+spring:
+  profiles: filterDisabled
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay
+      routes:
+        - id: account-state-service
+          uri: http://${ACCOUNT_STATE_ADDR:127.0.0.1:8070}
+          predicates:
+            - Path=/accountstateservice/**
+          filters:
+            - RewritePath=/accountstateservice(?<segment>/?.*), $\{segment}
+            - RemoveRequestHeader=Cookie
+
+opa:
+  service:
+    base-url: http://${PDP_ADDR:localhost:8181} # without the "/" at the end
+    enabled: false
