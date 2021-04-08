@@ -16,7 +16,7 @@
 		<module>domain-generator</module>
 		<module>opa</module>
 		<module>account-state-common</module>
-		<module>account-state-common</module>
+		<module>account-state-hardcoded</module>
 	</modules>
 	<packaging>pom</packaging>
 
