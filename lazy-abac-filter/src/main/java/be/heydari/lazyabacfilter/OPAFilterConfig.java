@@ -21,7 +21,8 @@ public class OPAFilterConfig {
     @Bean
     public ABACPolicyGatewayFilterFactory abacPolicyGatewayFilterFactory() {
         ABACPolicyGatewayFilterFactory abacPolicyGatewayFilterFactory = new ABACPolicyGatewayFilterFactory();
-        abacPolicyGatewayFilterFactory.setOpaClient(new OPAClient(baseUrl, tracer));
+        //abacPolicyGatewayFilterFactory.setOpaClient(new OPAClient(baseUrl, tracer));
+        abacPolicyGatewayFilterFactory.setOpaClientAsync(new OPAClientAsync(baseUrl, tracer));
         abacPolicyGatewayFilterFactory.setEnabled(enabled);
         return abacPolicyGatewayFilterFactory;
     }

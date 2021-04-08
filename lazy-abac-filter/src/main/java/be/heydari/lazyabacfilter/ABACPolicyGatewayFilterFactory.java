@@ -7,10 +7,12 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @ConditionalOnProperty(name = "opa.service.enabled", havingValue = "true")
@@ -20,16 +22,21 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
     public static final String ABAC_QUERY = "abacQuery";
     public static final String ABAC_UNKNOWNS = "abacUnknowns";
 
-    private OPAClient opaClient;
+    //private OPAClient opaClient;
+    private OPAClientAsync opaClientAsync;
     private boolean enabled;
 
     public ABACPolicyGatewayFilterFactory() {
         super(Config.class);
     }
 
-    public void setOpaClient(OPAClient opaClient) {
+    /*public void setOpaClient(OPAClient opaClient) {
         this.opaClient = opaClient;
+    }*/
+    public void setOpaClientAsync(OPAClientAsync opaClientAsync) {
+        this.opaClientAsync = opaClientAsync;
     }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -42,37 +49,31 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
     @Override
     public GatewayFilter apply(Config config) {
         return new OrderedGatewayFilter((exchange, chain) -> {
-            if (!this.enabled) {
+            Optional<String> bearerToken = fetchBearerToken(exchange);
+            if ((!bearerToken.isPresent()) || (!this.enabled)) {
                 return chain.filter(exchange);
             }
 
-//            LOGGER.info("--- Hello from ABAC GateWay Filter: ---");
-//            LOGGER.info("query:" + config.getAbacQuery());
-//            LOGGER.info("unknowns:" + config.getAbacUnknowns().toString());
-
-//            LOGGER.info("headers" + exchange.getRequest().getHeaders());
-
-            List<String> authorization = exchange.getRequest().getHeaders().get("Authorization");
-            if (authorization != null && authorization.size() > 0) {
-                String bearer = authorization.get(0);
-                if (bearer.startsWith("Bearer")) {
-                    String[] bearerArray = bearer.split("\\s+");
-                    String abacContextEncoded = null;
-                    try {
-                        abacContextEncoded = opaClient.queryOPA(config.getAbacQuery(), new OpaInput(bearerArray[1]), config.getAbacUnknowns());
-                    } catch (IOException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-
-                    if (abacContextEncoded != null) {
+            return opaClientAsync.queryOPA(config.getAbacQuery(), new OpaInput(bearerToken.get()), config.getAbacUnknowns())
+                    .map(abacContextEncoded -> {
                         exchange.getRequest()
-                            .mutate()
-                            .header("X-ABAC-Context", abacContextEncoded);
-                    }
-                }
-            }
-            return chain.filter(exchange);
+                                    .mutate()
+                                    .header("X-ABAC-Context", abacContextEncoded);
+                        return exchange;
+                    }).flatMap(chain::filter);
         }, 1);
+    }
+
+    private Optional<String> fetchBearerToken(ServerWebExchange exchange) {
+        List<String> authorization = exchange.getRequest().getHeaders().get("Authorization");
+        if (authorization != null && authorization.size() > 0) {
+            String bearer = authorization.get(0);
+            if (bearer.startsWith("Bearer")) {
+                String[] bearerArray = bearer.split("\\s+");
+                return Optional.ofNullable(bearerArray[1]);
+            }
+        }
+        return Optional.empty();
     }
 
 
