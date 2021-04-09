@@ -53,13 +53,17 @@ public class OPAClientAsync {
                     .unknowns(unknowns)
                     .build();
 
-            return reactiveClient.post()
+            /*return reactiveClient.post()
                     .uri(URI.create(format("%s/v1/compile", baseUrl)))
                     .body(Mono.just(opaQuery), OpaQuery.class)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .bodyToMono(String.class)
-                    .map(residualPolicy -> convertResidualPolicyToProtoBuf(residualPolicy).get());
+                    .map(residualPolicy -> {
+                        return convertResidualPolicyToProtoBuf(residualPolicy).get();
+                    });*/
+            String opaMockResponseBroker0AccountStatesCall = "{\"result\":{\"queries\":[[{\"index\":0,\"terms\":{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"},{\"type\":\"string\",\"value\":\"allow\"}]}}]],\"support\":[{\"package\":{\"path\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"}]},\"rules\":[{\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":true}},\"body\":[{\"index\":0,\"terms\":[{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"eq\"}]},{\"type\":\"string\",\"value\":\"broker0\"},{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"accountState\"},{\"type\":\"string\",\"value\":\"brokerName\"}]}]}]},{\"default\":true,\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":false}},\"body\":[{\"index\":0,\"terms\":{\"type\":\"boolean\",\"value\":true}}]}]}]}}";
+            return Mono.just(convertResidualPolicyToProtoBuf(opaMockResponseBroker0AccountStatesCall).get());
         } finally {
             span.finish();
         }
