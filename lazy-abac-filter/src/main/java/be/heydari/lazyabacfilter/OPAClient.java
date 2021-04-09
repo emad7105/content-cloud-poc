@@ -4,8 +4,8 @@ import be.heydari.AstWalker;
 import be.heydari.lib.converters.protobuf.ProtobufUtils;
 import be.heydari.lib.converters.protobuf.generated.PDisjunction;
 import be.heydari.lib.expressions.Disjunction;
-import brave.Span;
-import brave.Tracer;
+//import brave.Span;
+//import brave.Tracer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
@@ -13,8 +13,6 @@ import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.sleuth.annotation.NewSpan;
-import org.springframework.cloud.sleuth.annotation.SpanTag;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -31,17 +29,17 @@ public class OPAClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(OPAClient.class);
 
     private String baseUrl;
-    private Tracer tracer;
+//    private Tracer tracer;
 
-    public OPAClient(String baseUrl, Tracer tracer) {
+    public OPAClient(String baseUrl/*, Tracer tracer*/) {
         this.baseUrl = baseUrl;
-        this.tracer = tracer;
+//        this.tracer = tracer;
     }
 
     public String queryOPA(String query, OpaInput input, List<String> unknowns) throws IOException {
-        Span span = tracer.nextSpan().name("call-opa");
-        try (Tracer.SpanInScope ws = this.tracer.withSpanInScope(span.start())) {
-            span.tag("query", query);
+//        Span span = tracer.nextSpan().name("call-opa");
+//        try (Tracer.SpanInScope ws = this.tracer.withSpanInScope(span.start())) {
+//            span.tag("query", query);
             OpaQuery opaQuery = OpaQuery.builder()
                 .query(query)
                 .input(input)
@@ -61,9 +59,9 @@ public class OPAClient {
                 return null;
             }
             return Base64.getEncoder().encodeToString(protoBytes);
-        } finally {
-            span.finish();
-        }
+//        } finally {
+//            span.finish();
+//        }
     }
 
 /*    public static String queryOPA(Long brokerId) throws IOException {

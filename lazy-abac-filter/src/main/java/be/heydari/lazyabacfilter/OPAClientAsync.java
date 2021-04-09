@@ -4,8 +4,8 @@ import be.heydari.AstWalker;
 import be.heydari.lib.converters.protobuf.ProtobufUtils;
 import be.heydari.lib.converters.protobuf.generated.PDisjunction;
 import be.heydari.lib.expressions.Disjunction;
-import brave.Span;
-import brave.Tracer;
+//import brave.Span;
+//import brave.Tracer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
@@ -33,27 +33,30 @@ public class OPAClientAsync {
     private static final Logger LOGGER = LoggerFactory.getLogger(OPAClientAsync.class);
 
     private String baseUrl;
-    private Tracer tracer;
+//    private Tracer tracer;
     private WebClient reactiveClient;
 
-    public OPAClientAsync(String baseUrl, Tracer tracer) {
-        this.baseUrl = baseUrl;
-        this.tracer = tracer;
+    public OPAClientAsync(String baseUrl/*, Tracer tracer*/, WebClient reactiveClient) {
+        LOGGER.info("elastic version");
 
-        HttpClient httpClient = HttpClient.create(ConnectionProvider
-                .elastic("OpaHttpClientPool"));
-        this.reactiveClient = WebClient
-                .builder()
-                .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .baseUrl(baseUrl)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
+        this.baseUrl = baseUrl;
+//        this.tracer = tracer;
+        this.reactiveClient = reactiveClient;
+
+//        HttpClient httpClient = HttpClient.create(ConnectionProvider
+//                .elastic("OpaHttpClientPool"));
+//        this.reactiveClient = WebClient
+//                .builder()
+//                .clientConnector(new ReactorClientHttpConnector(httpClient))
+//                .baseUrl(baseUrl)
+//                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+//                .build();
     }
 
     public Mono<String> queryOPA(String query, OpaInput input, List<String> unknowns) {
-        Span span = tracer.nextSpan().name("call-opa");
-        try (Tracer.SpanInScope ws = this.tracer.withSpanInScope(span.start())) {
-            span.tag("query", query);
+//        Span span = tracer.nextSpan().name("call-opa");
+//        try (Tracer.SpanInScope ws = this.tracer.withSpanInScope(span.start())) {
+//            span.tag("query", query);
             OpaQuery opaQuery = OpaQuery.builder()
                     .query(query)
                     .input(input)
@@ -70,13 +73,13 @@ public class OPAClientAsync {
                         return convertResidualPolicyToProtoBuf(residualPolicy).get();
                     });
             //String opaMockResponseBroker0AccountStatesCall = "{\"result\":{\"queries\":[[{\"index\":0,\"terms\":{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"},{\"type\":\"string\",\"value\":\"allow\"}]}}]],\"support\":[{\"package\":{\"path\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"}]},\"rules\":[{\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":true}},\"body\":[{\"index\":0,\"terms\":[{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"eq\"}]},{\"type\":\"string\",\"value\":\"broker0\"},{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"accountState\"},{\"type\":\"string\",\"value\":\"brokerName\"}]}]}]},{\"default\":true,\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":false}},\"body\":[{\"index\":0,\"terms\":{\"type\":\"boolean\",\"value\":true}}]}]}]}}";
-            //return Mono.just(convertResidualPolicyToProtoBuf(opaMockResponseBroker0AccountStatesCall).get());
-        } finally {
-            span.finish();
-        }
+//            return Mono.just(convertResidualPolicyToProtoBuf(opaMockResponseBroker0AccountStatesCall).get());
+//        } finally {
+//            span.finish();
+//        }
     }
 
-    private Optional<String> convertResidualPolicyToProtoBuf(String residualPolicy) {
+    public Optional<String> convertResidualPolicyToProtoBuf(String residualPolicy) {
         //ResponseAST
         Disjunction disjunction = null;
         try {
@@ -92,7 +95,6 @@ public class OPAClientAsync {
             return Optional.empty();
         }
     }
-
 
     /**
      * Example:
