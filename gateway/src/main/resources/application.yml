@@ -37,6 +37,8 @@ logging.level:
   org.springframework.security: ERROR
   org.springframework.web.reactive.function.client: ERROR
 
+  be.heydari.ast: ERROR
+
 ---
 spring:
   profiles: filterEnabled
