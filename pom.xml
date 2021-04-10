@@ -17,7 +17,8 @@
 		<module>opa</module>
 		<module>account-state-common</module>
 		<module>account-state-hardcoded</module>
-	</modules>
+        <module>gateway2</module>
+    </modules>
 	<packaging>pom</packaging>
 
 	<properties>
