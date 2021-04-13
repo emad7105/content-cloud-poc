@@ -18,11 +18,16 @@ public class HardcodedProvisioner {
 
     private BrokerRepository brokerRepository;
     private AccountStateRepository accountStateRepository;
+    private int scaling = 1;
 
     @Autowired
     public HardcodedProvisioner(BrokerRepository brokerRepository, AccountStateRepository accountStateRepository) {
         this.brokerRepository = brokerRepository;
         this.accountStateRepository = accountStateRepository;
+    }
+    
+    public void setScale(int scale) {
+        this.scaling = scale;
     }
 
     public void provision() {
@@ -48,7 +53,7 @@ public class HardcodedProvisioner {
             return b;
         }).collect(Collectors.toList());
 
-        for (int i = 0; i != 100; i ++) {
+        for (int i = 0; i != 100 * scaling; i ++) {
             AccountState state = new AccountState();
             Broker broker = brokers.get(Generators.rand.nextInt(brokers.size()));
             state.setBroker(broker);
@@ -85,12 +90,12 @@ public class HardcodedProvisioner {
             state.setAttribute23(broker.getName());
             state.setAttribute24(broker.getName());
 
-            state.setSelectivity1 (i<1 );
-            state.setSelectivity10(i<10);
-            state.setSelectivity20(i<20);
-            state.setSelectivity40(i<40);
-            state.setSelectivity60(i<60);
-            state.setSelectivity80(i<80);
+            state.setSelectivity1 (i < 1  * scaling);
+            state.setSelectivity10(i < 10 * scaling);
+            state.setSelectivity20(i < 20 * scaling);
+            state.setSelectivity40(i < 40 * scaling);
+            state.setSelectivity60(i < 60 * scaling);
+            state.setSelectivity80(i < 80 * scaling);
             state.setSelectivity100(true);
 
 //            state.setAttribute25(generator.getAttribute().generate());

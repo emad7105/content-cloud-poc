@@ -81,8 +81,13 @@ public class AccountStateApplication {
 //        System.setProperty("spring.jpa.hibernate.ddl-auto", "create");
 ////        System.setProperty("spring.jpa.hibernate.hbm2ddl.auto", "create");
 
+
         ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStateApplication.class, args);
         HardcodedProvisioner provisioner = applicationContext.getBean(HardcodedProvisioner.class);
+
+        String scaleString = System.getenv().getOrDefault("DB_SCALER", "100");
+        int scale = Integer.parseInt(scaleString);
+        provisioner.setScale(scale);
         provisioner.provision();
     }
 

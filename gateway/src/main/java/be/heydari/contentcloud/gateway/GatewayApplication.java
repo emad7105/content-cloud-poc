@@ -35,11 +35,6 @@ public class GatewayApplication {
         Environment env = ctx.getEnvironment();
         String property = env.getProperty("spring.sleuth.sampler.probability");
         System.out.println("sampling rate: " + property);
-
-        Arrays.stream(
-            ctx.getBeanDefinitionNames()
-        ).sorted().forEach(component -> System.out.println("component: " + component));
-
     }
 
     @GetMapping(value = "/token")

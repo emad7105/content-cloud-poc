@@ -1,6 +1,6 @@
 pdp:
   lang: "Rego"
   host: "gateway:8181"
-  policyFile: "/resources/query/selectivity_1.rego"
+  policyFile: "/resources/query/policies.rego"
 cluster:
   k8s: "minikube"

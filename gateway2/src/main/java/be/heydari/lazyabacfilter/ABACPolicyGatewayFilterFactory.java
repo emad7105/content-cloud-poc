@@ -58,30 +58,30 @@ public class ABACPolicyGatewayFilterFactory extends AbstractGatewayFilterFactory
             if ((!bearerToken.isPresent()) || (!this.enabled)) {
                 return chain.filter(exchange);
             }
-            return Mono.defer(() -> {
-                try {
-//                    String opaMockResponseBroker0AccountStatesCall = "{\"result\":{\"queries\":[[{\"index\":0,\"terms\":{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"},{\"type\":\"string\",\"value\":\"allow\"}]}}]],\"support\":[{\"package\":{\"path\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"}]},\"rules\":[{\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":true}},\"body\":[{\"index\":0,\"terms\":[{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"eq\"}]},{\"type\":\"string\",\"value\":\"broker0\"},{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"accountState\"},{\"type\":\"string\",\"value\":\"brokerName\"}]}]}]},{\"default\":true,\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":false}},\"body\":[{\"index\":0,\"terms\":{\"type\":\"boolean\",\"value\":true}}]}]}]}}";
-//                    return Mono.just(opaClientAsync.convertResidualPolicyToProtoBuf(opaMockResponseBroker0AccountStatesCall).get());
-                    return Mono.just(opaClient.queryOPA(config.getAbacQuery(), new OpaInput(bearerToken.get()), config.getAbacUnknowns()));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).publishOn(scheduler)
-            .subscribeOn(scheduler)
-            .map(abacContextEncoded -> {
-                exchange.getRequest()
-                    .mutate()
-                    .header("X-ABAC-Context", abacContextEncoded);
-                return exchange;
-            }).flatMap(chain::filter);
+//            return Mono.defer(() -> {
+//                try {
+////                    String opaMockResponseBroker0AccountStatesCall = "{\"result\":{\"queries\":[[{\"index\":0,\"terms\":{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"},{\"type\":\"string\",\"value\":\"allow\"}]}}]],\"support\":[{\"package\":{\"path\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"}]},\"rules\":[{\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":true}},\"body\":[{\"index\":0,\"terms\":[{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"eq\"}]},{\"type\":\"string\",\"value\":\"broker0\"},{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"accountState\"},{\"type\":\"string\",\"value\":\"brokerName\"}]}]}]},{\"default\":true,\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":false}},\"body\":[{\"index\":0,\"terms\":{\"type\":\"boolean\",\"value\":true}}]}]}]}}";
+////                    return Mono.just(opaClientAsync.convertResidualPolicyToProtoBuf(opaMockResponseBroker0AccountStatesCall).get());
+//                    return Mono.just(opaClient.queryOPA(config.getAbacQuery(), new OpaInput(bearerToken.get()), config.getAbacUnknowns()));
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }).publishOn(scheduler)
+//            .subscribeOn(scheduler)
+//            .map(abacContextEncoded -> {
+//                exchange.getRequest()
+//                    .mutate()
+//                    .header("X-ABAC-Context", abacContextEncoded);
+//                return exchange;
+//            }).flatMap(chain::filter);
 
-//            return opaClientAsync.queryOPA(config.getAbacQuery(), new OpaInput(bearerToken.get()), config.getAbacUnknowns())
-//                    .map(abacContextEncoded -> {
-//                        exchange.getRequest()
-//                                    .mutate()
-//                                    .header("X-ABAC-Context", abacContextEncoded);
-//                        return exchange;
-//                    }).flatMap(chain::filter);
+            return opaClientAsync.queryOPA(config.getAbacQuery(), new OpaInput(bearerToken.get()), config.getAbacUnknowns())
+                    .map(abacContextEncoded -> {
+                        exchange.getRequest()
+                                    .mutate()
+                                    .header("X-ABAC-Context", abacContextEncoded);
+                        return exchange;
+                    }).flatMap(chain::filter);
         }, 1);
     }
 

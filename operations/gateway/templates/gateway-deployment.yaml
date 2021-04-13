@@ -38,7 +38,13 @@ spec:
       {{ end -}}
       containers:
         - name: gateway
+          {{ if eq .Values.version "2" -}}
+          image: contentcloudpoc.azurecr.io/gateway2
+          {{- else if eq .Values.version "1" -}}
           image: contentcloudpoc.azurecr.io/gateway
+          {{- else -}}
+          image: contentcloudpoc.azurecr.io/gateway
+          {{- end }}
           imagePullPolicy: Always
           ports:
             - containerPort: 8060

@@ -1,3 +1,4 @@
+version: "2"
 zipkin:
   sampleRate: "\"0\""
 accountState:

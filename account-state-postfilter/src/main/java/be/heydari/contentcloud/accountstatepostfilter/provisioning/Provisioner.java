@@ -14,6 +14,11 @@ public class Provisioner {
     private Logger LOGGER = Logger.getLogger(Provisioner.class);
 
     private AccountStateRepository accountStateRepository;
+    private int scale = 1;
+
+    public void setScale(int scale) {
+        this.scale = scale;
+    }
 
     @Autowired
     public Provisioner(AccountStateRepository accountStateRepository) {
@@ -33,7 +38,7 @@ public class Provisioner {
             LOGGER.info("cleared account state repository: " + accountStateRepository.count() + " entities remaining");
 //        }
 
-        for (int i = 0; i != 100; i ++) {
+        for (int i = 0; i != 100 * scale; i ++) {
             AccountState state = new AccountState();
             String broker = brokers.get(Generators.rand.nextInt(brokers.size()));
             state.setBrokerName(broker);
@@ -69,12 +74,12 @@ public class Provisioner {
             state.setAttribute23(broker);
             state.setAttribute24(broker);
 
-            state.setSelectivity1 (i<1 );
-            state.setSelectivity10(i<10);
-            state.setSelectivity20(i<20);
-            state.setSelectivity40(i<40);
-            state.setSelectivity60(i<60);
-            state.setSelectivity80(i<80);
+            state.setSelectivity1 (i < 1  * scale);
+            state.setSelectivity10(i < 10 * scale);
+            state.setSelectivity20(i < 20 * scale);
+            state.setSelectivity40(i < 40 * scale);
+            state.setSelectivity60(i < 60 * scale);
+            state.setSelectivity80(i < 80 * scale);
             state.setSelectivity100(true);
 
             accountStateRepository.save(state);

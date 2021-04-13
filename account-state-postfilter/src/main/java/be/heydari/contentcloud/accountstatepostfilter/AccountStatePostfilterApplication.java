@@ -24,6 +24,11 @@ public class AccountStatePostfilterApplication {
 
         ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStatePostfilterApplication.class, args);
         Provisioner provisioner = applicationContext.getBean(Provisioner.class);
+
+        String scaleString = System.getenv().getOrDefault("DB_SCALER", "100");
+        int scale = Integer.parseInt(scaleString);
+        provisioner.setScale(scale);
+
         provisioner.provision();
     }
 

@@ -22,6 +22,12 @@ public class AccountStateController {
     public AccountStateController(AccountStateRepository accountStateRepository, ActiveRedactor activePolicy) {
         this.accountStateRepository = accountStateRepository;
         this.activeRedactor = activePolicy;
+        this.activeRedactor.set("policies",
+            (token, size) -> {
+                LOGGER.info("token: " + token.get("select_1"));
+                return accountStateRepository.selector_1((Boolean) token.get("select_1"));
+            }
+        );
     }
 
     @GetMapping("/accountStates")
@@ -35,6 +41,11 @@ public class AccountStateController {
     @GetMapping("/policy")
     public void postPolicy(@RequestParam("name") String policy) {
         switch (policy) {
+            case "policies":
+                this.activeRedactor.set(
+                    "policies",
+                    (token, size) -> accountStateRepository.policies((String) token.get("broker"))
+                );
             case "attr_count_1":
             case "attr_count_20":
             case "selectivity_1":

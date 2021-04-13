@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface AccountStateRepository extends JpaRepository<AccountState, Long> {
 
+    @Query("select a from AccountState a where a.brokerName = :brokerName")
+    List<AccountState> policies(@Param("brokerName") String brokerName);
+
     @Query("select a from AccountState a where a.selectivity1 = :selectivity1")
     List<AccountState> selector_1(@Param("selectivity1") boolean selectivity1);
 

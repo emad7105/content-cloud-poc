@@ -1,0 +1,4 @@
+from openjdk:15-jdk-alpine
+copy gateway2/target/*-spring-boot.jar app.jar
+expose 8060
+entrypoint ["java", "-jar", "app.jar"]
