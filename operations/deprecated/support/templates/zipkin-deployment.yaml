@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zipkin-deployment
+  labels:
+    app: zikpin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zipkin
+  template:
+    metadata:
+      labels:
+        app: zipkin
+        group: support
+    spec:
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+        agentpool: application
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - support
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - presentation-tier
+                      - logic-tier
+      {{ end -}}
+      containers:
+        - name: zipkin
+          image: ghcr.io/openzipkin/zipkin-slim:latest
+          ports:
+            - containerPort: 9411
+          env:
+            - name: STORAGE_TYPE
+              value: mem

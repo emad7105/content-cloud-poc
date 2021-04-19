@@ -13,3 +13,4 @@ data:
   DB_NAME: {{ .Values.accountState.dbName }}
   DB_USER: {{ .Values.accountState.dbUsername }}
   DB_PASSWORD: {{ .Values.accountState.dbPassword }}
+  DB_SCALE: {{ .Values.accountState.dbScale}}

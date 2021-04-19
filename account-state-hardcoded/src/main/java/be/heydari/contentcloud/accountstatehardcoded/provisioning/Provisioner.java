@@ -39,7 +39,9 @@ public class Provisioner {
         LOGGER.info("cleared account state repository: " + accountStateRepository.count() + " entities remaining");
 //        }
 
-        for (int i = 0; i != 100 * scale; i ++) {
+        int totalRecords = 100 * scale;
+
+        for (int i = 0; i != totalRecords; i ++) {
             AccountState state = new AccountState();
             String broker = brokers.get(Generators.rand.nextInt(brokers.size()));
             state.setBrokerName(broker);
@@ -85,5 +87,7 @@ public class Provisioner {
 
             accountStateRepository.save(state);
         }
+
+        LOGGER.info("finished provisioning: created " + totalRecords + " records");
     }
 }

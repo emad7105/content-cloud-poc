@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for deploying dignostic services such as zipkin and a debug container
+name: support-services
+version: 1.0.0

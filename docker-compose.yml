@@ -27,15 +27,15 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
 
-  sqlserver-account-state:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      ACCEPT_EULA: Y
-      SA_PASSWORD: s3cr3t_p@ssw0rd
-    ports:
-      - "1433:1433"
-    volumes:
-      - sqlserver-account-state-data:/var/opt/mssql/
+#  sqlserver-account-state:
+#    image: mcr.microsoft.com/mssql/server:2019-latest
+#    environment:
+#      ACCEPT_EULA: Y
+#      SA_PASSWORD: s3cr3t_p@ssw0rd
+#    ports:
+#      - "1433:1433"
+#    volumes:
+#      - sqlserver-account-state-data:/var/opt/mssql/
 
   postgres-account-state:
     image: postgres

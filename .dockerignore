@@ -1,0 +1,5 @@
+./results/
+./locust-client/results/*
+./locust-client/reports/*
+
+*.sqlite

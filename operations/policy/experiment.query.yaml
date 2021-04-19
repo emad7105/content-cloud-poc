@@ -1,0 +1,4 @@
+pdp:
+  lang: "Rego"
+  host: "gateway:8181"
+  policyFile: "/resources/query/policies.rego"

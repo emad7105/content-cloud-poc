@@ -4,7 +4,7 @@ accountState:
   dbServer: "contentcloudaccountstates"
   dbName: "accountstates"
   dbUsername: "content-cloud"
-#  dbPassword: ""
+  dbScale: "\"10\""
 cluster:
   k8s: "AKS"
 zipkin:

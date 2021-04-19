@@ -27,7 +27,7 @@ public class PolicyPusher {
 
     public static void pushRegoPolicy(Map<String, String> env) throws Exception {
         var pdpAddr = env.getOrDefault("PDP_ADDR", "localhost:8181");
-        var policyFile = env.getOrDefault("POLICY_FILE", "./opa/src/main/resources/postfilter/selectivity_10.rego");
+        var policyFile = env.getOrDefault("POLICY_FILE", "./opa/src/main/resources/query/policies.rego");
 
         var url = new URL("http://" + pdpAddr + "/v1/policies/account-state");
         var httpCon = (HttpURLConnection) url.openConnection();

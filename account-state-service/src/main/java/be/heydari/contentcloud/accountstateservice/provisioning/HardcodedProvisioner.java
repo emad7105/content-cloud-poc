@@ -18,7 +18,7 @@ public class HardcodedProvisioner {
 
     private BrokerRepository brokerRepository;
     private AccountStateRepository accountStateRepository;
-    private int scaling = 1;
+    private int scale = 1;
 
     @Autowired
     public HardcodedProvisioner(BrokerRepository brokerRepository, AccountStateRepository accountStateRepository) {
@@ -27,7 +27,7 @@ public class HardcodedProvisioner {
     }
     
     public void setScale(int scale) {
-        this.scaling = scale;
+        this.scale = scale;
     }
 
     public void provision() {
@@ -53,7 +53,9 @@ public class HardcodedProvisioner {
             return b;
         }).collect(Collectors.toList());
 
-        for (int i = 0; i != 100 * scaling; i ++) {
+        int totalRecords = 100 * scale;
+
+        for (int i = 0; i != totalRecords; i ++) {
             AccountState state = new AccountState();
             Broker broker = brokers.get(Generators.rand.nextInt(brokers.size()));
             state.setBroker(broker);
@@ -90,12 +92,12 @@ public class HardcodedProvisioner {
             state.setAttribute23(broker.getName());
             state.setAttribute24(broker.getName());
 
-            state.setSelectivity1 (i < 1  * scaling);
-            state.setSelectivity10(i < 10 * scaling);
-            state.setSelectivity20(i < 20 * scaling);
-            state.setSelectivity40(i < 40 * scaling);
-            state.setSelectivity60(i < 60 * scaling);
-            state.setSelectivity80(i < 80 * scaling);
+            state.setSelectivity1 (i < 1  * scale);
+            state.setSelectivity10(i < 10 * scale);
+            state.setSelectivity20(i < 20 * scale);
+            state.setSelectivity40(i < 40 * scale);
+            state.setSelectivity60(i < 60 * scale);
+            state.setSelectivity80(i < 80 * scale);
             state.setSelectivity100(true);
 
 //            state.setAttribute25(generator.getAttribute().generate());
@@ -105,5 +107,7 @@ public class HardcodedProvisioner {
 //            state.setAttribute29(generator.getAttribute().generate());
             accountStateRepository.save(state);
         }
+
+        LOGGER.info("finished provisioning: created " + totalRecords + " records");
     }
 }

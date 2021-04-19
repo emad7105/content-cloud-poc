@@ -2,6 +2,7 @@
 accountState:
   mode: "hardcoded"
   dbDriver: H2
+  dbScale: "\"10\""
 cluster:
   k8s: "AKS"
 zipkin:

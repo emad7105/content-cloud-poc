@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: locust
+  template:
+    metadata:
+      labels:
+        app: locust
+        group: support
+    spec:
+      {{ if eq .Values.cluster.k8s "minikube" -}}
+      imagePullSecrets:
+        - name: azurecrcred
+      {{ end -}}
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+        agentpool: application
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - support
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - presentation-tier
+                      - logic-tier
+      {{ end -}}
+      containers:
+        - name: locust
+          image: contentcloudpoc.azurecr.io/locust
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8089
+            - containerPort: 5557
+          command: [ "locust", "-f", "main.py" ]
+          envFrom:
+            - configMapRef:
+                name: locust-config

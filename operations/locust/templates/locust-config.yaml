@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: locust-config
+  labels:
+    app: locust
+data:
+  LOCUST_HEADLESS: "True"
+  LOCUST_HOST: {{ .Values.config.host }}
+  LOCUST_USERS: {{ .Values.config.users }}
+  LOCUST_SPAWN_RATE: {{ .Values.config.spawnRate}}
+  LOCUST_RUN_TIME: {{ .Values.config.runTime }}
+  LOCUST_CSV: "{{ .Values.config.statsDir }}/latencies"
+  LOCUST_CSV_FULL_HISTORY: {{ .Values.config.csvFullHistory }}
+  CLIENT_BROKER_COUNT: {{ .Values.config.brokerCount }}
+  CLIENT_PAGE_SIZE: {{ .Values.config.pageSize }}
+  CLIENT_USER_RPS: {{ .Values.config.userRPS }}
+  CLIENT_ENABLE_HISTORY_DB: {{ .Values.config.enableHistoryDB }}
+  CLIENT_HISTORY_DB_FILE: "{{ .Values.config.statsDir }}/latencies.sqlite"

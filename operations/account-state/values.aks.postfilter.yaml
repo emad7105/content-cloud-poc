@@ -6,6 +6,6 @@ accountState:
   dbServer: "contentcloudaccountstates"
   dbName: "accountstates-postfilter"
   dbUsername: "content-cloud"
-  dbPassword: ""
+  dbScale: "\"10\""
 cluster:
   k8s: "AKS"

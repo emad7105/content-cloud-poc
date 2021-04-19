@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debug-deployment
+  labels:
+    app: debug
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: debug
+  template:
+    metadata:
+      labels:
+        app: debug
+        group: support
+    spec:
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+        agentpool: application
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - support
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - presentation-tier
+                      - logic-tier
+      {{ end -}}
+      containers:
+        - name: debug
+          image: praqma/network-multitool

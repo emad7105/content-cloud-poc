@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for pushing policies to OPA
+name: locust
+version: 1.0.0
