@@ -3,7 +3,7 @@ package accountstates
 default allow = false
 
 allow {
-  input.accountState.selectivity1 == token.payload.select_1
+  input.accountState.selectivity0_01 == token.payload.select_0_01
 }
 
 token = {"payload": payload} {

@@ -1,4 +1,5 @@
 config:
+  headless: "\"True\""
   host: "http://gateway:8060"
   users: "\"700\""
   spawnRate: "\"2\""

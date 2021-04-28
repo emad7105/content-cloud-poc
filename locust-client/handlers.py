@@ -8,7 +8,6 @@ class RequestStats:
         self.writer = writer
 
     def add_request(self, request_type, name, response_time, response_length, **kwargs):
-        print(f'adding data {response_time}')
         self.data.append({'time': response_time})
 
         # flush async

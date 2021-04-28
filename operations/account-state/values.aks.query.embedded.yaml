@@ -2,7 +2,7 @@
 accountState:
   mode: "query"
   dbDriver: H2
-  dbScale: "\"10\""
+  dbRecordCount: "\"10000\""
 cluster:
   k8s: "AKS"
 zipkin:

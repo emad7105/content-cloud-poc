@@ -5,7 +5,8 @@ metadata:
   labels:
     app: locust
 data:
-  LOCUST_HEADLESS: "True"
+  LOCUST_HEADLESS: {{ .Values.config.headless }}
+  {{ if eq .Values.config.headless "\"True\"" -}}
   LOCUST_HOST: {{ .Values.config.host }}
   LOCUST_USERS: {{ .Values.config.users }}
   LOCUST_SPAWN_RATE: {{ .Values.config.spawnRate}}
@@ -17,3 +18,4 @@ data:
   CLIENT_USER_RPS: {{ .Values.config.userRPS }}
   CLIENT_ENABLE_HISTORY_DB: {{ .Values.config.enableHistoryDB }}
   CLIENT_HISTORY_DB_FILE: "{{ .Values.config.statsDir }}/latencies.sqlite"
+  {{- end }}

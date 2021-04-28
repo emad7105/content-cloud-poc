@@ -42,7 +42,12 @@ class AccountStateServiceUser(HttpUser):
         broker_idx = random.randint(0, broker_count - 1)
 
         print('using broker', broker_idx)
-        cookies = setup_session(self.host, f'broker{broker_idx}', f'broker{broker_idx}')
+        cookies = setup_session(
+            self.host,
+            f'broker{broker_idx}',
+            f'broker{broker_idx}',
+            # f'/accountstateservice/accountStates?size={c.page_size}'
+        )
 
         for name, value in cookies.items():
             self.client.cookies.set(name, value)

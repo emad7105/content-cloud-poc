@@ -1,0 +1,31 @@
+first set up keycloak:
+helm install -f keycloak/values.aks.yaml keycloak keycloak
+
+independently install diagnostic containers
+helm install -f diagnostics/values.aks.yaml diagnostics diagnostics
+
+to fill keycloak with data:
+helm install -f keycloak-filler/values.aks.yaml keycloak-filler keycloak-filler
+
+install gateway:
+helm install -f gateway/values.aks.query.yaml gateway gateway
+or for postfiltering
+helm install -f gateway/values.aks.postfilter.yaml gateway gateway
+
+
+install account-state:
+helm install -f account-state/values.aks.query.yaml -f account-state/values.aks.dbpassword.yaml account-state account-state
+or for postfiltering
+helm install -f account-state/values.aks.postfilter.yaml -f account-state/values.aks.dbpassword.yaml account-state account-state
+
+
+install policies:
+helm install -f policy/cluster.aks.yaml -f policy/experiment.query.yaml policy policy
+or postfiltering
+helm install -f policy/cluster.aks.yaml -f policy/experiment.postfilter.yaml policy policy
+
+
+then wait until the account state service has finished filling up
+then start locust:
+
+helm install -f locust/cluster.aks.yaml -f locust/latency.yaml locust locust

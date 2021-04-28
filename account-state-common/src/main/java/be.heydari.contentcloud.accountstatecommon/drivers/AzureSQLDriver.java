@@ -10,7 +10,7 @@ public class AzureSQLDriver implements DatabaseDriver {
     @Override
     public void before() {
         System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
-        System.setProperty("spring.jpa.hibernate.ddl-auto", "create-drop");
+        System.setProperty("spring.jpa.hibernate.ddl-auto", "create-drop"); // update once stable
     }
 
     @Override

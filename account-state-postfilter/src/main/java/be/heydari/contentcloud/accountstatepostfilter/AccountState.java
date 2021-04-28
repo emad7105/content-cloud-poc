@@ -31,6 +31,8 @@ public class AccountState {
     private String clearanceLevel;
     private boolean probation;
 
+    private boolean selectivity0_01;
+    private boolean selectivity0_1;
     private boolean selectivity1;
     private boolean selectivity10;
     private boolean selectivity20;

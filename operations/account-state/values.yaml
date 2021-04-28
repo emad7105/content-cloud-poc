@@ -7,6 +7,6 @@ accountState:
   dbName: "AccountStates"
   dbUsername: "user"
   dbPassword: "s3cr3t_p@ssw0rd"
-  dbScale: "\"10\""
+  dbRecordCount: "\"10000\""
 cluster:
   k8s: "minikube"

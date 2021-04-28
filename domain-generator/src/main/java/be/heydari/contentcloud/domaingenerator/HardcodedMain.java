@@ -52,7 +52,7 @@ public class HardcodedMain {
         }
 
         var selectivityAttributes = new ArrayList<Attribute>();
-        for (var selectivity: Arrays.asList(1, 10, 20, 40, 60, 80, 100)) {
+        for (var selectivity: Arrays.asList("0_01", "0_1", "1", "10", "20", "40", "60", "80", "100")) {
             selectivityAttributes.add(new SingletonAttribute("select_" + selectivity, new BoolGenerator(null)));
         }
 

@@ -6,10 +6,8 @@ import be.heydari.contentcloud.accountstatepostfilter.opa.OPAInput;
 import brave.Span;
 import brave.Tracer;
 import org.javatuples.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 public class AccountStateController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountStateController.class);
+    private static final Logger LOGGER = Logger.getLogger(AccountStateController.class);
     private final AccountStateRepository accountStateRepository;
     private OPAClient opaClient;
     private final ExecutorService executor;

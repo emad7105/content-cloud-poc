@@ -85,10 +85,11 @@ public class AccountStateApplication {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStateApplication.class, args);
         HardcodedProvisioner provisioner = applicationContext.getBean(HardcodedProvisioner.class);
 
-        String scaleString = System.getenv().getOrDefault("DB_SCALER", "100");
-        int scale = Integer.parseInt(scaleString);
-        provisioner.setScale(scale);
-        provisioner.provision();
+        String resetString = System.getenv().getOrDefault("DB_RESET", "false");
+        boolean reset = Boolean.parseBoolean(resetString);
+        String recordString = System.getenv().getOrDefault("DB_RECORD_COUNT", "10000");
+        int recordCount = Integer.parseInt(recordString);
+        provisioner.provision(recordCount, reset);
     }
 
     @Configuration

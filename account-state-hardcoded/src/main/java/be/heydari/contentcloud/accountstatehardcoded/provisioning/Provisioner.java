@@ -9,39 +9,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class Provisioner {
     private Logger LOGGER = Logger.getLogger(Provisioner.class);
 
     private AccountStateRepository accountStateRepository;
-    private int scale = 1;
 
     @Autowired
     public Provisioner(AccountStateRepository accountStateRepository) {
         this.accountStateRepository = accountStateRepository;
     }
 
-    public void setScale(int scale) {
-        this.scale = scale;
-    }
-
-    public void provision() {
+    public void provision(int count, boolean reset) {
         Generators.HardcodedGenerator generator = new Generators.HardcodedGenerator();
 
         List<String> brokers = generator.getBroker().uniqueEntries();
 
         LOGGER.info("account state repository: " + accountStateRepository.count() + " entities present");
-//        if (System.getenv("DB_INIT").equals("clear")) {
-        // clear database at start
+
+        if (!reset && accountStateRepository.count() == count) {
+            LOGGER.info("keeping old records, desired count count: " + count);
+            return;
+        }
+
         accountStateRepository.deleteAll();
 
         LOGGER.info("cleared account state repository: " + accountStateRepository.count() + " entities remaining");
-//        }
 
-        int totalRecords = 100 * scale;
-
-        for (int i = 0; i != totalRecords; i ++) {
+        Random random = new Random();
+        for (int i = 0; i != count; i ++) {
             AccountState state = new AccountState();
             String broker = brokers.get(Generators.rand.nextInt(brokers.size()));
             state.setBrokerName(broker);
@@ -77,17 +75,20 @@ public class Provisioner {
             state.setAttribute23(broker);
             state.setAttribute24(broker);
 
-            state.setSelectivity1 (i < 1 * scale);
-            state.setSelectivity10(i < 10 * scale);
-            state.setSelectivity20(i < 20 * scale);
-            state.setSelectivity40(i < 40 * scale);
-            state.setSelectivity60(i < 60 * scale);
-            state.setSelectivity80(i < 80 * scale);
-            state.setSelectivity100(true);
+            // generate different selectivities
+            state.setSelectivity0_01(random.nextDouble() < 0.0001); // 0.01%
+            state.setSelectivity0_1(random.nextDouble() < 0.001); // 0.1 %
+            state.setSelectivity1 (random.nextDouble() < 0.01); // 1%
+            state.setSelectivity10(random.nextDouble() < 0.1); // 10%
+            state.setSelectivity20(random.nextDouble() < 0.2); // 20%
+            state.setSelectivity40(random.nextDouble() < 0.4); // 40%
+            state.setSelectivity60(random.nextDouble() < 0.6); // 60%
+            state.setSelectivity80((random.nextDouble() < 0.8)); // 80%
+            state.setSelectivity100(true); // 100%
 
             accountStateRepository.save(state);
         }
 
-        LOGGER.info("finished provisioning: created " + totalRecords + " records");
+        LOGGER.info("finished provisioning: created " + count + " records");
     }
 }

@@ -25,11 +25,11 @@ public class AccountStatePostfilterApplication {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStatePostfilterApplication.class, args);
         Provisioner provisioner = applicationContext.getBean(Provisioner.class);
 
-        String scaleString = System.getenv().getOrDefault("DB_SCALER", "100");
-        int scale = Integer.parseInt(scaleString);
-        provisioner.setScale(scale);
-
-        provisioner.provision();
+        String resetString = System.getenv().getOrDefault("DB_RESET", "false");
+        boolean reset = Boolean.parseBoolean(resetString);
+        String countString = System.getenv().getOrDefault("DB_RECORD_COUNT", "10000");
+        int count = Integer.parseInt(countString);
+        provisioner.provision(count, reset);
     }
 
     @Configuration

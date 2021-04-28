@@ -1,8 +1,7 @@
 package be.heydari.contentcloud.accountstatehardcoded;
 
 import be.heydari.contentcloud.accountstatehardcoded.util.JWT;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,7 @@ import java.util.Optional;
 @RestController
 public class AccountStateController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountStateController.class);
+    private static final Logger LOGGER = Logger.getLogger(AccountStateController.class);
 
     private final AccountStateRepository accountStateRepository;
     private final ActiveRedactor activeRedactor;
@@ -40,18 +39,22 @@ public class AccountStateController {
 
     @GetMapping("/policy")
     public void postPolicy(@RequestParam("name") String policy) {
+        LOGGER.info("policy name: " + policy);
         switch (policy) {
             case "policies":
                 this.activeRedactor.set(
                     "policies",
                     (token, size) -> accountStateRepository.policies((String) token.get("broker"))
                 );
-            case "attr_count_1":
-            case "attr_count_20":
             case "selectivity_1":
                 this.activeRedactor.set(
                     "selector_1",
                     (token, size) -> accountStateRepository.selector_1((Boolean) token.get("select_1"))
+                ); break;
+            case "selectivity_10":
+                this.activeRedactor.set(
+                    "selector_10",
+                    (token, size) -> accountStateRepository.selector_10((Boolean) token.get("select_10"))
                 ); break;
             case "selectivity_20":
                 this.activeRedactor.set(

@@ -7,11 +7,11 @@ import logging
 log = logging.getLogger('init')
 
 
-def setup_session(gateway_url, username, password):
+def setup_session(gateway_url, username, password, init_path='/'):
     # first login at the resource server (gateway)
     gateway_url = urlparse(gateway_url)
     gateway_conn = http.client.HTTPConnection(gateway_url.hostname, gateway_url.port, timeout=10)
-    (response, data) = do_request(gateway_conn, 'GET', '/')
+    (response, data) = do_request(gateway_conn, 'GET', init_path)
     assert response.status == 302
     log.debug(f"status: {response.status}; headers: {response.headers}")
 
