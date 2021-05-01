@@ -1,7 +1,14 @@
 version: "2"
+
+cluster:
+  k8s: "AKS"
+
+keycloak:
+  addr: "keycloak:8080"
+
 zipkin:
   sampleRate: "\"0\""
-accountState:
-  mode: "query"
-cluster:
-  k8s: "minikube"
+  addr: "zipkin:9411"
+
+experiment:
+  fgac: "query"

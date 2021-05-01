@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fill-keycloak-config
+  labels:
+    app: fill-keycloak
+data:
+  KEYCLOAK_ADDR: {{ .Values.keycloak.addr }}
+  BROKER_COUNT: {{ .Values.experiment.brokerCount }}

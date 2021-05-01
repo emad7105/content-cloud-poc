@@ -1,0 +1,8 @@
+cluster:
+  k8s: "AKS"
+
+keycloak:
+  addr: "keycloak:8080"
+
+experiment:
+  brokerCount: "\"100\""

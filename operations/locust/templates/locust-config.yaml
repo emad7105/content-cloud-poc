@@ -5,17 +5,18 @@ metadata:
   labels:
     app: locust
 data:
-  LOCUST_HEADLESS: {{ .Values.config.headless }}
-  {{ if eq .Values.config.headless "\"True\"" -}}
-  LOCUST_HOST: {{ .Values.config.host }}
-  LOCUST_USERS: {{ .Values.config.users }}
-  LOCUST_SPAWN_RATE: {{ .Values.config.spawnRate}}
-  LOCUST_RUN_TIME: {{ .Values.config.runTime }}
-  LOCUST_CSV: "{{ .Values.config.statsDir }}/latencies"
-  LOCUST_CSV_FULL_HISTORY: {{ .Values.config.csvFullHistory }}
-  CLIENT_BROKER_COUNT: {{ .Values.config.brokerCount }}
-  CLIENT_PAGE_SIZE: {{ .Values.config.pageSize }}
-  CLIENT_USER_RPS: {{ .Values.config.userRPS }}
-  CLIENT_ENABLE_HISTORY_DB: {{ .Values.config.enableHistoryDB }}
-  CLIENT_HISTORY_DB_FILE: "{{ .Values.config.statsDir }}/latencies.sqlite"
+  LOCUST_HEADLESS: {{ .Values.locust.headless }}
+  {{ if eq .Values.locust.headless "\"True\"" -}}
+  LOCUST_HOST: {{ .Values.locust.host }}
+  LOCUST_USERS: {{ .Values.experiment.users }}
+  LOCUST_SPAWN_RATE: {{ .Values.experiment.spawnRate}}
+  LOCUST_RUN_TIME: {{ .Values.experiment.runTime }}
+  LOCUST_CSV: "{{ .Values.locust.statsDir }}/latencies"
+  LOCUST_CSV_FULL_HISTORY: {{ .Values.locust.csvFullHistory }}
+  CLIENT_BROKER_COUNT: {{ .Values.experiment.brokerCount }}
+  CLIENT_ACTIVE_BROKER_COUNT: {{ .Values.experiment.activeBrokerCount }}
+  CLIENT_PAGE_SIZE: {{ .Values.experiment.pageSize }}
+  CLIENT_USER_RPS: {{ .Values.experiment.userRPS }}
+  CLIENT_ENABLE_HISTORY_DB: {{ .Values.locust.enableHistoryDB }}
+  CLIENT_HISTORY_DB_FILE: "{{ .Values.locust.statsDir }}/latencies.sqlite"
   {{- end }}

@@ -27,7 +27,7 @@ public class PolicyPusher {
 
     public static void pushRegoPolicy(Map<String, String> env) throws Exception {
         var pdpAddr = env.getOrDefault("PDP_ADDR", "localhost:8181");
-        var policyFile = env.getOrDefault("POLICY_FILE", "./opa/src/main/resources/query/selectivity_0_1.rego");
+        var policyFile = env.getOrDefault("POLICY_FILE", "./opa/src/main/resources/query/mixed.rego");
 
         var url = new URL("http://" + pdpAddr + "/v1/policies/account-state");
         var httpCon = (HttpURLConnection) url.openConnection();
@@ -46,7 +46,7 @@ public class PolicyPusher {
 
         var statusCode = httpCon.getResponseCode();
         if (statusCode == 200) {
-            System.out.println("successfully pushed rego policies");
+            System.out.println("successfully pushed rego policies" + policyFile);
             return;
         }
         System.out.println("failed to push policies:");

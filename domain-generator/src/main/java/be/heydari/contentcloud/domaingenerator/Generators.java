@@ -18,12 +18,12 @@ public class Generators {
         private final ValueGenerator<String> clearanceLevel;
         private final ValueGenerator<String> attribute;
 
-        public HardcodedGenerator() {
+        public HardcodedGenerator(int brokerCount) {
             rand = Generators.rand;
             var brokers = new ArrayList<String>();
             var roles = new ArrayList<String>();
             var attributes = new ArrayList<String>();
-            for (var i = 0; i != 10; i++) {
+            for (var i = 0; i != brokerCount; i++) {
                 brokers.add("broker" + i);
                 roles.add("role" + i);
                 attributes.add("value" + i);

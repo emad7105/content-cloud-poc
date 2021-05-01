@@ -1,4 +1,4 @@
-{{ if eq .Values.accountState.dbDriver "MSSQL" }}
+{{ if eq .Values.db.driver "MSSQL" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

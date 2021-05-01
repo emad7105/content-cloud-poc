@@ -39,3 +39,5 @@ build/
 
 ### account-state-secrets ###
 **/values.aks.dbpassword.yaml
+
+*.DS_Store

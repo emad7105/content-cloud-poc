@@ -5,12 +5,14 @@ metadata:
   labels:
     app: account-state
 data:
-  KEYCLOAK_ADDR: keycloak:8080
-  ZIPKIN_ADDR: zipkin:9411
+  KEYCLOAK_ADDR: {{ .Values.keycloak.addr }}
+  ZIPKIN_ADDR: {{ .Values.zipkin.addr }}
   ZIPKIN_SAMPLE_RATE: {{ .Values.zipkin.sampleRate }}
-  DB_DRIVER: {{ .Values.accountState.dbDriver }}
-  DB_SERVER: {{ .Values.accountState.dbServer }}
-  DB_NAME: {{ .Values.accountState.dbName }}
-  DB_USER: {{ .Values.accountState.dbUsername }}
-  DB_PASSWORD: {{ .Values.accountState.dbPassword }}
-  DB_RECORD_COUNT: {{ .Values.accountState.dbRecordCount }}
+  DB_DRIVER: {{ .Values.db.driver }}
+  DB_SERVER: {{ .Values.db.server }}
+  DB_NAME: {{ .Values.db.name }}
+  DB_USER: {{ .Values.db.user }}
+  DB_PASSWORD: {{ .Values.db.password }}
+  DB_RESET: {{ .Values.experiment.resetDB }}
+  DB_RECORD_COUNT: {{ .Values.experiment.accountStateCount }}
+  DB_BROKER_COUNT: {{ .Values.experiment.brokerCount}}

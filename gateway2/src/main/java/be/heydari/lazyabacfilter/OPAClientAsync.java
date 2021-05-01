@@ -51,6 +51,8 @@ public class OPAClientAsync {
 //        Span span = tracer.nextSpan().name("call-opa");
 //        try (Tracer.SpanInScope ws = this.tracer.withSpanInScope(span.start())) {
 //            span.tag("query", query);
+//            System.out.println("input: " + input.getToken());
+
             OpaQuery opaQuery = OpaQuery.builder()
                     .query(query)
                     .input(input)

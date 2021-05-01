@@ -3,3 +3,5 @@
 ./locust-client/reports/*
 
 *.sqlite
+
+**/values.aks.dbpassword.yaml

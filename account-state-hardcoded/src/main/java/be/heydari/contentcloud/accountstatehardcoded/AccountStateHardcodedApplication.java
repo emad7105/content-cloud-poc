@@ -24,18 +24,17 @@ public class AccountStateHardcodedApplication {
 
     public static void main(String[] args) {
         DatabaseDriver driver = drivers.getByEnv();
-
         driver.before();
-
         ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStateHardcodedApplication.class, args);
         Provisioner provisioner = applicationContext.getBean(Provisioner.class);
 
         String resetString = System.getenv().getOrDefault("DB_RESET", "false");
         boolean reset = Boolean.parseBoolean(resetString);
-        String countString = System.getenv().getOrDefault("DB_RECORD_COUNT", "10000");
-        int count = Integer.parseInt(countString);
-
-        provisioner.provision(count, reset);
+        String recordCountString = System.getenv().getOrDefault("DB_RECORD_COUNT", "10000");
+        int recordCount = Integer.parseInt(recordCountString);
+        String brokerCountString = System.getenv().getOrDefault("DB_BROKER_COUNT", "10");
+        int brokerCount = Integer.parseInt(brokerCountString);
+        provisioner.provision(recordCount, brokerCount, reset);
     }
 
     @Bean

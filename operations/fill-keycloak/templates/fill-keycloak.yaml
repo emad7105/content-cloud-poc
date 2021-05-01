@@ -1,0 +1,25 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/job/
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fill-keycloak
+spec:
+  template:
+    spec:
+      {{ if eq .Values.cluster.k8s "minikube" -}}
+      imagePullSecrets:
+        - name: azurecrcred
+      {{end -}}
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+        agentpool: application
+      {{end -}}
+      containers:
+        - name: fill-keycloak
+          image: contentcloudpoc.azurecr.io/fill-keycloak
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                - name: fill-keycloak-config
+      restartPolicy: Never # replace by OnFailure once sure that working
+  backoffLimit: 10

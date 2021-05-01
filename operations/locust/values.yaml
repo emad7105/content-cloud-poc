@@ -1,15 +1,18 @@
 cluster:
-  k8s: "minikube"
+  k8s: "AKS"
 
-config:
+locust:
   headless: "\"True\""
   host: "http://gateway:8060"
+  statsDir: "/results"
+  csvFullHistory: "\"True\""
+  enableHistoryDB: "\"True\""
+
+experiment:
   users: "\"1\""
   spawnRate: "\"1\""
   runTime: "100s"
-  statsDir: "/results"
-  csvFullHistory: "\"True\""
-  brokerCount: "\"10\""
+  brokerCount: "\"100\""
+  activeBrokerCount: "\"10\""
   pageSize: "\"10\""
   userRPS: "\"1\""
-  enableHistoryDB: "\"True\""

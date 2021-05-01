@@ -1,0 +1,4 @@
+pdp:
+  lang: "Rego"
+  host: "account-state:8181"
+  policyFile: "/resources/postfilter/attr_count_25.rego"

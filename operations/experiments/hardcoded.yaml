@@ -1,0 +1,32 @@
+cluster:
+  k8s: "AKS"
+
+db:
+  driver: "AzureSQL"
+  server: "contentcloudaccountstates"
+  name: "accountstates-hardcoded"
+  user: "content-cloud"
+
+keycloak:
+  addr: "keycloak:8080"
+
+zipkin:
+  sampleRate: "\"0\""
+  addr: "zipkin:9411"
+
+experiment:
+  fgac: "hardcoded"
+  resetDB: "\"false\""
+  accountStateCount: "\"10000\""
+  brokerCount: "\"100\""
+  activeBrokerCount: "\"10\""
+  pageSize: "\"50\""
+  users: "\"1\""
+  spawnRate: "\"1\""
+  userRPS: "\"1\""
+  runTime: "\"10m\""
+  pdp:
+    lang: "Java"
+    host: "account-state:8070"
+    policyFile: "selectivity_100"
+    policyName: "policies"

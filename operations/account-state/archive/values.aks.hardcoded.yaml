@@ -1,8 +1,10 @@
+#configuration for the account state service with an embedded database
 accountState:
-  mode: "postfilter"
+  mode: "hardcoded"
+  dbReset: "\"false\""
   dbDriver: "AzureSQL"
   dbServer: "contentcloudaccountstates"
-  dbName: "accountstates-postfilter"
+  dbName: "accountstates-hardcoded"
   dbUsername: "content-cloud"
   dbRecordCount: "\"10000\""
 cluster:

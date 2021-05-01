@@ -1,4 +1,0 @@
-pdp:
-  lang: "Rego"
-  host: "account-state:8181"
-  policyFile: "/resources/postfilter/selectivity_0_1.rego"

@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: policy-pusher
+spec:
+  template:
+    spec:
+      {{ if eq .Values.cluster.k8s "minikube" -}}
+      imagePullSecrets:
+        - name: azurecrcred
+      {{end -}}
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+          agentpool: application
+      {{end -}}
+      containers:
+        - name: policy-pusher
+          image: contentcloudpoc.azurecr.io/policy-pusher
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: policy-config
+      restartPolicy: Never
+  backoffLimit: 10

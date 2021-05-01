@@ -10,7 +10,15 @@ public class AzureSQLDriver implements DatabaseDriver {
     @Override
     public void before() {
         System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
-        System.setProperty("spring.jpa.hibernate.ddl-auto", "create-drop"); // update once stable
+        boolean reset = Boolean.parseBoolean(env().getOrDefault("DB_RESET", "false"));
+
+        if (reset) {
+            System.out.println("resetting database");
+            System.setProperty("spring.jpa.hibernate.ddl-auto", "create"); // update once stable
+        } else {
+            System.out.println("keeping original database schema");
+            System.setProperty("spring.jpa.hibernate.ddl-auto", "update"); // update once stable
+        }
     }
 
     @Override

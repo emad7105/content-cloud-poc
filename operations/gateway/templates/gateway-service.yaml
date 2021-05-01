@@ -10,7 +10,7 @@ spec:
       name: gateway
       port: 8060
       targetPort: 8060
-    {{ if eq .Values.accountState.mode "query" -}}
+    {{ if eq .Values.experiment.fgac "query" -}}
     - protocol: TCP
       name: opa
       port: 8181

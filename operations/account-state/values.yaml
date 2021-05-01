@@ -1,12 +1,32 @@
+cluster:
+  k8s: "AKS"
+
+db:
+  driver: "AzureSQL"
+  server: "contentcloudaccountstates"
+  name: "accountstates"
+  user: "content-cloud"
+  password: ""
+
+keycloak:
+  addr: "keycloak:8080"
+
 zipkin:
   sampleRate: "\"0\""
-accountState:
-  mode: "query"
-  dbDriver: "Postgres"
-  dbServer: "account-state-postgres"
-  dbName: "AccountStates"
-  dbUsername: "user"
-  dbPassword: "s3cr3t_p@ssw0rd"
-  dbRecordCount: "\"10000\""
-cluster:
-  k8s: "minikube"
+  addr: "zipkin:9411"
+
+experiment:
+  accountStateCount: "\"10000\""
+  brokerCount: "\"100\""
+  resetDB: "\"false\""
+  fgac: "query"
+
+#accountState:
+#  mode: "query"
+#  dbReset: "\"false\""
+#  dbDriver: "Postgres"
+#  dbServer: "account-state-postgres"
+#  dbName: "AccountStates"
+#  dbUsername: "user"
+#  dbPassword: "s3cr3t_p@ssw0rd"
+#  dbRecordCount: "\"10000\""

@@ -26,15 +26,15 @@ public class HardcodedProvisioner {
         this.accountStateRepository = accountStateRepository;
     }
 
-    public void provision(int count, boolean reset) {
+    public void provision(int recordCount, int brokerCount, boolean reset) {
         LOGGER.info("provisioning database");
 
         LOGGER.info("account state repository: " + accountStateRepository.count() + " entities present");
         LOGGER.info("broker repository: " + accountStateRepository.count() + " entities present");
         LOGGER.info("reset? " + reset);
 
-        if (!reset && accountStateRepository.count() == count){
-           LOGGER.info("keeping old records, desired count count: " + count);
+        if (!reset && accountStateRepository.count() == recordCount){
+           LOGGER.info("keeping old records, desired count count: " + recordCount);
            return;
         }
 
@@ -49,7 +49,7 @@ public class HardcodedProvisioner {
 
 //        }
 
-        Generators.HardcodedGenerator generator = new Generators.HardcodedGenerator();
+        Generators.HardcodedGenerator generator = new Generators.HardcodedGenerator(brokerCount);
         List<Broker> brokers = generator.getBroker().uniqueEntries().stream().map(broker -> {
             Broker b = new Broker();
             b.setName(broker);
@@ -59,7 +59,7 @@ public class HardcodedProvisioner {
 
         Random random = new Random();
 
-        for (int i = 0; i != count; i ++) {
+        for (int i = 0; i != recordCount; i ++) {
             AccountState state = new AccountState();
             Broker broker = brokers.get(Generators.rand.nextInt(brokers.size()));
             state.setBroker(broker);
@@ -104,16 +104,30 @@ public class HardcodedProvisioner {
 //            state.setSelectivity80(i < 80 * scale);
 //            state.setSelectivity100(true);
 
+            state.setSelectivity0_01((i % 10_000) == 0);
+            state.setSelectivity0_1((i % 1_000) == 0);
+            state.setSelectivity1((i % 100) == 0);
+            state.setSelectivity10((i % 10) == 0);
+            // fields 20 to 80 will be left out of the final experiments
+            // as they do not really provide interesting insights
+            state.setSelectivity20(random.nextDouble() < 0.2);
+            state.setSelectivity40(random.nextDouble() < 0.4);
+            state.setSelectivity60(random.nextDouble() < 0.6);
+            state.setSelectivity80(random.nextDouble() < 0.8);
+            state.setSelectivity100(true);
+
+
+
             // generate different selectivities
-            state.setSelectivity0_01(random.nextDouble() < 0.0001); // 0.01%
-            state.setSelectivity0_1(random.nextDouble() < 0.001); // 0.1%
-            state.setSelectivity1 (random.nextDouble() < 0.01); // 1%
-            state.setSelectivity10(random.nextDouble() < 0.1); // 10%
-            state.setSelectivity20(random.nextDouble() < 0.2); // 20%
-            state.setSelectivity40(random.nextDouble() < 0.4); // 40%
-            state.setSelectivity60(random.nextDouble() < 0.6); // 60%
-            state.setSelectivity80(random.nextDouble() < 0.8); // 80%
-            state.setSelectivity100(true); // 100%
+//            state.setSelectivity0_01(random.nextDouble() < 0.0001); // 0.01%
+//            state.setSelectivity0_1(random.nextDouble() < 0.001); // 0.1%
+//            state.setSelectivity1 (random.nextDouble() < 0.01); // 1%
+//            state.setSelectivity10(random.nextDouble() < 0.1); // 10%
+//            state.setSelectivity20(random.nextDouble() < 0.2); // 20%
+//            state.setSelectivity40(random.nextDouble() < 0.4); // 40%
+//            state.setSelectivity60(random.nextDouble() < 0.6); // 60%
+//            state.setSelectivity80(random.nextDouble() < 0.8); // 80%
+//            state.setSelectivity100(true); // 100%
 
 //            state.setAttribute25(generator.getAttribute().generate());
 //            state.setAttribute26(generator.getAttribute().generate());
@@ -123,6 +137,6 @@ public class HardcodedProvisioner {
             accountStateRepository.save(state);
         }
 
-        LOGGER.info("finished provisioning: created " + count + " records");
+        LOGGER.info("finished provisioning: created " + recordCount + " records");
     }
 }

@@ -6,7 +6,7 @@ config:
   runTime: "\"400\""
   statsDir: "/results"
   csvFullHistory: "\"True\""
-  brokerCount: "\"10\"",
+  brokerCount: "\"100\"",
   pageSize: "\"10\"",
   userRPS: "\"1\"",
   enableHistoryDB: "\"True\""

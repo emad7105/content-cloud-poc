@@ -1,8 +1,7 @@
 package be.heydari.contentcloud.gateway2;
 
 import be.heydari.lazyabacfilter.EnableOPAFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -21,7 +20,7 @@ import java.util.Arrays;
 @EnableOPAFilter
 @ComponentScan("be.heydari.lazyabacfilter")
 public class Gateway2Application {
-	private static final Logger LOGGER = LoggerFactory.getLogger(Gateway2Application.class);
+	private static final Logger LOGGER = Logger.getLogger(Gateway2Application.class);
 
 
 	public static void main(String[] args) {

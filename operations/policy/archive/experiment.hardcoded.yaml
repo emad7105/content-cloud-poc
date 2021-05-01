@@ -1,0 +1,4 @@
+pdp:
+  lang: "Java"
+  host: "account-state:8070"
+  policyName: "selectivity_100"

@@ -1,0 +1,15 @@
+{{ if eq .Values.accountState.dbDriver "MSSQL"}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.accountState.dbServer }}
+  labels:
+    app: mssql
+spec:
+  selector:
+    app: mssql
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
+{{ end -}}

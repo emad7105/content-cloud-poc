@@ -13,6 +13,7 @@ public class HardcodedMain {
     public static void main(String[] args) {
         var env = System.getenv();
         var keycloakAddr = env.getOrDefault("KEYCLOAK_ADDR", "localhost:8080");
+        var brokerCount = Integer.parseInt(env.getOrDefault("BROKER_COUNT", "10"));
 
         System.out.println("keycloak address::" + "http://" + keycloakAddr + "/auth");
 
@@ -36,7 +37,7 @@ public class HardcodedMain {
         var client = new Client("content-cloud-gateway-client", "92064e45-a751-4efb-bc1f-b4fbc2e99565");
         client.create(realm.resource());
 
-        var generators = new Generators.HardcodedGenerator();
+        var generators = new Generators.HardcodedGenerator(brokerCount);
         var attributes = new ArrayList<Attribute>();
         attributes.add(new SingletonAttribute("broker", generators.getBroker()));
         attributes.add(new SingletonAttribute("accountState", generators.getAccountState()));

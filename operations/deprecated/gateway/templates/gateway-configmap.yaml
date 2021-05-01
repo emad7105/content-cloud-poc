@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+  labels:
+    app: gateway
+data:
+  KEYCLOAK_ADDR: keycloak:8080
+  ZIPKIN_ADDR: zipkin:9411
+  ZIPKIN_SAMPLE_RATE: {{ .Values.zipkin.sampleRate }}
+  ACCOUNT_STATE_ADDR: account-state:8070
+  PDP_ADDR: localhost:8181 #sidecar
+  FILTER_PROFILE: {{ if eq .Values.accountState.mode "query"}} "filterEnabled" {{- else -}} "filterDisabled" {{- end }}
+  #OPA_ENABLED: {{ if eq .Values.accountState.mode "query" -}} "true" {{- else -}} "false" {{- end -}}

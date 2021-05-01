@@ -1,0 +1,16 @@
+{{ if eq .Values.accountState.dbDriver "Postgres" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.accountState.dbServer }}
+  labels:
+    app: account-state-postgres
+spec:
+  selector:
+    app: account-state-postgres
+  #  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+{{ end }}

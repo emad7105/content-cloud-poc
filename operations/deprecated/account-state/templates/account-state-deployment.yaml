@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-state-deployment
+  labels:
+    app: account-state
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-state
+  template:
+    metadata:
+      labels:
+        app: account-state
+        group: logic-tier
+    spec:
+      {{ if eq .Values.cluster.k8s "minikube" -}}
+      imagePullSecrets:
+        - name: azurecrcred
+      {{ end -}}
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+        agentpool: application
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - presentation-tier
+                      - support
+      {{ end -}}
+      containers:
+        - name: account-state
+          image: {{if eq .Values.accountState.mode "query" -}}
+            contentcloudpoc.azurecr.io/account-state-query
+          {{- else if eq .Values.accountState.mode "postfilter" -}}
+            contentcloudpoc.azurecr.io/account-state-postfilter
+          {{- else if eq .Values.accountState.mode "hardcoded" -}}
+            contentcloudpoc.azurecr.io/account-state-hardcoded
+          {{- else -}}
+            contentcloudpoc.azurecr.io/account-state-query
+          {{- end }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8070
+          envFrom:
+            - configMapRef:
+                name: account-state-config
+        {{ if eq .Values.accountState.mode "postfilter" -}}
+        - name: opa
+          image:  openpolicyagent/opa:0.20.5
+          imagePullPolicy: Always
+          command: [ "./opa", "run", "--server"]
+          ports:
+            - containerPort: 8181
+        {{- end -}}

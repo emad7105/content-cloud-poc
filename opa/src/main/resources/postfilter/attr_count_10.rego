@@ -17,3 +17,4 @@ allow {
 
 token = {"payload": payload} {
   [header, payload, signature] := io.jwt.decode(input.token)
+}

@@ -1,0 +1,12 @@
+zipkin:
+  sampleRate: "\"0\""
+accountState:
+  mode: "postfilter"
+  dbDriver: "Postgres"
+  dbServer: "account-state-postgres"
+  dbName: "AccountStates"
+  dbUsername: "user"
+  dbPassword: "s3cr3t_p@ssw0rd"
+  dbRecordCount: "\"100\""
+cluster:
+  k8s: "minikube"

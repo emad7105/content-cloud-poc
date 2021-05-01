@@ -6,7 +6,8 @@ config:
   runTime: "10m" # 1200 requests in total if can keep up the given RPS
   statsDir: "/results"
   csvFullHistory: "\"True\""
-  brokerCount: "\"10\""
+  brokerCount: "\"100\""
+  activeBrokerCount: "\"10\""
   pageSize: "\"50\""
   userRPS: "\"2\""
   enableHistoryDB: "\"True\""

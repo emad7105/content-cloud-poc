@@ -21,15 +21,15 @@ public class Provisioner {
         this.accountStateRepository = accountStateRepository;
     }
 
-    public void provision(int count, boolean reset) {
-        Generators.HardcodedGenerator generator = new Generators.HardcodedGenerator();
+    public void provision(int recordCount, int brokerCount, boolean reset) {
+        Generators.HardcodedGenerator generator = new Generators.HardcodedGenerator(brokerCount);
 
         List<String> brokers = generator.getBroker().uniqueEntries();
 
         LOGGER.info("account state repository: " + accountStateRepository.count() + " entities present");
 
-        if (!reset && accountStateRepository.count() == count) {
-            LOGGER.info("keeping old records, desired count count: " + count);
+        if (!reset && accountStateRepository.count() == recordCount) {
+            LOGGER.info("keeping old records, desired count count: " + recordCount);
             return;
         }
 
@@ -38,7 +38,7 @@ public class Provisioner {
         LOGGER.info("cleared account state repository: " + accountStateRepository.count() + " entities remaining");
 
         Random random = new Random();
-        for (int i = 0; i != count; i ++) {
+        for (int i = 0; i != recordCount; i ++) {
             AccountState state = new AccountState();
             String broker = brokers.get(Generators.rand.nextInt(brokers.size()));
             state.setBrokerName(broker);
@@ -75,15 +75,27 @@ public class Provisioner {
             state.setAttribute24(broker);
 
             // generate different selectivities
-            state.setSelectivity0_01(random.nextDouble() < 0.0001); // 0.01%
-            state.setSelectivity0_1(random.nextDouble() < 0.001); // 0.1%
-            state.setSelectivity1 (random.nextDouble() < 0.01); // 1%
-            state.setSelectivity10(random.nextDouble() < 0.1); // 10%
-            state.setSelectivity20(random.nextDouble() < 0.2); // 20%
-            state.setSelectivity40(random.nextDouble() < 0.4); // 40%
-            state.setSelectivity60(random.nextDouble() < 0.6); // 60%
-            state.setSelectivity80(random.nextDouble() < 0.8); // 80%
-            state.setSelectivity100(true); // 100%
+            state.setSelectivity0_01((i % 10_000) == 0);
+            state.setSelectivity0_1((i % 1_000) == 0);
+            state.setSelectivity1((i % 100) == 0);
+            state.setSelectivity10((i % 10) == 0);
+            // fields 20 to 80 will be left out of the final experiments
+            // as they do not really provide interesting insights
+            state.setSelectivity20(random.nextDouble() < 0.2);
+            state.setSelectivity40(random.nextDouble() < 0.4);
+            state.setSelectivity60(random.nextDouble() < 0.6);
+            state.setSelectivity80(random.nextDouble() < 0.8);
+            state.setSelectivity100(true);
+
+//            state.setSelectivity0_01(random.nextDouble() < 0.0001); // 0.01%
+//            state.setSelectivity0_1(random.nextDouble() < 0.001); // 0.1%
+//            state.setSelectivity1 (random.nextDouble() < 0.01); // 1%
+//            state.setSelectivity10(random.nextDouble() < 0.1); // 10%
+//            state.setSelectivity20(random.nextDouble() < 0.2); // 20%
+//            state.setSelectivity40(random.nextDouble() < 0.4); // 40%
+//            state.setSelectivity60(random.nextDouble() < 0.6); // 60%
+//            state.setSelectivity80(random.nextDouble() < 0.8); // 80%
+//            state.setSelectivity100(true); // 100%
 
 
 //            // generate different selectivities
@@ -106,6 +118,6 @@ public class Provisioner {
             accountStateRepository.save(state);
         }
 
-        LOGGER.info("finished provisioning: created " + count + " records");
+        LOGGER.info("finished provisioning: created " + recordCount + " records");
     }
 }

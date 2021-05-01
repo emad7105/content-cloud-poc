@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+  labels:
+    app: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+        group: presentation-tier
+    spec:
+      {{ if eq .Values.cluster.k8s "minikube" -}}
+      imagePullSecrets:
+        - name: azurecrcred
+      {{ end -}}
+      {{ if eq .Values.cluster.k8s "AKS" -}}
+      nodeSelector:
+        agentpool: application
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: group
+                    operator: In
+                    values:
+                      - logic-tier
+                      - support
+                      - presentation-tier
+
+      {{ end -}}
+      containers:
+        - name: gateway
+          {{ if eq .Values.version "2" -}}
+          image: contentcloudpoc.azurecr.io/gateway2
+          {{- else if eq .Values.version "1" -}}
+          image: contentcloudpoc.azurecr.io/gateway
+          {{- else -}}
+          image: contentcloudpoc.azurecr.io/gateway
+          {{- end }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8060
+          envFrom:
+            - configMapRef:
+                name: gateway-config
+        {{ if eq .Values.accountState.mode "query" -}}
+        - name: opa
+          image: openpolicyagent/opa:0.20.5
+          #          imagePullPolicy: Never # remove once not in minikube
+          #          image: openpolicyagent/opa:0.20.5
+          command: [ "./opa", "run", "--server"]
+          ports:
+            - containerPort: 8181
+        {{- end -}}

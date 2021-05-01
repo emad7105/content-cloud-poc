@@ -36,11 +36,11 @@ spec:
       {{ end -}}
       containers:
         - name: account-state
-          image: {{if eq .Values.accountState.mode "query" -}}
+          image: {{if eq .Values.experiment.fgac "query" -}}
             contentcloudpoc.azurecr.io/account-state-query
-          {{- else if eq .Values.accountState.mode "postfilter" -}}
+          {{- else if eq .Values.experiment.fgac "postfilter" -}}
             contentcloudpoc.azurecr.io/account-state-postfilter
-          {{- else if eq .Values.accountState.mode "hardcoded" -}}
+          {{- else if eq .Values.experiment.fgac "hardcoded" -}}
             contentcloudpoc.azurecr.io/account-state-hardcoded
           {{- else -}}
             contentcloudpoc.azurecr.io/account-state-query
@@ -51,7 +51,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: account-state-config
-        {{ if eq .Values.accountState.mode "postfilter" -}}
+        {{ if eq .Values.experiment.fgac "postfilter" -}}
         - name: opa
           image:  openpolicyagent/opa:0.20.5
           imagePullPolicy: Always

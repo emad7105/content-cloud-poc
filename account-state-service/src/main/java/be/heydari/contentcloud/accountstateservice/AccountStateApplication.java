@@ -45,51 +45,27 @@ import org.springframework.web.context.annotation.RequestScope;
 @EnableAbac
 //@EnableWebSecurity
 public class AccountStateApplication {
-    private static final DatabaseDrivers drivers = new DatabaseDrivers(new H2Driver(), new MSSQLDriver(), new PostgresDriver(), new AzureSQLDriver());
+    private static final DatabaseDrivers drivers = new DatabaseDrivers(
+        new H2Driver(),
+        new MSSQLDriver(),
+        new PostgresDriver(),
+        new AzureSQLDriver()
+    );
 
     public static void main(String[] args) {
         DatabaseDriver driver = drivers.getByEnv();
         driver.before();
-//        System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-//        System.setProperty("spring.jpa.hibernate.ddl-auto", "create");
-//
-//
-//        try {
-//
-//            Connection connection =
-//                DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=SA;password=s3cr3t_p@ssw0rd");
-//            Statement stmt = connection.createStatement();
-//
-//            String query = "IF NOT EXISTS(SELECT * FROM sys.Databases WHERE Name = 'AccountStates')\n" +
-//                "BEGIN\n" +
-//                "  CREATE DATABASE AccountStates;\n" +
-//                "END;\n";
-//            System.out.println("query:\n" + query);
-//
-//            stmt.execute(query);
-//
-//            connection.commit();
-//            connection.close();
-//
-//        } catch (Exception e) {
-//           throw new RuntimeException(e);
-//        }
-//
-//        System.out.println("created database");
-//
-//        System.setProperty("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
-//        System.setProperty("spring.jpa.hibernate.ddl-auto", "create");
-////        System.setProperty("spring.jpa.hibernate.hbm2ddl.auto", "create");
-
-
         ConfigurableApplicationContext applicationContext = SpringApplication.run(AccountStateApplication.class, args);
         HardcodedProvisioner provisioner = applicationContext.getBean(HardcodedProvisioner.class);
 
         String resetString = System.getenv().getOrDefault("DB_RESET", "false");
         boolean reset = Boolean.parseBoolean(resetString);
-        String recordString = System.getenv().getOrDefault("DB_RECORD_COUNT", "10000");
-        int recordCount = Integer.parseInt(recordString);
-        provisioner.provision(recordCount, reset);
+        String recordCountString = System.getenv().getOrDefault("DB_RECORD_COUNT", "10000");
+        int recordCount = Integer.parseInt(recordCountString);
+        String brokerCountString = System.getenv().getOrDefault("DB_BROKER_COUNT", "10");
+        int brokerCount = Integer.parseInt(brokerCountString);
+
+        provisioner.provision(recordCount, brokerCount, reset);
     }
 
     @Configuration

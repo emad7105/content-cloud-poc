@@ -1,0 +1,7 @@
+version: "2"
+zipkin:
+  sampleRate: "\"0\""
+accountState:
+  mode: "query"
+cluster:
+  k8s: "minikube"

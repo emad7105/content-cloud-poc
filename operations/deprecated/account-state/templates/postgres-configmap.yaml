@@ -1,0 +1,12 @@
+{{ if eq .Values.accountState.dbDriver "Postgres" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: account-state-postgres-config
+  labels:
+    app: account-state-postgres
+data:
+  POSTGRES_DB: {{ .Values.accountState.dbName }}
+  POSTGRES_USER: {{ .Values.accountState.dbUsername }}
+  POSTGRES_PASSWORD: {{ .Values.accountState.dbPassword }}
+{{ end }}

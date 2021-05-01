@@ -1,8 +1,8 @@
 cluster:
   k8s: "minikube"
-
-pdp:
-  lang: "Rego"
-  host: "gateway:8181"
-  policyFile: "/resources/query/policies.rego"
-  policyName: "policies"
+experiment:
+  pdp:
+    lang: "Rego"
+    host: "gateway:8181"
+    policyFile: "/resources/query/policies.rego"
+    policyName: "policies"

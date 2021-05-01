@@ -1,0 +1,12 @@
+config:
+  headless: "\"True\""
+  host: "http://gateway:8060"
+  users: "\"700\""
+  spawnRate: "\"2\""
+  runTime: "\"400\""
+  statsDir: "/results"
+  csvFullHistory: "\"True\""
+  brokerCount: "\"100\"",
+  pageSize: "\"10\"",
+  userRPS: "\"1\"",
+  enableHistoryDB: "\"True\""

@@ -3,10 +3,10 @@ kind: ConfigMap
 metadata:
   name: policy-config
 data:
-  POLICY_LANGUAGE: {{ .Values.pdp.lang }}
-  PDP_ADDR: {{ .Values.pdp.host }}
-  {{ if eq .Values.pdp.lang "Rego" -}}
-  POLICY_FILE: {{ .Values.pdp.policyFile }}
-  {{ else if eq .Values.pdp.lang "Java" -}}
-  POLICY_NAME: {{ .Values.pdp.policyName }}
+  POLICY_LANGUAGE: {{ .Values.experiment.pdp.lang }}
+  PDP_ADDR: {{ .Values.experiment.pdp.host }}
+  {{ if eq .Values.experiment.pdp.lang "Rego" -}}
+  POLICY_FILE: {{ .Values.experiment.pdp.policyFile }}
+  {{ else if eq .Values.experiment.pdp.lang "Java" -}}
+  POLICY_NAME: {{ .Values.experiment.pdp.policyName }}
   {{ end }}

@@ -1,0 +1,12 @@
+accountState:
+  mode: "query"
+  dbReset: "\"false\""
+  dbDriver: "AzureSQL"
+  dbServer: "contentcloudaccountstates"
+  dbName: "accountstates"
+  dbUsername: "content-cloud"
+  dbRecordCount: "\"10000\""
+cluster:
+  k8s: "AKS"
+zipkin:
+  sampleRate: "\"0\""

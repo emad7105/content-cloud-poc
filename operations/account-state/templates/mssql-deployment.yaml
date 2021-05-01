@@ -1,4 +1,4 @@
-{{ if eq .Values.accountState.dbDriver "MSSQL" }}
+{{ if eq .Values.db.driver "MSSQL" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

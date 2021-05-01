@@ -1,0 +1,32 @@
+cluster:
+  k8s: "AKS"
+
+db:
+  driver: "AzureSQL"
+  server: "contentcloudaccountstates"
+  name: "accountstates"
+  user: "content-cloud"
+
+keycloak:
+  addr: "keycloak:8080"
+
+zipkin:
+  sampleRate: "\"0\""
+  addr: "zipkin:9411"
+
+experiment:
+  fgac: "query"
+  resetDB: "\"false\""
+  accountStateCount: "\"10000\""
+  brokerCount: "\"100\""
+  activeBrokerCount: "\"10\""
+  pageSize: "\"50\""
+  users: "\"1\""
+  spawnRate: "\"1\""
+  userRPS: "\"1\""
+  runTime: "\"10m\""
+  pdp:
+    lang: "Rego"
+    host: "gateway:8181"
+    policyFile: "/resources/query/selectivity_1.rego"
+    policyName: "policies"
