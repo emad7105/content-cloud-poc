@@ -42,9 +42,9 @@ public class Provisioner {
             Broker broker = brokers.get(
                 Generators.rand.nextInt(brokers.size())
             );
-            state.setBroker(
-                broker
-            );
+//            state.setBroker(
+//                broker
+//            );
             state.setBrokerName(broker.getName());
 
             List<AccountStateAttribute> attributes = new ArrayList<>();
@@ -68,7 +68,7 @@ public class Provisioner {
                 attr.setValue(multiples.get(key).generate());
             }
 
-            state.setAttributes(attributes);
+//            state.setAttributes(attributes);
             accountStateRepository.save(state);
         }
     }

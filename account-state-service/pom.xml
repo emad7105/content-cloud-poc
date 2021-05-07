@@ -3,11 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+<!--    <parent>-->
+<!--        <groupId>be.heydari.contentcloud</groupId>-->
+<!--        <artifactId>content-cloud-poc-parent</artifactId>-->
+<!--        <version>0.0.1-SNAPSHOT</version>-->
+<!--        <relativePath>../pom.xml</relativePath>-->
+<!--    </parent>-->
     <parent>
-        <groupId>be.heydari.contentcloud</groupId>
-        <artifactId>content-cloud-poc-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.4.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <artifactId>account-state-service</artifactId>
@@ -47,30 +53,31 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
-                <version>2.3.0.RELEASE</version>
+<!--                <version>2.3.0.RELEASE</version>-->
+                <version>2.4.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.cloud</groupId>-->
+<!--                <artifactId>spring-cloud-dependencies</artifactId>-->
+<!--                <version>${spring-cloud.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <!--sleuth-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-sleuth</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zipkin</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-sleuth</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-zipkin</artifactId>-->
+<!--        </dependency>-->
 
         <!-- Emad -->
         <dependency>
@@ -118,47 +125,54 @@
 <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>com.github.paulcwarren</groupId>
-            <artifactId>spring-content-fs-boot-starter</artifactId>
-            <version>1.1.0.M4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.paulcwarren</groupId>
-            <artifactId>spring-content-rest-boot-starter</artifactId>
-            <version>1.1.0.M4</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.paulcwarren</groupId>-->
+<!--            <artifactId>spring-content-fs-boot-starter</artifactId>-->
+<!--            <version>1.1.0.M4</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.paulcwarren</groupId>-->
+<!--            <artifactId>spring-content-rest-boot-starter</artifactId>-->
+<!--            <version>1.1.0.M4</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
+            <version>1.18.16</version>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.github.paulcwarren</groupId>
-            <artifactId>spring-content-renditions-boot-starter</artifactId>
-            <version>1.1.0.M4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.paulcwarren</groupId>
-            <artifactId>spring-content-docx4j</artifactId>
-            <version>1.1.0.M4</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.paulcwarren</groupId>-->
+<!--            <artifactId>spring-content-renditions-boot-starter</artifactId>-->
+<!--            <version>1.1.0.M4</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.paulcwarren</groupId>-->
+<!--            <artifactId>spring-content-docx4j</artifactId>-->
+<!--            <version>1.1.0.M4</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.github.paulcwarren</groupId>
-            <artifactId>spring-versions-jpa-boot-starter</artifactId>
-            <version>1.1.0.M4</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.paulcwarren</groupId>-->
+<!--            <artifactId>spring-versions-jpa-boot-starter</artifactId>-->
+<!--            <version>1.1.0.M4</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.example</groupId>-->
+<!--            <artifactId>abac-for-springdata</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.example</groupId>
-            <artifactId>abac-for-springdata</artifactId>
+            <artifactId>abac-querydsl-for-springdata</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-aop</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.querydsl</groupId>
@@ -169,17 +183,17 @@
             <artifactId>querydsl-jpa</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.paulcwarren</groupId>
-            <artifactId>spring-content-solr-boot-starter</artifactId>
-            <version>1.1.0.M4</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.paulcwarren</groupId>-->
+<!--            <artifactId>spring-content-solr-boot-starter</artifactId>-->
+<!--            <version>1.1.0.M4</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.github.paulcwarren</groupId>
-            <artifactId>spring-content-solr</artifactId>
-            <version>1.1.0.M4</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.paulcwarren</groupId>-->
+<!--            <artifactId>spring-content-solr</artifactId>-->
+<!--            <version>1.1.0.M4</version>-->
+<!--        </dependency>-->
 
         <!-- Testing-->
         <dependency>

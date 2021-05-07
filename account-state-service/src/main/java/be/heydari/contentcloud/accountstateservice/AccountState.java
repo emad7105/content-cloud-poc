@@ -30,7 +30,7 @@ public class AccountState {
         this.contentId = state.getContentId();
         this.contentLength = state.getContentLength();
         this.mimeType = state.getMimeType();
-        this.broker = state.getBroker();
+//        this.broker = state.getBroker();
     }
 
     @Id
@@ -74,7 +74,7 @@ public class AccountState {
     @ManyToOne
     private Broker broker;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
     private List<AccountStateAttribute> attributes;
 
     private int accountState;

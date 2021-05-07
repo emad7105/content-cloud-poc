@@ -27,6 +27,6 @@ public class Broker {
 
     private String name;
 
-    @OneToMany(mappedBy = "broker", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "broker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<AccountState> accountStates = new HashSet<>();
 }

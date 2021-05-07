@@ -1,2 +1,2 @@
 cluster:
-  k8s: "minikube"
+  k8s: "AKS"

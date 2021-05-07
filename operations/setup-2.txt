@@ -1,0 +1,27 @@
+helm install -f experiments/query.yaml keycloak keycloak
+helm install -f experiments/postfilter.yaml keycloak keycloak
+helm install -f experiments/hardcoded.yaml keycloak keycloak
+
+helm install -f experiments/query.yaml diagnostics diagnostics
+helm install -f experiments/postfilter.yaml diagnostics diagnostics
+helm install -f experiments/hardcoded.yaml diagnostics diagnostics
+
+helm install -f experiments/query.yaml fill-keycloak fill-keycloak
+helm install -f experiments/postfilter.yaml fill-keycloak fill-keycloak
+helm install -f experiments/hardcoded.yaml fill-keycloak fill-keycloak
+
+helm install -f experiments/query.yaml gateway gateway
+helm install -f experiments/postfilter.yaml gateway gateway
+helm install -f experiments/hardcoded.yaml gateway gateway
+
+helm install -f experiments/query.yaml -f account-state/values.aks.dbPassword.yaml account-state account-state
+helm install -f experiments/postfilter.yaml -f account-state/values.aks.dbPassword.yaml account-state account-state
+helm install -f experiments/hardcoded.yaml -f account-state/values.aks.dbPassword.yaml account-state account-state
+
+helm install -f experiments/query.yaml policy policy
+helm install -f experiments/postfilter.yaml policy policy
+helm install -f experiments/hardcoded.yaml policy policy
+
+helm install -f experiments/query.yaml locust locust
+helm install -f experiments/postfilter.yaml locust locust
+helm install -f experiments/hardcoded.yaml locust locust

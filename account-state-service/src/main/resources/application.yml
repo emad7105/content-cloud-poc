@@ -1,7 +1,17 @@
 server:
   port: 8070
 
+
+
 spring:
+#  jpa:
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        generate_statistics: true
+  main:
+    allow-bean-definition-overriding: true
   sleuth:
     sampler:
       probability: ${ZIPKIN_SAMPLE_RATE:1.0}

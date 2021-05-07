@@ -40,8 +40,14 @@ public class Provisioner {
 
         Random random = new Random();
         for (int i = 0; i != recordCount; i ++) {
+            if (i % 1000 == 0) {
+                System.out.println("already generated " + i + " records");
+            }
+
+
             AccountState state = new AccountState();
-            String broker = brokers.get(Generators.rand.nextInt(brokers.size()));
+            int nextBroker = i % brokerCount;
+            String broker = brokers.get(nextBroker);
             state.setBrokerName(broker);
 
             state.setAccountState(generator.getAccountState().generate());

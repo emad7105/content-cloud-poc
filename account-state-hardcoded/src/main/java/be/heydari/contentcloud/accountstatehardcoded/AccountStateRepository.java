@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AccountStateRepository extends JpaRepository<AccountState, Long> {
+    @Query("select a from AccountState a where a.brokerName = :brokerName")
+    List<AccountState> tenant(@Param("brokerName") String brokerName, Pageable pageable);
 
     @Query("select a from AccountState a where a.brokerName = :brokerName")
     List<AccountState> policies(@Param("brokerName") String brokerName, Pageable pageable);

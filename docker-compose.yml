@@ -93,4 +93,4 @@ services:
 volumes:
   postgres-keycloak-data: { }
   postgres-account-state-data: { }
-  sqlserver-account-state-data: { }
+#  sqlserver-account-state-data: { }

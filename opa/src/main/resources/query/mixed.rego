@@ -3,7 +3,7 @@ package accountstates
 default allow = false
 
 allow {
-  data.accountState.selectivity100 == token.payload.select_100
+  data.accountState.selectivity1 == token.payload.select_1
   data.accountState.brokerName == token.payload.broker
 }
 

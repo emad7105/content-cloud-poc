@@ -4,7 +4,6 @@ import be.heydari.contentcloud.accountstatehardcoded.util.JWT;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,11 +42,16 @@ public class AccountStateController {
     public void postPolicy(@RequestParam("name") String policy) {
         LOGGER.info("policy name: " + policy);
         switch (policy) {
+            case "tenant":
+                this.activeRedactor.set(
+                    "tenant",
+                    (token, size) -> accountStateRepository.tenant((String) token.get("broker"), PageRequest.of(0, size))
+                ); break;
             case "policies":
                 this.activeRedactor.set(
                     "policies",
                     (token, size) -> accountStateRepository.policies((String) token.get("broker"), PageRequest.of(0, size))
-                );
+                ); break;
             case "selectivity_0_01":
                 this.activeRedactor.set(
                     "selector_0_01",

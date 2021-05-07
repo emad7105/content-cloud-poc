@@ -60,9 +60,14 @@ public class HardcodedProvisioner {
         Random random = new Random();
 
         for (int i = 0; i != recordCount; i ++) {
+            if (i % 1000 == 0) {
+                System.out.println("already generated " + i + " records");
+            }
+
             AccountState state = new AccountState();
-            Broker broker = brokers.get(Generators.rand.nextInt(brokers.size()));
-            state.setBroker(broker);
+            int nextBroker = i % brokerCount;
+            Broker broker = brokers.get(nextBroker);
+//            state.setBroker(broker);
             state.setBrokerName(broker.getName());
 
             state.setAccountState(generator.getAccountState().generate());

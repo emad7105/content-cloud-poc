@@ -5,13 +5,17 @@ import matplotlib.pyplot as plt
 import re
 
 data = {'cpu': [], 'sel': [], 'mode': [], 'avg': [], '50%': [], '95%': [], '99%': []}
-for exp in ['aks-10m-s1-pg50-q', 'aks-10m-s10-pg50-q', 'aks-10m-s100-pg50-q', 'p-s1-pg50-10m-aks-rand', 'p-s10-pg50-10m-aks-mod', 'p-s100-pg50-10m-aks-rand']:
+for exp in ['aks-10m-s1-pg50-q', 'aks-10m-s10-pg50-q', 'aks-10m-s100-pg50-q',
+            'p-s1-pg50-10m-aks-rand', 'p-s10-pg50-10m-aks-mod', 'p-s100-pg50-10m-aks-rand',
+            'h-s1-pg50-10m-aks', 'h-s10-pg50-10m-aks', 'h-s100-pg50-10m-aks']:
     print('reading: ', f'../results/selectivity_tests/{exp}/latencies.sqlite')
     con = sqlite3.connect(f'../results/selectivity_tests/{exp}/latencies.sqlite')
     df = pd.read_sql_query('select * from latencies', con).iloc[1:]
     data['sel'].append(int(re.search("s(\d+)", exp).group(1)))
     if exp[0] == 'p':
         data['mode'].append('postfilter')
+    elif exp[0] == 'h':
+        data['mode'].append('hardcoded')
     else:
         data['mode'].append('query')
 
@@ -49,17 +53,28 @@ plt.savefig('cpu.pdf')
 plt.title('Maximum CPU usage')
 plt.show()
 
-ax = sns.lineplot(data=data, x='sel', y='95%', hue='mode',  markers=True, dashes=False, style="mode")
-ax.set(xscale='log')
-plt.ylim(0, 4000)
-plt.show()
+print('--- post-filter ---')
+pdf = df[df['mode'] == 'postfilter']
+print(pdf)
 
-ax = sns.lineplot(data=data, x='sel', y='50%', hue='mode',  markers=True, dashes=False, style="mode")
-ax.set(xscale='log')
-plt.ylim(0, 4000)
-plt.show()
+print('--- query rewriting ---')
+qdf = df[df['mode'] == 'query']
+print(qdf)
 
-ax = sns.lineplot(data=data, x='sel', y='avg', hue='mode',  markers=True, dashes=False, style="mode")
-ax.set(xscale='log')
-plt.ylim(0, 4000)
-plt.show()
+print('--- hardcoded ---')
+hdf = df[df['mode'] == 'hardcoded']
+print(hdf)
+# ax = sns.lineplot(data=data, x='sel', y='95%', hue='mode',  markers=True, dashes=False, style="mode")
+# ax.set(xscale='log')
+# plt.ylim(0, 4000)
+# plt.show()
+#
+# ax = sns.lineplot(data=data, x='sel', y='50%', hue='mode',  markers=True, dashes=False, style="mode")
+# ax.set(xscale='log')
+# plt.ylim(0, 4000)
+# plt.show()
+#
+# ax = sns.lineplot(data=data, x='sel', y='avg', hue='mode',  markers=True, dashes=False, style="mode")
+# ax.set(xscale='log')
+# plt.ylim(0, 4000)
+# plt.show()

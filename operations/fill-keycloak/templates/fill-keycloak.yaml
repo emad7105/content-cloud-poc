@@ -20,6 +20,6 @@ spec:
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
-                - name: fill-keycloak-config
+                name: fill-keycloak-config
       restartPolicy: Never # replace by OnFailure once sure that working
   backoffLimit: 10

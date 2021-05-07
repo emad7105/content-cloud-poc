@@ -10,7 +10,7 @@ spec:
       name: account-state
       port: 8070
       targetPort: 8070
-    {{ if eq .Values.fgac "postfilter" -}}
+    {{ if eq .Values.experiment.fgac "postfilter" -}}
     - protocol: TCP
       name: opa
       port: 8181

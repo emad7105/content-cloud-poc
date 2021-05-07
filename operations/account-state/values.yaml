@@ -6,7 +6,7 @@ db:
   server: "contentcloudaccountstates"
   name: "accountstates"
   user: "content-cloud"
-  password: ""
+  password: "s3cr3t"
 
 keycloak:
   addr: "keycloak:8080"

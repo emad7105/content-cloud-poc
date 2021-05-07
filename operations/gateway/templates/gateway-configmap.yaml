@@ -11,4 +11,4 @@ data:
   ACCOUNT_STATE_ADDR: account-state:8070
   PDP_ADDR: localhost:8181 #sidecar
   FILTER_PROFILE: {{ if eq .Values.experiment.fgac "query"}} "filterEnabled" {{- else -}} "filterDisabled" {{- end }}
-  #OPA_ENABLED: {{ if eq .Values.experiment.fgac "query" -}} "true" {{- else -}} "false" {{- end -}}
+  # OPA_ENABLED: {{ if eq .Values.experiment.fgac "query" -}} "true" {{- else -}} "false" {{- end -}}
