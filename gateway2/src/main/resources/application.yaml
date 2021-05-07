@@ -56,9 +56,23 @@ spring:
             - RemoveRequestHeader=Cookie
             - name: ABACPolicy
               args:
-                abacQuery: "data.accountstates.allow"
-                abacUnknowns:
-                  - "data.accountState"
+                mode: "multi"
+                rules:
+#                  - path: "^/.*"
+#                    policy: "data.accountstates.allow2"
+#                    unknowns:
+#                      - "data.accountState"
+                  - path: "^/accountStates.*"
+                    policy: "data.accountstates.allow"
+                    unknowns:
+                      - "data.accountState"
+#                  - path: "^/hospitalBills.*"
+#                    policy: "data.hospital.allow"
+#                    unknowns:
+#                      - "data.hospitalbill"
+#                abacQuery: "data.accountstates.allow"
+#                abacUnknowns:
+#                  - "data.accountState"
 opa:
   service:
     base-url: http://${PDP_ADDR:localhost:8181} # without the "/" at the end

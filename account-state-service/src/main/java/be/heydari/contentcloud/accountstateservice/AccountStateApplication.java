@@ -70,7 +70,7 @@ public class AccountStateApplication {
         boolean reset = Boolean.parseBoolean(resetString);
         String recordCountString = System.getenv().getOrDefault("DB_RECORD_COUNT", "10000");
         int recordCount = Integer.parseInt(recordCountString);
-        String brokerCountString = System.getenv().getOrDefault("DB_BROKER_COUNT", "10");
+        String brokerCountString = System.getenv().getOrDefault("DB_BROKER_COUNT", "100");
         int brokerCount = Integer.parseInt(brokerCountString);
 
         provisioner.provision(recordCount, brokerCount, reset);

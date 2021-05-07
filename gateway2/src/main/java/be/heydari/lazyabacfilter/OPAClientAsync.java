@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -27,32 +28,16 @@ public class OPAClientAsync {
     private static final Logger LOGGER = LoggerFactory.getLogger(OPAClientAsync.class);
 
     private String baseUrl;
-//    private Tracer tracer;
     private WebClient reactiveClient;
 
-    public OPAClientAsync(String baseUrl/*, Tracer tracer*/, WebClient reactiveClient) {
+    public OPAClientAsync(String baseUrl, WebClient reactiveClient) {
         LOGGER.info("elastic version");
 
         this.baseUrl = baseUrl;
-//        this.tracer = tracer;
         this.reactiveClient = reactiveClient;
-
-//        HttpClient httpClient = HttpClient.create(ConnectionProvider
-//                .elastic("OpaHttpClientPool"));
-//        this.reactiveClient = WebClient
-//                .builder()
-//                .clientConnector(new ReactorClientHttpConnector(httpClient))
-//                .baseUrl(baseUrl)
-//                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//                .build();
     }
 
     public Mono<String> queryOPA(String query, OpaInput input, List<String> unknowns) {
-//        Span span = tracer.nextSpan().name("call-opa");
-//        try (Tracer.SpanInScope ws = this.tracer.withSpanInScope(span.start())) {
-//            span.tag("query", query);
-//            System.out.println("input: " + input.getToken());
-
             OpaQuery opaQuery = OpaQuery.builder()
                     .query(query)
                     .input(input)
@@ -68,11 +53,6 @@ public class OPAClientAsync {
                     .map(residualPolicy -> {
                         return convertResidualPolicyToProtoBuf(residualPolicy).get();
                     });
-            //String opaMockResponseBroker0AccountStatesCall = "{\"result\":{\"queries\":[[{\"index\":0,\"terms\":{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"},{\"type\":\"string\",\"value\":\"allow\"}]}}]],\"support\":[{\"package\":{\"path\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"partial\"},{\"type\":\"string\",\"value\":\"accountstates\"}]},\"rules\":[{\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":true}},\"body\":[{\"index\":0,\"terms\":[{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"eq\"}]},{\"type\":\"string\",\"value\":\"broker0\"},{\"type\":\"ref\",\"value\":[{\"type\":\"var\",\"value\":\"data\"},{\"type\":\"string\",\"value\":\"accountState\"},{\"type\":\"string\",\"value\":\"brokerName\"}]}]}]},{\"default\":true,\"head\":{\"name\":\"allow\",\"value\":{\"type\":\"boolean\",\"value\":false}},\"body\":[{\"index\":0,\"terms\":{\"type\":\"boolean\",\"value\":true}}]}]}]}}";
-//            return Mono.just(convertResidualPolicyToProtoBuf(opaMockResponseBroker0AccountStatesCall).get());
-//        } finally {
-//            span.finish();
-//        }
     }
 
     public Optional<String> convertResidualPolicyToProtoBuf(String residualPolicy) {
@@ -107,6 +87,7 @@ public class OPAClientAsync {
      */
     @Data
     @Builder
+    @ToString
     static class OpaQuery {
         String query;
         OpaInput input;
