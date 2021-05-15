@@ -3,6 +3,7 @@ package be.heydari.contentcloud.accountstatehardcoded;
 import be.heydari.contentcloud.accountstatehardcoded.util.JWT;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,7 @@ public class AccountStateController {
     }
 
     @GetMapping("/accountStates")
-    public List<AccountState> accountStates(@RequestHeader("Authorization") String token, @RequestParam("size") Optional<Integer> size){
+    public Page<AccountState> accountStates(@RequestHeader("Authorization") String token, @RequestParam("size") Optional<Integer> size){
         Map<String, Object> jwt = JWT.parse(token);
 
         AccountStateRedactor redactor = this.activeRedactor.get();

@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.versions.LockingAndVersioningRepository;
 
 public interface AccountStateRepository extends JpaRepository<AccountState, Long>, QuerydslPredicateExecutor<AccountState> {
-
     List<AccountState> findByType(@Param("type") String type, Pageable pageable);
 
     @Query("select d from AccountState d where d.type = :type")

@@ -17,16 +17,13 @@ if c.history_enabled:
     events.request_success.add_listener(stats.add_request)
     events.test_stop.add_listener(stats.flush)
 
-
-def inf_wait(**kwargs):
-    print("waiting")
-    while True:
-        pass
-        time.sleep(1)
-
-
 if c.detached:
-    events.quitting.add_listener(inf_wait)
+    events.quitting.add_listener(handlers.inf_wait)
+
+if c.zipkin_enabled:
+    events.test_stop.add_listener(
+        handlers.pull_zipkin(c.zipkin_addr, c.zipkin_file, c.zipkin_max_requests)
+    )
 
 users = []
 
@@ -57,26 +54,4 @@ class AccountStateServiceUser(HttpUser):
                 f'broker{broker_idx}',
             )
             users.append(cookies)
-
-        # if c.switch_brokers:
-        #     for broker_idx in range(0, broker_count - 1):
-        #         cookies = setup_session(
-        #             self.host,
-        #             f'broker{broker_idx}',
-        #             f'broker{broker_idx}',
-        #         )
-        #         users.append(cookies)
-        # else:
-        #     cookies = setup_session(
-        #         self.host,
-        #         f'broker{broker_idx}',
-        #         f'broker{broker_idx}',
-        #     )
-        #     users.append(cookies)
-        #
-        # for broker_idx in range(0, broker_count - 1):
-        #     users.append()
-        #
-        # for name, value in cookies.items():
-        #     self.client.cookies.set(name, value)
 

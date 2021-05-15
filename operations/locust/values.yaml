@@ -1,6 +1,10 @@
 cluster:
   k8s: "AKS"
 
+zipkin:
+  sampleRate: "\"0\""
+  addr: "zipkin:9411"
+
 locust:
   headless: "\"True\""
   host: "http://gateway:8060"
@@ -16,3 +20,5 @@ experiment:
   activeBrokerCount: "\"10\""
   pageSize: "\"10\""
   userRPS: "\"1\""
+  zipkinEnabled: "\"True\""
+  zipkinMaxRequests: "\"1200\""

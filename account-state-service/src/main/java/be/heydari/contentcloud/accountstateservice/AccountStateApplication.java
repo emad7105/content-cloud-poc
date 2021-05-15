@@ -49,7 +49,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 
 @SpringBootApplication
-@EnableAspectJAutoProxy()
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableAbac
 //@EnableWebSecurity
 public class AccountStateApplication {

@@ -16,9 +16,9 @@ zipkin:
 
 experiment:
   fgac: "hardcoded"
-  resetDB: "\"true\""
-  accountStateCount: "\"100000\""
-  brokerCount: "\"100\""
+  resetDB: "\"false\""
+  accountStateCount: "\"1000000\""
+  brokerCount: "\"1000\""
   activeBrokerCount: "\"10\""
   pageSize: "\"50\""
   users: "\"1\""

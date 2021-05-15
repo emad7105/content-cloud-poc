@@ -19,4 +19,8 @@ data:
   CLIENT_USER_RPS: {{ .Values.experiment.userRPS }}
   CLIENT_ENABLE_HISTORY_DB: {{ .Values.locust.enableHistoryDB }}
   CLIENT_HISTORY_DB_FILE: "{{ .Values.locust.statsDir }}/latencies.sqlite"
+  CLIENT_ZIPKIN_ENABLED: "{{ .Values.experiment.zipkinEnabled}}"
+  CLIENT_ZIPKIN_ADDR: "{{ .Values.zipkin.addr }}"
+  CLIENT_ZIPKIN_FILE: "{{.Values.locust.statsDir }}/zipkin.json"
+  CLIENT_ZIPKIN_MAX_REQUESTS: "{{ .Values.experiment.zipkinMaxRequests }}"
   {{- end }}

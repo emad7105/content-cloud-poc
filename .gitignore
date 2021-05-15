@@ -40,4 +40,6 @@ build/
 ### account-state-secrets ###
 **/values.aks.dbpassword.yaml
 
+### Data
 *.DS_Store
+*.sqlite

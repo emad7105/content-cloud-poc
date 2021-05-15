@@ -11,20 +11,22 @@ keycloak:
   addr: "keycloak:8080"
 
 zipkin:
-  sampleRate: "\"0\""
+  sampleRate: "\"1\""
   addr: "zipkin:9411"
 
 experiment:
   fgac: "query"
   resetDB: "\"false\""
-  accountStateCount: "\"100000\""
-  brokerCount: "\"100\""
+  accountStateCount: "\"1000000\""
+  brokerCount: "\"1000\""
   activeBrokerCount: "\"10\""
   pageSize: "\"50\""
   users: "\"1\""
   spawnRate: "\"1\""
   userRPS: "\"2\""
   runTime: "\"10m\""
+  zipkinEnabled: "\"True\""
+  zipkinMaxRequests: "\"1200\""
   pdp:
     lang: "Rego"
     host: "gateway:8181"
