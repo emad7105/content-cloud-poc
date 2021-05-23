@@ -5,13 +5,17 @@ import matplotlib.pyplot as plt
 import re
 
 data = {'attr': [], 'mode': [], 'avg': [], '50%': [], '95%': [], '99%': []}
-for exp in ['p-aks-10m-attr5-s1-pg50', 'p-aks-10m-attr15-s1-pg50', 'p-aks-10m-attr25-s1-pg50', 'q-aks-10m-attr5-s1-pg50', 'q-aks-10m-attr15-s1-pg50', 'q-aks-10m-attr25-s1-pg50']:
-    print('reading: ', f'../results/attr_tests/{exp}/latencies.sqlite')
-    con = sqlite3.connect(f'../results/attr_tests/{exp}/latencies.sqlite')
+for exp in [
+        'q-a1', 'q-a5', 'q-a15', 'q-a25',
+        'h-a1', 'h-a5', 'h-a15', 'h-a25']:
+    print('reading: ', f'../results/attributes/{exp}/latencies.sqlite')
+    con = sqlite3.connect(f'../results/attributes/{exp}/latencies.sqlite')
     df = pd.read_sql_query('select * from latencies', con).iloc[1:]
-    data['attr'].append(int(re.search("attr(\d+)", exp).group(1)))
+    data['attr'].append(int(re.search("(\d+)", exp).group(1)))
     if exp[0] == 'p':
         data['mode'].append('postfilter')
+    if exp[0] == 'h':
+        data['mode'].append('hardcoded')
     else:
         data['mode'].append('query')
 
@@ -21,15 +25,24 @@ for exp in ['p-aks-10m-attr5-s1-pg50', 'p-aks-10m-attr15-s1-pg50', 'p-aks-10m-at
     data['99%'].append(df['latency'].quantile(0.99))
 
 df = pd.DataFrame(data)
-ax = sns.lineplot(data=df[df['mode'] == 'query'], x='attr', y='99%', hue='mode',  markers=True, dashes=False, style="mode")
+ax = sns.lineplot(data=df, x='attr', y='99%', hue='mode',  markers=True, dashes=False, style="mode")
 plt.xlabel('attributes')
 # plt.xticks([1, 10, 100])
 
 plt.ylabel('latency (ms)')
 # plt.ylim(0, 4000)
-plt.savefig('selectivity.png')
-plt.title('99th percentile latency')
+# plt.title('99th percentile latency')
+plt.savefig(
+    'out/attribute.pdf',
+    bbox_inches='tight',
+    pad_inches=0,
+)
 plt.show()
+
+csv = df.to_csv(index=False)
+file = open('out/attribute.csv', 'w')
+file.write(csv)
+
 
 ax = sns.lineplot(data=data, x='attr', y='95%', hue='mode',  markers=True, dashes=False, style="mode")
 # ax.set(xscale='log')

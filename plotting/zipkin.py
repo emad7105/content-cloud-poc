@@ -1,116 +1,165 @@
-import json
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
+class QueryModeZipkinParser:
+    def __init__(self, traces):
+        self.traces = traces
 
-OPA = 'opa'
-ACC_STATE = 'acc-state'
-GATEWAY = 'gateway'
-REMAINDER = 'remainder'
+    def parse(self):
+        delays = {'opa': [], 'acc': [], 'query': [], 'remainder': []}
+        for trace in self.traces:
+            trace_delays, ok = self.parse_trace(trace)
 
+            if not ok:
+                continue
 
-def parse_zipkin(traces):
-    delays = {OPA: [], ACC_STATE: [], GATEWAY: []}
-    percent = {OPA: [], ACC_STATE: [], REMAINDER: []}
-    for trace in traces:
-        trace_delays, ok = parse_trace(trace)
+            total_delay = trace_delays['gw']
+            opa_delay = trace_delays['opa']
+            acc_state_delay = trace_delays['acc'] - trace_delays['query']
+            query_delay = trace_delays['query']
 
-        if not ok:
-            continue
+            delays['opa'].append(opa_delay / total_delay)
+            delays['acc'].append(acc_state_delay / total_delay)
+            delays['query'].append(query_delay / total_delay)
+            delays['remainder'].append((total_delay - opa_delay - acc_state_delay - query_delay) / total_delay)
 
-        delays[OPA].append(trace_delays[OPA])
-        delays[ACC_STATE].append(trace_delays[ACC_STATE])
-        delays[GATEWAY].append(trace_delays[GATEWAY])
+        return delays
 
-        total_delay = trace_delays[GATEWAY]
-        opa_delay = trace_delays[OPA]
-        acc_state_delay = trace_delays[ACC_STATE]
+    def parse_trace(self, trace):
+        delays = {}
+        for span in trace:
+            if self.is_opa_call(span):
+                # print('opa call')
+                delays['opa'] = span['duration']
+            if self.is_acc_state(span):
+                # print('acc-state call')
+                delays['acc'] = span['duration']
+            if self.is_query(span):
+                delays['query'] = span['duration']
+            if self.is_gateway_call(span):
+                # print('gw call')
+                delays['gw'] = span['duration']
 
-        percent[OPA].append(opa_delay / total_delay)
-        percent[ACC_STATE].append(acc_state_delay / total_delay)
-        percent[REMAINDER].append((total_delay - opa_delay - acc_state_delay) / total_delay)
+        return delays, len(delays) == 4
 
-    return delays, percent
+    def parse_old(self):
+        delays = {'opa': [], 'acc': [], 'remainder': []}
+        for trace in self.traces:
+            trace_delays, ok = self.parse_trace_old(trace)
 
+            if not ok:
+                continue
 
-def parse_trace(trace):
-    delays = {}
-    for span in trace:
-        if is_opa_call(span):
-            # print('opa call')
-            delays[OPA] = get_duration(span)
-        if is_acc_state(span):
-            # print('acc-state call')
-            delays[ACC_STATE] = get_duration(span)
-        if is_gateway_call(span):
-            # print('gw call')
-            delays[GATEWAY] = get_duration(span)
-    return delays, len(delays) == 3
+            total_delay = trace_delays['gw']
+            acc_state_delay = trace_delays['acc']
+            opa_delay = trace_delays['opa']
 
+            delays['opa'].append(opa_delay / total_delay)
+            delays['acc'].append(acc_state_delay / total_delay)
+            delays['remainder'].append((total_delay - opa_delay - acc_state_delay) / total_delay)
 
-def is_opa_call(span):
-    tags = get_tags(span)
-    return tags['http.method'] == 'POST' \
-        and tags['http.path'] == "/v1/compile"
+        return delays
 
+    def parse_trace_old(self, trace):
+        delays = {}
+        for span in trace:
+            if self.is_opa_call(span):
+                # print('opa call')
+                delays['opa'] = span['duration']
+            if self.is_acc_state(span):
+                # print('acc-state call')
+                delays['acc'] = span['duration']
+            if self.is_gateway_call(span):
+                # print('gw call')
+                delays['gw'] = span['duration']
+        return delays, len(delays) == 3
 
-def is_gateway_call(span):
-    tags = get_tags(span)
-    kind = get_kind(span)
-    return tags['http.method'] == 'GET' \
-        and tags['http.path'] == '/accountstateservice/accountStates' \
-        and kind == 'SERVER'
+    def is_opa_call(self, span):
+        if 'tags' not in span:
+            return False
+        tags = span['tags']
+        return tags['http.method'] == 'POST' \
+               and tags['http.path'] == "/v1/compile"
 
+    def is_gateway_call(self, span):
+        if 'tags' not in span:
+            return False
+        tags = span['tags']
 
-def is_acc_state(span):
-    tags = get_tags(span)
-    kind = get_kind(span)
-    return tags['http.method'] == 'GET' \
-        and tags['http.path'] == '/accountStates' \
-        and kind == 'SERVER'
+        if 'kind' not in span:
+            return False
+        kind = span['kind']
+        return tags['http.method'] == 'GET' \
+               and tags['http.path'] == '/accountstateservice/accountStates' \
+               and kind == 'SERVER'
 
+    def is_acc_state(self, span):
+        if 'tags' not in span:
+            return False
+        tags = span['tags']
 
-def get_tags(span):
-    return span['tags']
+        if 'kind' not in span:
+            return False
+        kind = span['kind']
 
+        return tags['http.method'] == 'GET' \
+               and tags['http.path'] == '/accountStates' \
+               and kind == 'SERVER'
 
-def get_kind(span):
-    return span['kind']
+    def is_query(self, span):
+        return span['name'] == 'query'
 
+class PostfilterModeZipkinParser:
 
-def get_duration(span):
-    return span['duration']
+    def __init__(self, traces):
+        self.traces = traces
 
+    def parse(self):
+        percent = {'postfilter': [], 'acc': [], 'remainder': []}
+        for trace in self.traces:
+            delay, ok = self.trace_delays(trace)
+            if not ok:
+                continue
 
-traces = open('zipkin.json')
-z_trace = json.loads(traces.read())
-_, z_parse = parse_zipkin(z_trace)
+            total_delay = delay['gw']
+            postfilter = delay['postfilter'] / total_delay
+            acc_state = (delay['acc'] - delay['postfilter']) / total_delay
+            remainder = (total_delay - delay['acc']) / total_delay
 
-z_df = pd.DataFrame.from_dict(z_parse)
-opa_mean = z_df[OPA].mean()
-acc_mean = z_df[ACC_STATE].mean()
-rem_mean = z_df[REMAINDER].mean()
+            percent['postfilter'].append(postfilter)
+            percent['acc'].append(acc_state)
+            percent['remainder'].append(remainder)
+        return percent
 
-m_df = pd.DataFrame.from_dict({
- 'kind': ['OPA', 'Service', 'Remainder'],
- 'percentage': [opa_mean, acc_mean, rem_mean],
-})
+    def trace_delays(self, trace):
+        delays = {}
 
-sns.set()
-m_df = m_df.sort_values('percentage')
-m_df = m_df.set_index('kind')
+        for span in trace:
+            if self.is_postfilter_call(span):
+                # print('opa call')
+                delays['postfilter'] = span['duration']
+            if self.is_acc_call(span):
+                # print('acc call')
+                delays['acc'] = span['duration']
+            if self.is_gw_call(span):
+                # print('gw call')
+                delays['gw'] = span['duration']
 
-print(m_df)
+        return delays, len(delays) == 3
 
+    def is_postfilter_call(self, span):
+        return span['name'] == 'postfilter-opa'
 
-sns.set_style("ticks")
-sns.despine()
+    def is_gw_call(self, span):
+        if 'tags' not in span:
+            return False
 
-ax = m_df.T.plot(kind='barh', stacked=True, )
-handles, labels = ax.get_legend_handles_labels()
-ax.legend(handles=handles[:], labels=labels[:])
-plt.xlabel('Contribution to latency')
-plt.ylabel(None)
-plt.yticks([])
+        tags = span['tags']
+        return tags['http.method'] == 'GET' \
+               and tags['http.path'] == '/accountstateservice/accountStates' \
+               and span['kind'] == 'SERVER'
 
-plt.show()
+    def is_acc_call(self, span):
+        if 'tags' not in span:
+            return False
+        tags = span['tags']
+        return tags['http.method'] == 'GET' \
+               and tags['http.path'] == '/accountStates' \
+               and span['kind'] == 'SERVER'

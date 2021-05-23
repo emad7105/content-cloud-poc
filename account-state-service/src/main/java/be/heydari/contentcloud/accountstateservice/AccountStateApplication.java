@@ -17,12 +17,14 @@ import be.heydari.lib.converters.solr.SolrUtils;
 import be.heydari.lib.expressions.Disjunction;
 //import brave.SpanCustomizer;
 //import com.example.abac_spike.ABACContext;
+import brave.Tracer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.apache.solr.client.solrj.SolrClient;
 //import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -112,64 +114,6 @@ public class AccountStateApplication {
         @Bean
         public DataSource getDataSource() {
             return drivers.getByEnv().getDataSource();
-//            String driverName = System.getenv("DB_DRIVER");
-//
-//            driverName = driverName == null ? "H2" : driverName;
-//
-//            switch (driverName) {
-//                case "H2":
-//                    return getH2DataSource();
-//                case "Postgres":
-//                    return getPostgresDataSource();
-//                case "MSSQL":
-//                    return getSqlServerDataSource();
-//                default:
-//                    throw new IllegalArgumentException("unknown database driver: " + driverName);
-//            }
-        }
-
-        public DataSource getH2DataSource() {
-            DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-            dataSourceBuilder.driverClassName("org.h2.Driver");
-            dataSourceBuilder.url("jdbc:h2:mem:");
-            dataSourceBuilder.username("sa");
-            dataSourceBuilder.password("");
-            return dataSourceBuilder.build();
-        }
-
-        public DataSource getPostgresDataSource() {
-            Map<String, String> env = System.getenv();
-            String dbURL = env.getOrDefault("DB_URL", "localhost:5432/account-states");
-            String username = env.getOrDefault("DB_USERNAME", "username");
-            String password = env.getOrDefault("DB_PASSWORD", "password");
-
-//            DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-//            dataSourceBuilder.driverClassName("org.postgresql.Driver");
-//            dataSourceBuilder.url(String.format("jdbc:postgresql://%s", dbURL));
-//            dataSourceBuilder.username(username);
-//            dataSourceBuilder.password(password);
-//            return dataSourceBuilder.build();
-
-            PGSimpleDataSource ds = new PGSimpleDataSource();
-            ds.setDatabaseName("account-state");
-            ds.setServerNames(new String[]{"localhost"});
-            ds.setUser("username");
-            ds.setPassword("password");
-            return ds;
-        }
-
-        public DataSource getSqlServerDataSource() {
-            Map<String, String> env = System.getenv();
-            String dbURL = env.getOrDefault("DB_URL", "localhost:1433;databaseName=AccountStates");
-            String username = env.getOrDefault("DB_USERNAME", "SA");
-            String password = env.getOrDefault("DB_PASSWORD", "s3cr3t_p@ssw0rd");
-
-            DataSourceBuilder dataSourceBuilder  = DataSourceBuilder.create();
-            dataSourceBuilder.driverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            dataSourceBuilder.url(String.format("jdbc:sqlserver://%s", dbURL));
-            dataSourceBuilder.username(username);
-            dataSourceBuilder.password(password);
-            return dataSourceBuilder.build();
         }
     }
 

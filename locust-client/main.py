@@ -27,6 +27,7 @@ if c.zipkin_enabled:
 
 users = []
 
+
 class AccountStateServiceUser(HttpUser):
     wait_time = constant_pacing(1.0 / c.user_rps)
 

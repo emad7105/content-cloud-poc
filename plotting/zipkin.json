@@ -1,0 +1,186 @@
+[
+    [
+        {
+            "traceId": "afce978b2362b98f",
+            "parentId": "47e98d1762adf192",
+            "id": "00d31e292a148cb8",
+            "name": "query",
+            "timestamp": 1621082913850253,
+            "duration": 2466,
+            "localEndpoint": {
+                "serviceName": "acc-state",
+                "ipv4": "192.168.63.111"
+            }
+        },
+        {
+            "traceId": "afce978b2362b98f",
+            "parentId": "ecf3eab0eb6c727c",
+            "id": "47e98d1762adf192",
+            "kind": "SERVER",
+            "name": "get",
+            "timestamp": 1621082913829430,
+            "duration": 56559,
+            "localEndpoint": {
+                "serviceName": "acc-state",
+                "ipv4": "192.168.63.111"
+            },
+            "remoteEndpoint": {
+                "ipv4": "127.0.0.1"
+            },
+            "tags": {
+                "http.method": "GET",
+                "http.path": "/accountStates"
+            }
+        },
+        {
+            "traceId": "afce978b2362b98f",
+            "parentId": "afce978b2362b98f",
+            "id": "a79815af99dec412",
+            "kind": "CLIENT",
+            "name": "post",
+            "timestamp": 1621082913814005,
+            "duration": 11585,
+            "localEndpoint": {
+                "serviceName": "gateway",
+                "ipv4": "192.168.63.111"
+            },
+            "tags": {
+                "http.method": "POST",
+                "http.path": "/v1/compile"
+            }
+        },
+        {
+            "traceId": "afce978b2362b98f",
+            "id": "afce978b2362b98f",
+            "kind": "SERVER",
+            "name": "get",
+            "timestamp": 1621082913810857,
+            "duration": 75609,
+            "localEndpoint": {
+                "serviceName": "gateway",
+                "ipv4": "192.168.63.111"
+            },
+            "remoteEndpoint": {
+                "ipv4": "127.0.0.1",
+                "port": 59734
+            },
+            "tags": {
+                "http.method": "GET",
+                "http.path": "/accountstateservice/accountStates"
+            }
+        },
+        {
+            "traceId": "afce978b2362b98f",
+            "parentId": "afce978b2362b98f",
+            "id": "ecf3eab0eb6c727c",
+            "kind": "CLIENT",
+            "name": "get",
+            "timestamp": 1621082913827660,
+            "duration": 59292,
+            "localEndpoint": {
+                "serviceName": "gateway",
+                "ipv4": "192.168.63.111"
+            },
+            "remoteEndpoint": {
+                "ipv4": "127.0.0.1",
+                "port": 8070
+            },
+            "tags": {
+                "http.method": "GET",
+                "http.path": "/accountStates"
+            }
+        }
+    ],
+    [
+        {
+            "traceId": "473ea73164a4618b",
+            "parentId": "473ea73164a4618b",
+            "id": "3645a05b46db9be0",
+            "kind": "CLIENT",
+            "name": "post",
+            "timestamp": 1621082886555193,
+            "duration": 6064,
+            "localEndpoint": {
+                "serviceName": "gateway",
+                "ipv4": "192.168.63.111"
+            },
+            "tags": {
+                "http.method": "POST",
+                "http.path": "/v1/compile"
+            }
+        },
+        {
+            "traceId": "473ea73164a4618b",
+            "id": "473ea73164a4618b",
+            "kind": "SERVER",
+            "name": "get",
+            "timestamp": 1621082886513173,
+            "duration": 489196,
+            "localEndpoint": {
+                "serviceName": "gateway",
+                "ipv4": "192.168.63.111"
+            },
+            "remoteEndpoint": {
+                "ipv4": "127.0.0.1",
+                "port": 59734
+            },
+            "tags": {
+                "http.method": "GET",
+                "http.path": "/accountstateservice/accountStates"
+            }
+        },
+        {
+            "traceId": "473ea73164a4618b",
+            "parentId": "473ea73164a4618b",
+            "id": "027f4658facd8f98",
+            "kind": "CLIENT",
+            "name": "get",
+            "timestamp": 1621082886568589,
+            "duration": 434384,
+            "localEndpoint": {
+                "serviceName": "gateway",
+                "ipv4": "192.168.63.111"
+            },
+            "remoteEndpoint": {
+                "ipv4": "127.0.0.1",
+                "port": 8070
+            },
+            "tags": {
+                "http.method": "GET",
+                "http.path": "/accountStates"
+            }
+        },
+        {
+            "traceId": "473ea73164a4618b",
+            "parentId": "e855959e5ab22f8b",
+            "id": "f4f78005a6b3ced8",
+            "name": "query",
+            "timestamp": 1621082886766214,
+            "duration": 42552,
+            "localEndpoint": {
+                "serviceName": "acc-state",
+                "ipv4": "192.168.63.111"
+            }
+        },
+        {
+            "traceId": "473ea73164a4618b",
+            "parentId": "027f4658facd8f98",
+            "id": "e855959e5ab22f8b",
+            "kind": "SERVER",
+            "name": "get",
+            "timestamp": 1621082886634760,
+            "duration": 366655,
+            "localEndpoint": {
+                "serviceName": "acc-state",
+                "ipv4": "192.168.63.111"
+            },
+            "remoteEndpoint": {
+                "ipv4": "127.0.0.1"
+            },
+            "tags": {
+                "http.method": "GET",
+                "http.path": "/accountStates"
+            }
+        }
+    ]
+]

@@ -11,7 +11,7 @@ keycloak:
   addr: "keycloak:8080"
 
 zipkin:
-  sampleRate: "\"0\""
+  sampleRate: "\"1\""
   addr: "zipkin:9411"
 
 experiment:

@@ -25,7 +25,6 @@ experiment:
   spawnRate: "\"1\""
   userRPS: "\"2\""
   runTime: "\"10m\""
-  zipkinEnabled: "\"True\""
   zipkinMaxRequests: "\"1200\""
   pdp:
     lang: "Rego"

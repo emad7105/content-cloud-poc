@@ -36,6 +36,8 @@ build/
 **/venv
 **/results/*
 **/reports/*
+experiment-runner/experiments/**
+plotting/out/*
 
 ### account-state-secrets ###
 **/values.aks.dbpassword.yaml

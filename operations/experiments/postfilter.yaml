@@ -11,7 +11,7 @@ keycloak:
   addr: "keycloak:8080"
 
 zipkin:
-  sampleRate: "\"0\""
+  sampleRate: "\"1\""
   addr: "zipkin:9411"
 
 experiment:
@@ -25,8 +25,8 @@ experiment:
   spawnRate: "\"1\""
   userRPS: "\"2\""
   runTime: "\"10m\""
+  zipkinMaxRequests: "\"1200\""
   pdp:
     lang: "Rego"
     host: "account-state:8181"
     policyFile: "/resources/postfilter/tenant.rego"
-    policyName: "policies"

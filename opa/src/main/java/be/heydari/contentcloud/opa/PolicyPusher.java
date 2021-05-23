@@ -11,7 +11,7 @@ import java.util.Map;
 public class PolicyPusher {
     public static void main(String[] args) throws Exception {
         var env = System.getenv();
-        var lang = env.getOrDefault("POLICY_LANGUAGE", "Rego");
+        var lang = env.getOrDefault("POLICY_LANGUAGE", "Java");
 
         switch (lang) {
             case "Rego":
@@ -27,7 +27,7 @@ public class PolicyPusher {
 
     public static void pushRegoPolicy(Map<String, String> env) throws Exception {
         var pdpAddr = env.getOrDefault("PDP_ADDR", "localhost:8181");
-        var policyFile = env.getOrDefault("POLICY_FILE", "./opa/src/main/resources/query/selectivity_1.rego");
+        var policyFile = env.getOrDefault("POLICY_FILE", "./opa/src/main/resources/postfilter/selectivity_100.rego");
 
         var url = new URL("http://" + pdpAddr + "/v1/policies/account-state");
         var httpCon = (HttpURLConnection) url.openConnection();
@@ -64,7 +64,7 @@ public class PolicyPusher {
     }
 
     public static void pushHardCodedPolicy(Map<String, String> env) throws Exception {
-        var policyName = env.getOrDefault("POLICY_NAME", "selectivity_1");
+        var policyName = env.getOrDefault("POLICY_NAME", "attr_count_15");
         var pdpAddr = env.getOrDefault("PDP_ADDR", "localhost:8070");
         var url = new URL("http://" + pdpAddr + "/policy?name=" + policyName);
 

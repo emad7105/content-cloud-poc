@@ -98,6 +98,121 @@ public class AccountStateController {
                     "selector_100",
                     (token, size) -> accountStateRepository.selector_100((Boolean) token.get("select_100"), PageRequest.of(0, size))
                 ); break;
+            case "attr_count_1":
+                this.activeRedactor.set(
+                    "attribute_count_1",
+                    (token, size) -> accountStateRepository.attr_count_1((String) token.get("attribute0"), PageRequest.of(0, size))
+                ); break;
+            case "attr_count_5":
+                this.activeRedactor.set(
+                    "attribute_count_5",
+                    (token, size) -> accountStateRepository.attr_count_5(
+                        (String) token.get("attribute0"),
+                        (String) token.get("attribute1"),
+                        (String) token.get("attribute2"),
+                        (String) token.get("attribute3"),
+                        (String) token.get("attribute4"),
+                        PageRequest.of(0, size)
+                    )
+                ); break;
+            case "attr_count_10":
+                this.activeRedactor.set(
+                    "attribute_count_10",
+                    (token, size) -> accountStateRepository.attr_count_10(
+                        (String) token.get("attribute0"),
+                        (String) token.get("attribute1"),
+                        (String) token.get("attribute2"),
+                        (String) token.get("attribute3"),
+                        (String) token.get("attribute4"),
+                        (String) token.get("attribute5"),
+                        (String) token.get("attribute6"),
+                        (String) token.get("attribute7"),
+                        (String) token.get("attribute8"),
+                        (String) token.get("attribute9"),
+                        PageRequest.of(0, size)
+                    )
+                ); break;
+            case "attr_count_15":
+                this.activeRedactor.set(
+                    "attribute_count_15",
+                    (token, size) -> accountStateRepository.attr_count_15(
+                        (String) token.get("attribute0"),
+                        (String) token.get("attribute1"),
+                        (String) token.get("attribute2"),
+                        (String) token.get("attribute3"),
+                        (String) token.get("attribute4"),
+                        (String) token.get("attribute5"),
+                        (String) token.get("attribute6"),
+                        (String) token.get("attribute7"),
+                        (String) token.get("attribute8"),
+                        (String) token.get("attribute9"),
+                        (String) token.get("attribute10"),
+                        (String) token.get("attribute11"),
+                        (String) token.get("attribute12"),
+                        (String) token.get("attribute13"),
+                        (String) token.get("attribute14"),
+                        PageRequest.of(0, size)
+                    )
+                ); break;
+            case "attr_count_20":
+                this.activeRedactor.set(
+                    "attribute_count_20",
+                    (token, size) -> accountStateRepository.attr_count_20(
+                        (String) token.get("attribute0"),
+                        (String) token.get("attribute1"),
+                        (String) token.get("attribute2"),
+                        (String) token.get("attribute3"),
+                        (String) token.get("attribute4"),
+                        (String) token.get("attribute5"),
+                        (String) token.get("attribute6"),
+                        (String) token.get("attribute7"),
+                        (String) token.get("attribute8"),
+                        (String) token.get("attribute9"),
+                        (String) token.get("attribute10"),
+                        (String) token.get("attribute11"),
+                        (String) token.get("attribute12"),
+                        (String) token.get("attribute13"),
+                        (String) token.get("attribute14"),
+                        (String) token.get("attribute15"),
+                        (String) token.get("attribute16"),
+                        (String) token.get("attribute17"),
+                        (String) token.get("attribute18"),
+                        (String) token.get("attribute19"),
+                        PageRequest.of(0, size)
+                    )
+                ); break;
+            case "attr_count_25":
+                this.activeRedactor.set(
+                    "attribute_count_25",
+                    (token, size) -> accountStateRepository.attr_count_25(
+                        (String) token.get("attribute0"),
+                        (String) token.get("attribute1"),
+                        (String) token.get("attribute2"),
+                        (String) token.get("attribute3"),
+                        (String) token.get("attribute4"),
+                        (String) token.get("attribute5"),
+                        (String) token.get("attribute6"),
+                        (String) token.get("attribute7"),
+                        (String) token.get("attribute8"),
+                        (String) token.get("attribute9"),
+                        (String) token.get("attribute10"),
+                        (String) token.get("attribute11"),
+                        (String) token.get("attribute12"),
+                        (String) token.get("attribute13"),
+                        (String) token.get("attribute14"),
+                        (String) token.get("attribute15"),
+                        (String) token.get("attribute16"),
+                        (String) token.get("attribute17"),
+                        (String) token.get("attribute18"),
+                        (String) token.get("attribute19"),
+                        (String) token.get("attribute20"),
+                        (String) token.get("attribute21"),
+                        (String) token.get("attribute22"),
+                        (String) token.get("attribute23"),
+                        (String) token.get("attribute24"),
+                        PageRequest.of(0, size)
+                    )
+                ); break;
             default:
                 throw new IllegalArgumentException("Unknown policy: " + policy);
         }

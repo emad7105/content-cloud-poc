@@ -8,6 +8,8 @@ import brave.Tracer;
 import org.javatuples.Pair;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -69,25 +71,53 @@ public class AccountStateController {
 
     private List<AccountState> sequentialAccountStates(String token, int size) {
         List<AccountState> states = new ArrayList<>();
-        for(AccountState entry: accountStateRepository.findAll()) {
-            String[] bearerArray = token.split("\\s+");
-            OPAInput input = new OPAInput(bearerArray[1], entry);
-
-            try {
-                OPAClient.OPAResponse decision = this.opaClient.queryOPA(input);
-                if (decision.result == true) {
-                    states.add(entry);
+        int cursorSize = 100;
+        int offset = 0;
+        while (true) {
+            Slice<AccountState> slice = accountStateRepository.findAllSlice(PageRequest.of(offset, cursorSize));
+            for (AccountState state : slice.getContent()) {
+                String[] bearerArray = token.split("\\s+");
+                OPAInput input = new OPAInput(bearerArray[1], state);
+                try {
+                    OPAClient.OPAResponse decision = this.opaClient.queryOPA(input);
+                    if (decision.result == true) {
+                        states.add(state);
+                    }
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage(), e);
                 }
-            } catch (IOException e) {
-                LOGGER.error(e.getMessage(), e);
+
+                if (states.size() == size) {
+                    return states;
+                }
             }
 
-            if (states.size() == size) {
-                break;
+            if (slice.isLast()) {
+                return states;
             }
+
+            offset++;
         }
 
-        return states;
+//        for(AccountState entry: accountStateRepository.findAll()) {
+//            String[] bearerArray = token.split("\\s+");
+//            OPAInput input = new OPAInput(bearerArray[1], entry);
+//
+//            try {
+//                OPAClient.OPAResponse decision = this.opaClient.queryOPA(input);
+//                if (decision.result == true) {
+//                    states.add(entry);
+//                }
+//            } catch (IOException e) {
+//                LOGGER.error(e.getMessage(), e);
+//            }
+//
+//            if (states.size() == size) {
+//                break;
+//            }
+//        }
+//
+//        return states;
     }
 
     private List<AccountState> parallelAccountStates(String token, int size) {
