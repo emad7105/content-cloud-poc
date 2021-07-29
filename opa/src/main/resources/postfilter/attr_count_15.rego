@@ -17,8 +17,10 @@ allow {
   input.accountState.attribute11 == token.payload.attribute11
   input.accountState.attribute12 == token.payload.attribute12
   input.accountState.attribute13 == token.payload.attribute13
-  input.accountState.attribute14 == token.payload.attribute14
-  input.accountState.attribute15 == token.payload.attribute15
+#  input.accountState.attribute14 == token.payload.attribute14
+#  input.accountState.attribute15 == token.payload.attribute15
+  input.accountState.selectivity10 == token.payload.select_10
+
 }
 
 token = {"payload": payload} {

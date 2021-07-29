@@ -3,6 +3,7 @@ package accountstates
 default allow = false
 
 allow {
+  data.accountState.selectivity10 == token.payload.select_10
   data.accountState.attribute0 == token.payload.attribute0
   data.accountState.attribute1 == token.payload.attribute1
   data.accountState.attribute2 == token.payload.attribute2
@@ -12,7 +13,7 @@ allow {
   data.accountState.attribute6 == token.payload.attribute6
   data.accountState.attribute7 == token.payload.attribute7
   data.accountState.attribute8 == token.payload.attribute8
-  data.accountState.attribute9 == token.payload.attribute9
+#  data.accountState.attribute9 == token.payload.attribute9
 }
 
 token = {"payload": payload} {
